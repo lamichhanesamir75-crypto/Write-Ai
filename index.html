@@ -458,6 +458,7 @@ select option{background:var(--white)}
       <div class="hbtns">
         <button class="btn btn-ink btn-lg" onclick="go('cv')">📄 Build My CV Free</button>
         <button class="btn btn-blue btn-lg" onclick="go('blog')">✍️ Create Blog Post</button>
+        <button class="btn btn-gold btn-lg" onclick="go('writing');setTimeout(()=>{document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));document.querySelector('[data-t=caption]').classList.add('on');renderWT('caption')},300)">📱 Generate Caption</button>
       </div>
       <div class="hproof">
         <div><div class="pnum">50K+</div><div class="plbl">Words Generated</div></div>
@@ -503,8 +504,9 @@ select option{background:var(--white)}
         <p>Professional emails for any purpose — follow-ups, pitches, apologies, cold outreach — perfectly written in seconds.</p>
         <div class="tc-arr">↗</div>
       </div>
-      <div class="tc" onclick="go('writing')">
+      <div class="tc" onclick="go('writing');setTimeout(()=>{document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));document.querySelector('[data-t=caption]').classList.add('on');renderWT('caption')},300)">
         <div class="tc-icon" style="background:#ede9fe">📱</div>
+        <span class="tc-tag" style="background:var(--purple)">Trending</span>
         <h3>Caption Generator</h3>
         <p>Viral captions for Instagram, TikTok, LinkedIn, Twitter with trending hashtags. Grow your audience faster.</p>
         <div class="tc-arr">↗</div>
@@ -539,7 +541,27 @@ select option{background:var(--white)}
     </div>
   </section>
 
-  <!-- TESTIMONIALS -->
+  <!-- QUICK CAPTION TOOL on Homepage -->
+  <section style="background:linear-gradient(135deg,#1a3a8f,#6d28d9);padding:60px var(--g)">
+    <div style="max-width:1360px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center">
+      <div>
+        <div class="ey" style="color:rgba(255,255,255,.5)">Quick Tool</div>
+        <div class="st" style="color:var(--white)">Generate a viral caption<br><em style="font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(255,255,255,.5)">in 5 seconds.</em></div>
+        <p style="color:rgba(255,255,255,.5);font-size:.9rem;font-weight:300;line-height:1.7;margin-top:12px">Type your post topic, choose platform, and get 3 ready-to-use captions with hashtags instantly. No sign-up needed.</p>
+      </div>
+      <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:var(--r-xl);padding:24px;backdrop-filter:blur(10px)">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+          <div><label style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.5);display:block;margin-bottom:5px">POST TOPIC *</label><input type="text" id="hc-topic" placeholder="e.g. Morning workout" style="background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.15);border-radius:var(--r);color:var(--white);font-family:'DM Sans',sans-serif;font-size:.85rem;padding:10px 13px;outline:none;width:100%;transition:all .2s" onfocus="this.style.borderColor='rgba(255,255,255,.5)'" onblur="this.style.borderColor='rgba(255,255,255,.15)'"/></div>
+          <div><label style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.5);display:block;margin-bottom:5px">PLATFORM</label><select id="hc-platform" style="background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.15);border-radius:var(--r);color:var(--white);font-family:'DM Sans',sans-serif;font-size:.85rem;padding:10px 13px;outline:none;width:100%"><option>Instagram</option><option>TikTok</option><option>Twitter/X</option><option>LinkedIn</option></select></div>
+        </div>
+        <button class="btn btn-gold" id="hc-btn" onclick="quickCaption()" style="width:100%;justify-content:center;padding:12px;font-size:.88rem">⚡ Generate 3 Captions Free</button>
+        <div id="hc-out" style="margin-top:14px;display:none">
+          <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--r);padding:14px;font-size:.82rem;color:rgba(255,255,255,.85);line-height:1.75;white-space:pre-wrap;max-height:200px;overflow-y:auto" id="hc-text"></div>
+          <button onclick="navigator.clipboard.writeText(document.getElementById('hc-text').textContent);this.textContent='✅ Copied!';setTimeout(()=>this.textContent='📋 Copy All',2000)" style="margin-top:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:var(--white);padding:6px 14px;border-radius:6px;font-size:.72rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">📋 Copy All</button>
+        </div>
+      </div>
+    </div>
+  </section>
   <section class="tsec">
     <div class="tinner">
       <div class="ey">What People Say</div>
@@ -709,7 +731,7 @@ select option{background:var(--white)}
       <div class="contact-info">
         <h3>We're here to help</h3>
         <p>Whether you've found a bug, have a feature request, or want to partner with us — reach out. We respond to all messages within 24 hours.</p>
-        <div class="citem"><div class="citem-icon">📧</div><div class="citem-text"><h4>Email</h4><p>support@writeai.app</p></div></div>
+        <div class="citem"><div class="citem-icon">📧</div><div class="citem-text"><h4>Email</h4><p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c4b7b1b4b4abb6b084b3b6adb0a1a5adeaa5b4b4">[email&#160;protected]</a></p></div></div>
         <div class="citem"><div class="citem-icon">🐦</div><div class="citem-text"><h4>Twitter / X</h4><p>@WriteAI_app</p></div></div>
         <div class="citem"><div class="citem-icon">💬</div><div class="citem-text"><h4>Response Time</h4><p>Within 24 hours on weekdays</p></div></div>
         <div class="citem"><div class="citem-icon">🌍</div><div class="citem-text"><h4>Available</h4><p>Worldwide — All time zones</p></div></div>
@@ -853,7 +875,7 @@ select option{background:var(--white)}
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ============================================================
 // NAVIGATION
 // ============================================================
@@ -914,17 +936,22 @@ function copyW(){const t=document.getElementById('wt')?.textContent;if(t){naviga
 // ============================================================
 let blogData={};
 
-// Different Unsplash-style queries per section topic
+// Topic-relevant images using Unsplash Source API
 function getImageUrl(topic, index){
-  // Use different seeds and categories based on content
-  const cats=['technology','business','education','nature','city','work','creative','people','science','health'];
-  const widths=[800,900,850,750,820];
-  const heights=[350,320,360,340,330];
-  const seed=(topic+index).split('').reduce((a,c)=>a+c.charCodeAt(0),0)%1000;
+  // Extract keywords from topic for relevant images
+  const keywords = topic.toLowerCase()
+    .replace(/[^a-z0-9\s]/g,'')
+    .split(' ')
+    .filter(w=>w.length>3)
+    .slice(0,3)
+    .join(',');
+  const query = encodeURIComponent(keywords||topic.split(' ').slice(0,2).join(' '));
+  const widths=[800,850,900,780,820];
+  const heights=[400,380,420,360,410];
   const w=widths[index%widths.length];
   const h=heights[index%heights.length];
-  // Use different seeds so each image is genuinely different
-  return `https://picsum.photos/seed/${seed+index*137}/${w}/${h}`;
+  // Unsplash Source — free, no API key, topic-relevant
+  return `https://source.unsplash.com/${w}x${h}/?${query}&sig=${index+Date.now()%999}`;
 }
 
 async function genBlog(){
@@ -962,16 +989,14 @@ function renderBlog(b){
   const doc=document.getElementById('blogdoc');
   const today=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
   const tags=(b.tags||[]).map(t=>`<span class="blog-tag">${t}</span>`).join(' ');
-  // Cover image — unique seed based on title
-  const coverSeed=(b.title||'blog').split('').reduce((a,c)=>a+c.charCodeAt(0),0)%500;
-  const coverImg=`https://picsum.photos/seed/${coverSeed}/900/400`;
+  // Cover image — topic-relevant from Unsplash
+  const coverQuery=encodeURIComponent((b.title||'blog').split(' ').slice(0,3).join(' '));
+  const coverImg=`https://source.unsplash.com/900x420/?${coverQuery}&sig=cover${Date.now()%999}`;
 
   const sectionsHTML=(b.sections||[]).map((s,i)=>{
-    // Each section gets genuinely different image using section heading as seed
-    const imgSeed=(s.heading||'section').split('').reduce((a,c)=>a+c.charCodeAt(0),0)%500;
-    // Offset by index*200 to ensure uniqueness
-    const uniqueSeed=imgSeed+(i+1)*200;
-    const imgUrl=`https://picsum.photos/seed/${uniqueSeed}/800/350`;
+    // Each section gets its own unique topic-relevant image
+    const sectionQuery=encodeURIComponent((s.imageAlt||s.heading||'').split(' ').slice(0,4).join(' '));
+    const imgUrl=`https://source.unsplash.com/800x380/?${sectionQuery}&sig=sec${i}${Date.now()%777}`;
     const paras=(s.content||'').split('\n').filter(p=>p.trim()).map(p=>`<p>${p}</p>`).join('');
     return `<h2>${s.heading}</h2>
 <div class="blog-img-wrap">
@@ -1289,6 +1314,25 @@ function dlCV(){
   URL.revokeObjectURL(url);
 }
 
+// Quick Caption on Homepage
+async function quickCaption(){
+  const topic=document.getElementById('hc-topic')?.value.trim();
+  if(!topic){const e=document.getElementById('hc-topic');e.style.borderColor='#dc2626';e.focus();setTimeout(()=>e.style.borderColor='rgba(255,255,255,.15)',2000);return}
+  const platform=document.getElementById('hc-platform')?.value||'Instagram';
+  const btn=document.getElementById('hc-btn');
+  const out=document.getElementById('hc-out');
+  const txt=document.getElementById('hc-text');
+  btn.disabled=true;btn.innerHTML=`<div class="dots" style="color:white"><span></span><span></span><span></span></div> Generating…`;
+  out.style.display='block';
+  txt.textContent='Writing your captions…';
+  try{
+    const r=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:`Write 3 unique viral ${platform} captions for a post about: "${topic}". Make each caption different in style (one inspiring, one funny/casual, one engaging question). Include 5-8 trending hashtags for each. Format clearly with numbers 1. 2. 3.`})});
+    const d=await r.json();if(d.error)throw new Error(d.error);
+    txt.textContent=d.result||'No content.';
+  }catch(e){txt.textContent=`⚠ Error: ${e.message}. Please try again.`}
+  btn.disabled=false;btn.innerHTML='⚡ Generate 3 Captions Free';
+}
+
 // Contact form
 function sendContact(){
   const em=document.getElementById('cf-em')?.value.trim();
@@ -1300,8 +1344,4 @@ function sendContact(){
 
 // Init
 renderCV();updAtBar();
-document.getElementById('cin').addEventListener('input',function(){this.style.height='40px';this.style.height=Math.min(this.scrollHeight,100)+'px'});
-if(suUser&&suName){document.getElementById('uname').textContent=suName.split(' ')[0];document.getElementById('ubadge').style.display='flex'}
-</script>
-</body>
-</html>
+document.getElementById('cin').addEventListener('input',function(){this.style.height='4
