@@ -888,6 +888,8 @@ function go(p){
   if(p==='writing')renderWT(curWT);
   if(p==='cv'){updAtBar();renderCV();if(!cvStarted)newCV();}
 }
+// Make all functions globally accessible (fixes Vercel/Cloudflare onclick issues)
+window.go=go;
 window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('sc',scrollY>20));
 
 // ============================================================
@@ -1379,4 +1381,22 @@ function sendContact(){
 
 // Init
 renderCV();updAtBar();
+// Export ALL functions to window for onclick handlers (Vercel fix)
+window.genWriting=genWriting;
+window.copyW=copyW;
+window.genBlog=genBlog;
+window.copyBlog=copyBlog;
+window.dlBlog=dlBlog;
+window.newCV=newCV;
+window.sendMsg=sendMsg;
+window.uploadPhoto=uploadPhoto;
+window.toggleEdit=toggleEdit;
+window.syncRender=syncRender;
+window.setTpl=setTpl;
+window.renderCV=renderCV;
+window.dlCV=dlCV;
+window.doSignup=doSignup;
+window.quickCaption=quickCaption;
+window.sendContact=sendContact;
+window.renderWT=renderWT;
 document.getElementById('cin').addEventListener('input',function(){this.style.height='4
