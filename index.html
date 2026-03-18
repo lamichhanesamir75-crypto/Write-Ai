@@ -1,963 +1,911 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>WriteAI – AI Writing & CV Builder</title>
-  <meta name="description" content="Free AI writing tool and professional CV builder. Create stunning resumes, blog posts, emails and more instantly."/>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
-  <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{
-      --bg:#f8f7f4;
-      --white:#ffffff;
-      --surface:#ffffff;
-      --surface2:#f2f1ee;
-      --border:#e8e6e0;
-      --accent:#1a1a2e;
-      --blue:#2563eb;
-      --blue-light:#eff6ff;
-      --blue-dark:#1d4ed8;
-      --gold:#d4a843;
-      --gold-light:#fef9ee;
-      --green:#059669;
-      --green-light:#f0fdf4;
-      --red:#dc2626;
-      --text:#0f0f1a;
-      --text2:#3d3d52;
-      --muted:#8b8b9e;
-      --radius:14px;
-      --shadow:0 1px 8px rgba(0,0,0,0.06),0 4px 20px rgba(0,0,0,0.04);
-      --shadow-lg:0 8px 40px rgba(0,0,0,0.1),0 2px 8px rgba(0,0,0,0.06);
-      --shadow-xl:0 20px 60px rgba(0,0,0,0.12);
-    }
-    html{scroll-behavior:smooth}
-    body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;font-weight:400;line-height:1.6;overflow-x:hidden}
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>WriteAI – AI Writing & CV Builder</title>
+<meta name="description" content="Free AI writing tool and professional CV builder. Just chat — AI builds your CV instantly."/>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f8f7f4;--white:#fff;--s2:#f0efec;--border:#e5e3dd;
+  --blue:#2563eb;--blue-l:#eff6ff;--blue-d:#1d4ed8;
+  --text:#0f0f1a;--t2:#3d3d52;--muted:#9090a8;
+  --green:#059669;--red:#dc2626;--purple:#7c3aed;--gold:#d4a843;
+  --shadow:0 2px 12px rgba(0,0,0,0.07),0 1px 3px rgba(0,0,0,0.05);
+  --shadow-lg:0 8px 40px rgba(0,0,0,0.1);
+  --shadow-xl:0 20px 60px rgba(0,0,0,0.15);
+  --r:12px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;font-weight:400;line-height:1.6;overflow-x:hidden}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 
-    /* SCROLLBAR */
-    ::-webkit-scrollbar{width:6px}
-    ::-webkit-scrollbar-track{background:var(--bg)}
-    ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(248,247,244,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);height:62px;display:flex;align-items:center;justify-content:space-between;padding:0 40px}
+.logo{display:flex;align-items:center;gap:9px;cursor:pointer;text-decoration:none;color:var(--text)}
+.lmark{width:32px;height:32px;background:var(--text);border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-family:'Instrument Serif',serif;font-style:italic;font-weight:700;font-size:1.1rem}
+.lname{font-weight:700;font-size:1.05rem;letter-spacing:-0.02em}
+.lname b{color:var(--blue);font-weight:700}
+.nav-mid{display:flex;gap:2px}
+.nl{border:none;background:none;color:var(--t2);font-size:0.85rem;font-weight:500;padding:6px 14px;border-radius:7px;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.15s}
+.nl:hover,.nl.on{background:var(--s2);color:var(--text)}
+.nav-r{display:flex;gap:8px;align-items:center}
+.btn{border:none;padding:8px 18px;border-radius:8px;font-size:0.85rem;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.15s}
+.btn-ghost{background:white;color:var(--text);border:1px solid var(--border)!important}
+.btn-ghost:hover{border-color:var(--blue)!important;color:var(--blue)}
+.btn-dark{background:var(--text);color:white}
+.btn-dark:hover{background:#252540;transform:translateY(-1px)}
+.btn-blue{background:var(--blue);color:white}
+.btn-blue:hover{background:var(--blue-d);transform:translateY(-1px)}
+.btn-green{background:var(--green);color:white}
+.btn-green:hover{background:#047857;transform:translateY(-1px)}
+.btn:disabled{opacity:0.5;cursor:not-allowed;transform:none!important}
 
-    /* NAV */
-    nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(248,247,244,0.92);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:0 48px;height:64px;display:flex;align-items:center;justify-content:space-between}
-    .logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text)}
-    .logo-mark{width:34px;height:34px;background:var(--text);border-radius:9px;display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:1rem;letter-spacing:-0.05em;font-family:'Instrument Serif',serif;font-style:italic}
-    .logo-name{font-weight:700;font-size:1.1rem;letter-spacing:-0.02em}
-    .logo-name span{color:var(--blue)}
-    .nav-center{display:flex;gap:4px}
-    .nav-link{color:var(--text2);text-decoration:none;font-size:0.875rem;font-weight:500;padding:7px 16px;border-radius:8px;transition:all 0.15s;border:none;background:none;cursor:pointer;font-family:'Outfit',sans-serif}
-    .nav-link:hover,.nav-link.active{background:var(--surface2);color:var(--text)}
-    .nav-right{display:flex;gap:10px;align-items:center}
-    .btn-ghost{background:none;border:1px solid var(--border);color:var(--text);padding:8px 18px;border-radius:8px;font-size:0.875rem;font-weight:500;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.15s}
-    .btn-ghost:hover{border-color:var(--blue);color:var(--blue)}
-    .btn-primary{background:var(--text);color:white;border:none;padding:9px 20px;border-radius:8px;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.15s;display:flex;align-items:center;gap:7px}
-    .btn-primary:hover{background:#2d2d45;transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,0.2)}
-    .btn-primary:disabled{opacity:0.5;cursor:not-allowed;transform:none}
-    .btn-blue{background:var(--blue);color:white;border:none;padding:9px 20px;border-radius:8px;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.15s;display:flex;align-items:center;gap:7px}
-    .btn-blue:hover{background:var(--blue-dark);transform:translateY(-1px)}
+/* PAGES */
+.page{display:none;min-height:100vh;padding-top:62px}
+.page.on{display:block}
 
-    /* PAGE SYSTEM */
-    .page{display:none;min-height:100vh;padding-top:64px}
-    .page.active{display:block}
+/* ========== HOME ========== */
+.hero{min-height:calc(100vh - 62px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 24px;position:relative;overflow:hidden}
+.hbg{position:absolute;inset:0;background:linear-gradient(150deg,#f0f7ff 0%,var(--bg) 45%,#f5f0ff 100%)}
+.hgrid{position:absolute;inset:0;background-image:linear-gradient(rgba(15,15,26,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(15,15,26,.025) 1px,transparent 1px);background-size:44px 44px}
+.hblob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.07;pointer-events:none}
+.hb1{width:480px;height:480px;background:var(--blue);top:-120px;right:-80px}
+.hb2{width:380px;height:380px;background:var(--purple);bottom:-60px;left:-80px}
+.hcontent{position:relative;z-index:1;max-width:800px}
+.badge{display:inline-flex;align-items:center;gap:7px;background:white;border:1px solid var(--border);padding:5px 14px;border-radius:100px;font-size:0.75rem;font-weight:600;color:var(--t2);margin-bottom:24px;box-shadow:var(--shadow);animation:up .6s ease both}
+.bdot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+h1{font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(2.8rem,6.5vw,5rem);line-height:1.06;letter-spacing:-.025em;animation:up .6s .1s ease both}
+h1 em{font-style:italic;color:var(--blue)}
+.hsub{margin-top:18px;font-size:1.05rem;color:var(--t2);max-width:500px;margin-left:auto;margin-right:auto;line-height:1.7;animation:up .6s .2s ease both}
+.hbtns{margin-top:32px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;animation:up .6s .3s ease both}
+.hbtn{background:var(--text);color:white;border:none;padding:13px 30px;border-radius:10px;font-size:.95rem;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .2s;box-shadow:0 4px 16px rgba(15,15,26,.2);display:flex;align-items:center;gap:7px}
+.hbtn:hover{transform:translateY(-2px);box-shadow:0 7px 24px rgba(15,15,26,.25)}
+.hbtn2{background:white;color:var(--text);border:1px solid var(--border);padding:13px 30px;border-radius:10px;font-size:.95rem;font-weight:500;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .2s;box-shadow:var(--shadow)}
+.hbtn2:hover{border-color:var(--text)}
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.stats{margin-top:48px;display:flex;justify-content:center;flex-wrap:wrap;animation:up .6s .4s ease both;background:white;border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+.stat{padding:18px 28px;text-align:center;border-right:1px solid var(--border)}
+.stat:last-child{border-right:none}
+.snum{font-family:'Instrument Serif',serif;font-size:1.7rem;color:var(--text)}
+.slbl{font-size:.7rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+/* CARDS */
+.sec{padding:70px 44px;max-width:1200px;margin:0 auto}
+.ey{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--blue);margin-bottom:10px}
+.stitle{font-family:'Instrument Serif',serif;font-size:clamp(1.7rem,3.5vw,2.5rem);font-weight:400;line-height:1.2;margin-bottom:10px;letter-spacing:-.02em}
+.ssub{color:var(--muted);font-size:.9rem;max-width:460px}
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:36px}
+.c{background:white;border:1px solid var(--border);border-radius:var(--r);padding:24px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.c:hover{box-shadow:var(--shadow-lg);border-color:rgba(37,99,235,.2);transform:translateY(-2px)}
+.cicon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:12px}
+.c h3{font-size:.9rem;font-weight:700;margin-bottom:6px}
+.c p{font-size:.8rem;color:var(--muted);line-height:1.6}
+.carr{position:absolute;top:20px;right:20px;color:var(--muted);font-size:1rem;transition:all .2s}
+.c:hover .carr{transform:translate(3px,-3px);color:var(--blue)}
+/* DARK */
+.dsec{background:var(--text);padding:70px 44px}
+.di{max-width:1200px;margin:0 auto}
+.dg{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;margin-top:36px}
+.dc{padding:22px;border:1px solid rgba(255,255,255,.07);border-radius:var(--r);transition:all .2s}
+.dc:hover{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.13)}
+.dicon{width:38px;height:38px;border-radius:9px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-bottom:12px}
+.dc h3{font-size:.88rem;font-weight:600;color:white;margin-bottom:6px}
+.dc p{font-size:.8rem;color:rgba(255,255,255,.4);line-height:1.6}
+/* AD */
+.ad{background:white;border:1px dashed var(--border);border-radius:var(--r);padding:14px;text-align:center;color:var(--muted);font-size:.72rem}
+.adl{font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:#ccc;margin-bottom:4px}
+.adw{max-width:1200px;margin:0 auto;padding:0 44px}
+/* FOOTER */
+footer{background:var(--text);color:white;padding:32px 44px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px}
+.fl2{display:flex;gap:18px}
+.fl2 a{font-size:.75rem;color:rgba(255,255,255,.3);text-decoration:none;transition:color .15s}
+.fl2 a:hover{color:white}
+footer p{font-size:.75rem;color:rgba(255,255,255,.2)}
 
-    /* ========== HOME PAGE ========== */
-    .hero{min-height:calc(100vh - 64px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 24px 80px;position:relative;overflow:hidden}
-    .hero-bg{position:absolute;inset:0;z-index:0}
-    .hero-circle{position:absolute;border-radius:50%;filter:blur(80px);opacity:0.07}
-    .hero-circle-1{width:500px;height:500px;background:var(--blue);top:-100px;right:-100px}
-    .hero-circle-2{width:400px;height:400px;background:var(--gold);bottom:-50px;left:-50px}
-    .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(26,26,46,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(26,26,46,0.03) 1px,transparent 1px);background-size:48px 48px}
-    .hero-content{position:relative;z-index:1;max-width:820px}
-    .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:white;border:1px solid var(--border);padding:6px 16px;border-radius:100px;font-size:0.78rem;font-weight:600;color:var(--text2);margin-bottom:28px;box-shadow:var(--shadow);animation:rise 0.6s ease both}
-    .hero-eyebrow-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:blink 2s infinite}
-    @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
-    h1{font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(3rem,7vw,5.5rem);line-height:1.05;letter-spacing:-0.02em;color:var(--text);animation:rise 0.6s 0.1s ease both}
-    h1 em{font-style:italic;color:var(--blue)}
-    h1 .serif-gold{color:var(--gold)}
-    .hero-sub{margin-top:20px;font-size:1.1rem;color:var(--text2);max-width:540px;margin-left:auto;margin-right:auto;line-height:1.7;animation:rise 0.6s 0.2s ease both}
-    .hero-actions{margin-top:36px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;animation:rise 0.6s 0.3s ease both}
-    .btn-hero{background:var(--text);color:white;border:none;padding:14px 32px;border-radius:10px;font-size:1rem;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.2s;box-shadow:0 4px 20px rgba(15,15,26,0.25);display:flex;align-items:center;gap:8px}
-    .btn-hero:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(15,15,26,0.3)}
-    .btn-hero-outline{background:white;color:var(--text);border:1px solid var(--border);padding:14px 32px;border-radius:10px;font-size:1rem;font-weight:500;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.2s;box-shadow:var(--shadow)}
-    .btn-hero-outline:hover{border-color:var(--text);box-shadow:var(--shadow-lg)}
-    @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+/* ========== WRITING TOOL ========== */
+.wwrap{max-width:1080px;margin:0 auto;padding:36px 22px 56px}
+.phdr{margin-bottom:28px}
+.phdr h2{font-family:'Instrument Serif',serif;font-size:2.1rem;font-weight:400;letter-spacing:-.02em;margin-bottom:5px}
+.phdr p{color:var(--muted);font-size:.9rem}
+.wcard{background:white;border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
+.wtabs{display:flex;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border);background:#fafafa}
+.wtabs::-webkit-scrollbar{display:none}
+.wtab{padding:12px 18px;font-size:.82rem;font-weight:500;color:var(--muted);cursor:pointer;white-space:nowrap;border:none;background:none;border-bottom:2px solid transparent;transition:all .15s;font-family:'Outfit',sans-serif}
+.wtab.on{color:var(--text);border-bottom-color:var(--blue);background:white}
+.wtab:hover:not(.on){color:var(--text);background:var(--s2)}
+.wbody{padding:26px}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fl{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--t2);display:block;margin-bottom:5px}
+input,select,textarea{width:100%;background:var(--s2);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-family:'Outfit',sans-serif;font-size:.87rem;padding:10px 12px;outline:none;resize:vertical;transition:all .15s}
+input:focus,select:focus,textarea:focus{border-color:var(--blue);background:white;box-shadow:0 0 0 3px rgba(37,99,235,.08)}
+select option{background:white}
+.wft{padding:16px 26px;border-top:1px solid var(--border);background:#fafafa;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pow{display:flex;align-items:center;gap:5px;font-size:.7rem;color:var(--muted);font-weight:500}
+.pdot{width:5px;height:5px;border-radius:50%;background:var(--green)}
+.outs{padding:0 26px 26px}
+.outh{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.outl{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.cbtn{display:flex;align-items:center;gap:4px;background:white;border:1px solid var(--border);color:var(--t2);padding:5px 10px;border-radius:6px;font-size:.72rem;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .15s}
+.cbtn:hover{border-color:var(--blue);color:var(--blue)}
+.outbox{background:var(--s2);border:1.5px solid var(--border);border-radius:9px;padding:16px;min-height:130px;font-size:.87rem;line-height:1.8;white-space:pre-wrap;color:var(--text)}
+.oplace{color:var(--muted);font-style:italic;font-size:.82rem}
+.ldg{display:flex;align-items:center;gap:8px;color:var(--blue);font-size:.82rem;font-weight:500}
+.dots{display:flex;gap:3px}
+.dots span{width:5px;height:5px;border-radius:50%;background:currentColor;animation:dj 1.2s infinite}
+.dots span:nth-child(2){animation-delay:.2s}
+.dots span:nth-child(3){animation-delay:.4s}
+@keyframes dj{0%,100%{transform:translateY(0);opacity:.3}50%{transform:translateY(-5px);opacity:1}}
 
-    /* TRUST BAR */
-    .trust{margin-top:56px;display:flex;gap:0;justify-content:center;flex-wrap:wrap;animation:rise 0.6s 0.4s ease both}
-    .trust-item{padding:16px 32px;text-align:center;border-right:1px solid var(--border)}
-    .trust-item:last-child{border-right:none}
-    .trust-num{font-family:'Instrument Serif',serif;font-size:2rem;font-weight:400;color:var(--text);line-height:1}
-    .trust-label{font-size:0.75rem;color:var(--muted);font-weight:500;margin-top:4px;text-transform:uppercase;letter-spacing:0.06em}
+/* ========== CV BUILDER ========== */
+.cvwrap{max-width:1340px;margin:0 auto;padding:36px 22px 60px}
+.cvlay{display:grid;grid-template-columns:460px 1fr;gap:22px;align-items:start}
 
-    /* TOOLS GRID */
-    .tools-section{padding:80px 48px;max-width:1200px;margin:0 auto}
-    .section-eyebrow{font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--blue);margin-bottom:12px}
-    .section-title{font-family:'Instrument Serif',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:400;line-height:1.2;margin-bottom:14px;letter-spacing:-0.02em}
-    .section-sub{color:var(--muted);font-size:1rem;max-width:480px}
-    .tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:48px}
-    .tool-card{background:white;border:1px solid var(--border);border-radius:var(--radius);padding:28px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden}
-    .tool-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--blue-light),transparent);opacity:0;transition:opacity 0.2s}
-    .tool-card:hover{box-shadow:var(--shadow-lg);border-color:rgba(37,99,235,0.2);transform:translateY(-2px)}
-    .tool-card:hover::before{opacity:1}
-    .tool-card-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:16px;position:relative;z-index:1}
-    .tool-card h3{font-size:1rem;font-weight:700;margin-bottom:8px;position:relative;z-index:1}
-    .tool-card p{font-size:0.85rem;color:var(--muted);line-height:1.6;position:relative;z-index:1}
-    .tool-card-arrow{position:absolute;top:24px;right:24px;color:var(--muted);font-size:1.2rem;transition:transform 0.2s;z-index:1}
-    .tool-card:hover .tool-card-arrow{transform:translate(3px,-3px);color:var(--blue)}
+/* CHAT PANEL */
+.chat-panel{background:white;border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);position:sticky;top:80px;display:flex;flex-direction:column;height:calc(100vh - 110px)}
+.chat-hdr{padding:18px 20px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,var(--blue),var(--purple));color:white;flex-shrink:0}
+.chat-hdr h3{font-size:1rem;font-weight:700;margin-bottom:2px}
+.chat-hdr p{font-size:.75rem;opacity:.8}
+.chat-hdr-btns{display:flex;gap:8px;margin-top:10px}
+.chat-hdr-btn{padding:5px 12px;border-radius:6px;font-size:.72rem;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;border:none;transition:all .15s}
+.chat-hdr-btn.primary{background:white;color:var(--blue)}
+.chat-hdr-btn.secondary{background:rgba(255,255,255,.15);color:white}
+.chat-hdr-btn:hover{opacity:.9}
 
-    /* FEATURES */
-    .features-section{padding:80px 48px;background:var(--text);color:white}
-    .features-inner{max-width:1200px;margin:0 auto}
-    .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;margin-top:48px}
-    .feature-item{padding:28px;border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius);transition:all 0.2s}
-    .feature-item:hover{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.15)}
-    .feature-icon{width:44px;height:44px;border-radius:10px;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:16px}
-    .feature-item h3{font-size:0.95rem;font-weight:600;margin-bottom:8px;color:white}
-    .feature-item p{font-size:0.85rem;color:rgba(255,255,255,0.5);line-height:1.6}
+/* PHOTO UPLOAD INSIDE CHAT */
+.photo-upload-area{padding:14px 18px;border-bottom:1px solid var(--border);background:var(--s2);display:flex;align-items:center;gap:12px;flex-shrink:0}
+.photo-thumb{width:52px;height:52px;border-radius:50%;overflow:hidden;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;cursor:pointer;border:2px dashed var(--border);transition:all .2s}
+.photo-thumb:hover{border-color:var(--blue)}
+.photo-thumb img{width:100%;height:100%;object-fit:cover}
+.photo-info{flex:1}
+.photo-info h4{font-size:.82rem;font-weight:600;margin-bottom:2px}
+.photo-info p{font-size:.72rem;color:var(--muted)}
+.photo-upload-btn{background:var(--blue);color:white;border:none;padding:7px 14px;border-radius:7px;font-size:.75rem;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;flex-shrink:0}
 
-    /* AD SLOT */
-    .ad-slot{background:white;border:1px dashed var(--border);border-radius:var(--radius);padding:16px;text-align:center;color:var(--muted);font-size:0.75rem;margin:24px 0}
-    .ad-label{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;color:#ccc}
+/* ATTEMPT BAR */
+.atbar{padding:10px 18px;border-bottom:1px solid var(--border);background:var(--blue-l);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.attext{font-size:.75rem;font-weight:600;color:var(--blue)}
+.atdots{display:flex;gap:4px}
+.atdot{width:8px;height:8px;border-radius:50%;background:var(--blue);transition:all .3s}
+.atdot.used{background:var(--border)}
 
-    /* ========== WRITING TOOL PAGE ========== */
-    .writing-page{padding:80px 0 60px}
-    .writing-inner{max-width:1100px;margin:0 auto;padding:0 24px}
-    .page-header{margin-bottom:40px}
-    .page-header h2{font-family:'Instrument Serif',serif;font-size:2.4rem;font-weight:400;letter-spacing:-0.02em;margin-bottom:8px}
-    .page-header p{color:var(--muted)}
+/* CHAT MESSAGES */
+.chat-msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+.chat-msgs::-webkit-scrollbar{width:3px}
+.chat-msgs::-webkit-scrollbar-thumb{background:var(--border)}
+.msg{display:flex;gap:8px;align-items:flex-end}
+.msg.user{flex-direction:row-reverse}
+.msg-avatar{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.8rem}
+.ai-avatar{background:linear-gradient(135deg,var(--blue),var(--purple));color:white}
+.user-avatar{background:var(--s2);color:var(--t2)}
+.bubble{max-width:78%;padding:10px 14px;border-radius:14px;font-size:.84rem;line-height:1.6}
+.ai-bubble{background:var(--blue-l);border:1px solid rgba(37,99,235,.1);border-radius:14px 14px 14px 2px;color:var(--text)}
+.user-bubble{background:var(--text);color:white;border-radius:14px 14px 2px 14px}
+.typing-bubble{background:var(--blue-l);border:1px solid rgba(37,99,235,.1);border-radius:14px;padding:10px 14px;display:inline-flex;align-items:center;gap:4px}
 
-    /* TOOL WRAPPER */
-    .writing-card{background:white;border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
-    .writing-tabs{display:flex;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border);background:#fafafa}
-    .writing-tabs::-webkit-scrollbar{display:none}
-    .wtab{padding:14px 20px;font-size:0.85rem;font-weight:500;color:var(--muted);cursor:pointer;white-space:nowrap;border:none;background:none;border-bottom:2px solid transparent;transition:all 0.15s;font-family:'Outfit',sans-serif;display:flex;align-items:center;gap:6px}
-    .wtab.active{color:var(--text);border-bottom-color:var(--blue);background:white}
-    .wtab:hover:not(.active){color:var(--text);background:var(--surface2)}
-    .writing-body{padding:32px}
-    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-    .form-group{display:flex;flex-direction:column;gap:7px}
-    .form-group.full{grid-column:1/-1}
-    .form-label{font-size:0.75rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.06em}
-    input,select,textarea{width:100%;background:var(--surface2);border:1.5px solid var(--border);border-radius:9px;color:var(--text);font-family:'Outfit',sans-serif;font-size:0.9rem;padding:11px 14px;outline:none;resize:vertical;transition:all 0.15s}
-    input:focus,select:focus,textarea:focus{border-color:var(--blue);background:white;box-shadow:0 0 0 3px rgba(37,99,235,0.08)}
-    select option{background:white}
-    .writing-footer{padding:20px 32px;border-top:1px solid var(--border);background:#fafafa;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-    .powered{display:flex;align-items:center;gap:6px;font-size:0.75rem;color:var(--muted);font-weight:500}
-    .powered-dot{width:5px;height:5px;border-radius:50%;background:var(--green)}
-    .output-section{padding:0 32px 32px}
-    .output-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-    .output-label{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)}
-    .copy-btn{display:flex;align-items:center;gap:5px;background:white;border:1px solid var(--border);color:var(--text2);padding:6px 12px;border-radius:7px;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.15s}
-    .copy-btn:hover{border-color:var(--blue);color:var(--blue)}
-    .output-box{background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:20px;min-height:150px;font-size:0.9rem;line-height:1.8;white-space:pre-wrap;color:var(--text)}
-    .output-placeholder{color:var(--muted);font-style:italic;font-size:0.875rem}
-    .gen-loading{display:flex;align-items:center;gap:10px;color:var(--blue);font-size:0.875rem;font-weight:500}
-    .dots{display:flex;gap:4px}
-    .dots span{width:6px;height:6px;border-radius:50%;background:var(--blue);animation:dotjump 1.2s infinite}
-    .dots span:nth-child(2){animation-delay:0.2s}
-    .dots span:nth-child(3){animation-delay:0.4s}
-    @keyframes dotjump{0%,100%{transform:translateY(0);opacity:0.3}50%{transform:translateY(-6px);opacity:1}}
+/* CHAT INPUT */
+.chat-input-area{padding:14px 16px;border-top:1px solid var(--border);display:flex;gap:8px;flex-shrink:0}
+.chat-input{flex:1;background:var(--s2);border:1.5px solid var(--border);border-radius:22px;color:var(--text);font-family:'Outfit',sans-serif;font-size:.87rem;padding:10px 16px;outline:none;resize:none;transition:all .15s;height:42px;overflow:hidden}
+.chat-input:focus{border-color:var(--blue);background:white}
+.chat-send{background:var(--blue);color:white;border:none;width:42px;height:42px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.chat-send:hover{background:var(--blue-d);transform:scale(1.05)}
+.chat-send svg{width:16px;height:16px}
 
-    /* ========== CV BUILDER PAGE ========== */
-    .cv-page{padding:80px 0 60px}
-    .cv-inner{max-width:1300px;margin:0 auto;padding:0 24px}
-    .cv-layout{display:grid;grid-template-columns:420px 1fr;gap:28px;align-items:start}
-    @media(max-width:900px){.cv-layout{grid-template-columns:1fr}}
+/* EDIT PANEL (shows after AI builds CV) */
+.edit-panel{display:none;padding:14px 18px;border-top:1px solid var(--border);flex-shrink:0;background:var(--s2)}
+.edit-panel.show{display:block}
+.edit-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.ef{display:flex;flex-direction:column;gap:4px}
+.ef label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--t2)}
+.ef input,.ef textarea,.ef select{font-size:.8rem;padding:7px 10px;border-radius:7px}
 
-    /* CV FORM PANEL */
-    .cv-form-panel{background:white;border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);position:sticky;top:84px}
-    .cv-form-header{padding:20px 24px;border-bottom:1px solid var(--border);background:#fafafa}
-    .cv-form-header h3{font-size:1rem;font-weight:700;margin-bottom:2px}
-    .cv-form-header p{font-size:0.8rem;color:var(--muted)}
-    .cv-sections{display:flex;border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;background:#fafafa}
-    .cv-sections::-webkit-scrollbar{display:none}
-    .cv-sec-btn{padding:11px 16px;font-size:0.8rem;font-weight:500;color:var(--muted);cursor:pointer;white-space:nowrap;border:none;background:none;border-bottom:2px solid transparent;transition:all 0.15s;font-family:'Outfit',sans-serif}
-    .cv-sec-btn.active{color:var(--blue);border-bottom-color:var(--blue);background:white}
-    .cv-form-body{padding:24px;max-height:calc(100vh - 280px);overflow-y:auto}
-    .cv-form-body::-webkit-scrollbar{width:4px}
-    .cv-form-body::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-    .cv-section-content{display:none}
-    .cv-section-content.active{display:block}
-    .cv-field{margin-bottom:16px}
-    .cv-label{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text2);display:block;margin-bottom:6px}
-    .cv-input{width:100%;background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-family:'Outfit',sans-serif;font-size:0.875rem;padding:10px 12px;outline:none;resize:vertical;transition:all 0.15s}
-    .cv-input:focus{border-color:var(--blue);background:white;box-shadow:0 0 0 3px rgba(37,99,235,0.08)}
-    .cv-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .cv-form-footer{padding:16px 24px;border-top:1px solid var(--border);display:flex;gap:10px}
+/* CV PREVIEW */
+.cv-preview{background:white;border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:var(--shadow-lg)}
+.cv-toolbar{padding:12px 16px;border-bottom:1px solid var(--border);background:#fafafa;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.tplbtns{display:flex;gap:5px;flex-wrap:wrap}
+.tplbtn{padding:6px 12px;border:1px solid var(--border);border-radius:7px;font-size:.72rem;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;background:white;color:var(--t2);transition:all .15s}
+.tplbtn.on{background:var(--text);color:white;border-color:var(--text)}
+.tplbtn:hover:not(.on){border-color:var(--blue);color:var(--blue)}
+.cv-scroll{padding:18px;background:#ddd;min-height:500px;display:flex;justify-content:center;overflow-y:auto}
+.cv-doc{width:100%;max-width:660px;background:white;box-shadow:var(--shadow-xl);font-family:'Outfit',sans-serif;font-size:12.5px;line-height:1.5}
 
-    /* PHOTO UPLOAD */
-    .photo-upload{width:100%;height:140px;border:2px dashed var(--border);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;background:var(--surface2);margin-bottom:16px;position:relative;overflow:hidden}
-    .photo-upload:hover{border-color:var(--blue);background:var(--blue-light)}
-    .photo-upload-icon{font-size:2rem;margin-bottom:8px}
-    .photo-upload-text{font-size:0.8rem;color:var(--muted);font-weight:500}
-    .photo-upload input{position:absolute;inset:0;opacity:0;cursor:pointer}
-    .photo-preview{width:100%;height:100%;object-fit:cover;border-radius:10px}
+/* ===== CV TEMPLATE 1: ROYAL EXECUTIVE ===== */
+.tpl1 .t-top{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);color:white;padding:30px;display:flex;align-items:center;gap:20px}
+.tpl1 .t-photo{width:78px;height:78px;border-radius:50%;overflow:hidden;flex-shrink:0;border:3px solid rgba(255,255,255,.25);background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:2rem}
+.tpl1 .t-photo img{width:100%;height:100%;object-fit:cover}
+.tpl1 .t-name{font-family:'Instrument Serif',serif;font-size:1.65rem;font-weight:400;line-height:1.1;margin-bottom:4px}
+.tpl1 .t-role{font-size:.82rem;opacity:.6;margin-bottom:9px}
+.tpl1 .t-contacts{display:flex;gap:12px;flex-wrap:wrap}
+.tpl1 .t-c{font-size:.7rem;opacity:.6;display:flex;align-items:center;gap:3px}
+.tpl1 .t-body{display:grid;grid-template-columns:1fr 200px;gap:0}
+.tpl1 .t-main{padding:24px;border-right:1px solid #f0f0f0}
+.tpl1 .t-side{padding:20px;background:#fafafa}
+.tpl1 .t-sh{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:#2563eb;margin-bottom:9px;padding-bottom:5px;border-bottom:2px solid #eff6ff}
+.tpl1 .t-sec{margin-bottom:18px}
+.tpl1 .t-et{font-size:.85rem;font-weight:700;color:#0f0f1a}
+.tpl1 .t-es{font-size:.75rem;color:#2563eb;font-weight:500;margin-bottom:2px}
+.tpl1 .t-ed{font-size:.68rem;color:#9090a8;margin-bottom:4px}
+.tpl1 .t-ep{font-size:.75rem;color:#3d3d52;line-height:1.6;margin-bottom:8px}
+.tpl1 .t-sbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.tpl1 .t-sn{font-size:.75rem;color:#3d3d52}
+.tpl1 .t-sb{width:80px;height:4px;background:#e5e3dd;border-radius:2px;overflow:hidden}
+.tpl1 .t-sf{height:100%;background:#2563eb;border-radius:2px}
+.tpl1 .t-ss{margin-bottom:16px}
+.tpl1 .t-st{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#9090a8;margin-bottom:7px}
+.tpl1 .t-li{font-size:.75rem;color:#3d3d52;margin-bottom:4px;padding-left:10px;position:relative}
+.tpl1 .t-li::before{content:'•';position:absolute;left:0;color:#2563eb}
 
-    /* ADD MORE BUTTON */
-    .add-more-btn{width:100%;padding:10px;border:1.5px dashed var(--border);border-radius:8px;background:none;color:var(--blue);font-size:0.85rem;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.15s;margin-top:8px}
-    .add-more-btn:hover{background:var(--blue-light);border-color:var(--blue)}
+/* ===== CV TEMPLATE 2: VIBRANT CREATIVE ===== */
+.tpl2 .t-top{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;padding:30px;display:flex;align-items:center;gap:20px}
+.tpl2 .t-photo{width:78px;height:78px;border-radius:14px;overflow:hidden;flex-shrink:0;border:3px solid rgba(255,255,255,.3);background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:2rem}
+.tpl2 .t-photo img{width:100%;height:100%;object-fit:cover}
+.tpl2 .t-name{font-family:'Instrument Serif',serif;font-size:1.65rem;font-weight:400;margin-bottom:3px}
+.tpl2 .t-role{font-size:.82rem;opacity:.75;margin-bottom:9px}
+.tpl2 .t-contacts{display:flex;gap:10px;flex-wrap:wrap}
+.tpl2 .t-c{font-size:.7rem;opacity:.75;background:rgba(255,255,255,.15);padding:3px 8px;border-radius:100px}
+.tpl2 .t-body{padding:22px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.tpl2 .t-sh{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:#764ba2;margin-bottom:9px;padding-bottom:5px;border-bottom:2px solid #f3f0ff}
+.tpl2 .t-sec{margin-bottom:18px}
+.tpl2 .t-et{font-size:.85rem;font-weight:700}
+.tpl2 .t-es{font-size:.75rem;color:#764ba2;font-weight:500;margin-bottom:2px}
+.tpl2 .t-ed{font-size:.68rem;color:#9090a8;margin-bottom:4px}
+.tpl2 .t-ep{font-size:.75rem;color:#3d3d52;line-height:1.6;margin-bottom:8px}
+.tpl2 .t-tag{display:inline-block;background:#f3f0ff;color:#764ba2;padding:3px 8px;border-radius:100px;font-size:.68rem;font-weight:600;margin:2px}
+.tpl2 .t-li{font-size:.75rem;color:#3d3d52;margin-bottom:4px;padding-left:10px;position:relative}
+.tpl2 .t-li::before{content:'▸';position:absolute;left:0;color:#764ba2;font-size:.6rem}
+.tpl2 .t-ss{margin-bottom:14px}
+.tpl2 .t-st{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#9090a8;margin-bottom:7px}
 
-    /* ENTRY CARD */
-    .entry-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px;position:relative}
-    .entry-card .remove-btn{position:absolute;top:10px;right:10px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;transition:color 0.15s}
-    .entry-card .remove-btn:hover{color:var(--red)}
+/* ===== CV TEMPLATE 3: EMERALD MODERN ===== */
+.tpl3 .t-top{background:linear-gradient(135deg,#059669 0%,#047857 100%);color:white;padding:28px 30px;display:flex;align-items:center;gap:20px}
+.tpl3 .t-photo{width:74px;height:74px;border-radius:12px;overflow:hidden;flex-shrink:0;border:3px solid rgba(255,255,255,.3);background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:1.9rem}
+.tpl3 .t-photo img{width:100%;height:100%;object-fit:cover}
+.tpl3 .t-name{font-family:'Instrument Serif',serif;font-size:1.6rem;font-weight:400;margin-bottom:3px}
+.tpl3 .t-role{font-size:.8rem;opacity:.75;margin-bottom:8px}
+.tpl3 .t-contacts{display:flex;gap:10px;flex-wrap:wrap}
+.tpl3 .t-c{font-size:.7rem;opacity:.75}
+.tpl3 .t-body{padding:22px;display:grid;grid-template-columns:1fr 190px;gap:20px}
+.tpl3 .t-sh{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:#059669;margin-bottom:9px;padding-bottom:5px;border-bottom:2px solid #f0fdf4}
+.tpl3 .t-sec{margin-bottom:18px}
+.tpl3 .t-et{font-size:.84rem;font-weight:700}
+.tpl3 .t-es{font-size:.75rem;color:#059669;font-weight:500;margin-bottom:2px}
+.tpl3 .t-ed{font-size:.68rem;color:#9090a8;margin-bottom:4px}
+.tpl3 .t-ep{font-size:.75rem;color:#3d3d52;line-height:1.6;margin-bottom:8px}
+.tpl3 .t-sbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.tpl3 .t-sn{font-size:.75rem;color:#3d3d52}
+.tpl3 .t-sb{width:70px;height:4px;background:#e5e3dd;border-radius:2px;overflow:hidden}
+.tpl3 .t-sf{height:100%;background:#059669;border-radius:2px}
+.tpl3 .t-ss{margin-bottom:14px}
+.tpl3 .t-st{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#9090a8;margin-bottom:7px}
+.tpl3 .t-li{font-size:.75rem;color:#3d3d52;margin-bottom:4px;padding-left:10px;position:relative}
+.tpl3 .t-li::before{content:'●';position:absolute;left:0;color:#059669;font-size:.4rem;top:.2em}
 
-    /* CV PREVIEW PANEL */
-    .cv-preview-panel{background:white;border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:var(--shadow-lg)}
-    .cv-preview-toolbar{padding:14px 20px;border-bottom:1px solid var(--border);background:#fafafa;display:flex;align-items:center;justify-content:space-between;gap:12px}
-    .cv-preview-toolbar-left{display:flex;gap:8px;align-items:center}
-    .template-btn{padding:7px 14px;border:1px solid var(--border);border-radius:7px;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;background:white;color:var(--text2);transition:all 0.15s}
-    .template-btn.active{background:var(--text);color:white;border-color:var(--text)}
-    .template-btn:hover:not(.active){border-color:var(--blue);color:var(--blue)}
-    .cv-preview-scroll{padding:24px;background:#e8e6e0;min-height:600px;display:flex;justify-content:center}
+/* ===== CV TEMPLATE 4: GOLDEN LUXURY ===== */
+.tpl4 .t-top{background:#1a1a2e;padding:28px 30px;display:flex;align-items:center;gap:20px;border-bottom:3px solid #d4a843}
+.tpl4 .t-photo{width:74px;height:74px;border-radius:50%;overflow:hidden;flex-shrink:0;border:3px solid #d4a843;background:#2a2a3e;display:flex;align-items:center;justify-content:center;font-size:1.9rem}
+.tpl4 .t-photo img{width:100%;height:100%;object-fit:cover}
+.tpl4 .t-name{font-family:'Instrument Serif',serif;font-size:1.6rem;font-weight:400;color:#f5f0e8;margin-bottom:3px}
+.tpl4 .t-role{font-size:.8rem;color:#d4a843;margin-bottom:8px;font-weight:500}
+.tpl4 .t-contacts{display:flex;gap:12px;flex-wrap:wrap}
+.tpl4 .t-c{font-size:.7rem;color:rgba(245,240,232,.5)}
+.tpl4 .t-body{display:grid;grid-template-columns:1fr 190px;gap:0}
+.tpl4 .t-main{padding:22px;border-right:1px solid #f0efec}
+.tpl4 .t-side{padding:18px;background:#faf9f7}
+.tpl4 .t-sh{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:#d4a843;margin-bottom:9px;padding-bottom:5px;border-bottom:2px solid #fef9ee}
+.tpl4 .t-sec{margin-bottom:18px}
+.tpl4 .t-et{font-size:.84rem;font-weight:700}
+.tpl4 .t-es{font-size:.75rem;color:#d4a843;font-weight:500;margin-bottom:2px}
+.tpl4 .t-ed{font-size:.68rem;color:#9090a8;margin-bottom:4px}
+.tpl4 .t-ep{font-size:.75rem;color:#3d3d52;line-height:1.6;margin-bottom:8px}
+.tpl4 .t-sbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.tpl4 .t-sn{font-size:.75rem;color:#3d3d52}
+.tpl4 .t-sb{width:70px;height:4px;background:#e5e3dd;border-radius:2px;overflow:hidden}
+.tpl4 .t-sf{height:100%;background:#d4a843;border-radius:2px}
+.tpl4 .t-ss{margin-bottom:14px}
+.tpl4 .t-st{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#9090a8;margin-bottom:7px}
+.tpl4 .t-li{font-size:.75rem;color:#3d3d52;margin-bottom:4px;padding-left:10px;position:relative}
+.tpl4 .t-li::before{content:'◆';position:absolute;left:0;color:#d4a843;font-size:.4rem;top:.25em}
 
-    /* CV TEMPLATES */
-    .cv-document{width:100%;max-width:680px;background:white;box-shadow:var(--shadow-xl);font-family:'Outfit',sans-serif}
+/* ===== CV TEMPLATE 5: MINIMAL CLEAN ===== */
+.tpl5 .t-top{padding:28px 32px;border-bottom:3px solid #0f0f1a}
+.tpl5 .t-inner{display:flex;align-items:center;gap:18px}
+.tpl5 .t-photo{width:66px;height:66px;border-radius:8px;overflow:hidden;flex-shrink:0;background:var(--s2);display:flex;align-items:center;justify-content:center;font-size:1.7rem}
+.tpl5 .t-photo img{width:100%;height:100%;object-fit:cover}
+.tpl5 .t-name{font-family:'Instrument Serif',serif;font-size:1.7rem;font-weight:400;letter-spacing:-.025em;margin-bottom:2px}
+.tpl5 .t-role{font-size:.82rem;color:#9090a8;margin-bottom:7px}
+.tpl5 .t-contacts{display:flex;gap:14px;flex-wrap:wrap}
+.tpl5 .t-c{font-size:.7rem;color:#9090a8}
+.tpl5 .t-body{padding:24px 32px;display:grid;grid-template-columns:1fr 160px;gap:24px}
+.tpl5 .t-sh{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.15em;color:#9090a8;margin-bottom:10px}
+.tpl5 .t-sec{margin-bottom:18px}
+.tpl5 .t-entry{padding-left:12px;border-left:2px solid #e5e3dd;margin-bottom:12px}
+.tpl5 .t-et{font-size:.85rem;font-weight:700}
+.tpl5 .t-es{font-size:.75rem;color:#3d3d52;margin-bottom:2px}
+.tpl5 .t-ed{font-size:.68rem;color:#9090a8;margin-bottom:4px}
+.tpl5 .t-ep{font-size:.75rem;color:#3d3d52;line-height:1.6;margin-bottom:8px}
+.tpl5 .t-skill{font-size:.75rem;color:#3d3d52;margin-bottom:7px;display:flex;align-items:center;gap:7px}
+.tpl5 .t-skill::before{content:'—';color:#9090a8}
+.tpl5 .t-ss{margin-bottom:14px}
+.tpl5 .t-st{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#9090a8;margin-bottom:7px}
+.tpl5 .t-li{font-size:.75rem;color:#3d3d52;margin-bottom:4px}
 
-    /* TEMPLATE 1: EXECUTIVE */
-    .tpl-executive .cv-top{background:var(--text);color:white;padding:36px;display:flex;gap:24px;align-items:center}
-    .tpl-executive .cv-photo-wrap{width:80px;height:80px;border-radius:50%;overflow:hidden;flex-shrink:0;border:3px solid rgba(255,255,255,0.3)}
-    .tpl-executive .cv-photo-wrap img{width:100%;height:100%;object-fit:cover}
-    .tpl-executive .cv-photo-placeholder{width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:2rem;flex-shrink:0}
-    .tpl-executive .cv-name{font-family:'Instrument Serif',serif;font-size:1.8rem;font-weight:400;line-height:1.1;margin-bottom:4px}
-    .tpl-executive .cv-title{font-size:0.9rem;opacity:0.7;font-weight:400;margin-bottom:10px}
-    .tpl-executive .cv-contact-row{display:flex;gap:16px;flex-wrap:wrap}
-    .tpl-executive .cv-contact-item{font-size:0.78rem;opacity:0.7;display:flex;align-items:center;gap:5px}
-    .tpl-executive .cv-body{padding:32px;display:grid;grid-template-columns:1fr 260px;gap:28px}
-    .tpl-executive .cv-main{}
-    .tpl-executive .cv-sidebar{border-left:1px solid var(--border);padding-left:24px}
-    .tpl-executive .cv-section{margin-bottom:24px}
-    .tpl-executive .cv-section-title{font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:0.12em;color:var(--blue);margin-bottom:12px;padding-bottom:6px;border-bottom:2px solid var(--blue-light)}
-    .tpl-executive .cv-entry{margin-bottom:16px}
-    .tpl-executive .cv-entry-title{font-size:0.9rem;font-weight:700;color:var(--text)}
-    .tpl-executive .cv-entry-sub{font-size:0.8rem;color:var(--blue);font-weight:500;margin-bottom:4px}
-    .tpl-executive .cv-entry-date{font-size:0.75rem;color:var(--muted);margin-bottom:6px}
-    .tpl-executive .cv-entry-desc{font-size:0.8rem;color:var(--text2);line-height:1.6}
-    .tpl-executive .cv-skill-item{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-    .tpl-executive .cv-skill-name{font-size:0.8rem;font-weight:500;color:var(--text2)}
-    .tpl-executive .cv-skill-bar{width:100px;height:5px;background:var(--surface2);border-radius:3px;overflow:hidden}
-    .tpl-executive .cv-skill-fill{height:100%;background:var(--blue);border-radius:3px}
-    .tpl-executive .cv-sidebar-section{margin-bottom:20px}
-    .tpl-executive .cv-sidebar-title{font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:10px}
-    .tpl-executive .cv-lang-item{display:flex;justify-content:space-between;margin-bottom:6px;font-size:0.8rem}
-    .tpl-executive .cv-lang-name{color:var(--text2)}
-    .tpl-executive .cv-lang-level{color:var(--muted)}
+/* SIGNUP MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);z-index:500;display:none;align-items:center;justify-content:center;padding:20px}
+.overlay.show{display:flex}
+.modal{background:white;border-radius:18px;padding:36px;max-width:400px;width:100%;box-shadow:var(--shadow-xl);text-align:center;animation:pop .3s ease}
+@keyframes pop{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+.micon{font-size:2.8rem;margin-bottom:14px}
+.modal h2{font-family:'Instrument Serif',serif;font-size:1.7rem;font-weight:400;margin-bottom:8px}
+.modal p{color:var(--muted);font-size:.87rem;margin-bottom:20px;line-height:1.6}
+.mbens{display:flex;flex-direction:column;gap:7px;margin-bottom:20px;text-align:left}
+.mben{display:flex;align-items:center;gap:9px;font-size:.83rem;color:var(--t2)}
+.mben-i{width:24px;height:24px;border-radius:50%;background:var(--green);color:white;display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0}
+.minput{width:100%;background:var(--s2);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-family:'Outfit',sans-serif;font-size:.88rem;padding:11px 13px;outline:none;margin-bottom:10px;transition:all .15s}
+.minput:focus{border-color:var(--blue);background:white}
+.mbtn{width:100%;padding:12px;border:none;border-radius:9px;font-size:.9rem;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;background:var(--text);color:white;transition:all .2s}
+.mbtn:hover{background:#252540;transform:translateY(-1px)}
+.mskip{margin-top:10px;font-size:.78rem;color:var(--muted);cursor:pointer;text-decoration:underline}
 
-    /* TEMPLATE 2: CREATIVE */
-    .tpl-creative .cv-top{background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:40px;text-align:center}
-    .tpl-creative .cv-photo-wrap{width:90px;height:90px;border-radius:50%;overflow:hidden;margin:0 auto 16px;border:4px solid rgba(255,255,255,0.4)}
-    .tpl-creative .cv-photo-wrap img{width:100%;height:100%;object-fit:cover}
-    .tpl-creative .cv-photo-placeholder{width:90px;height:90px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:2.5rem;margin:0 auto 16px}
-    .tpl-creative .cv-name{font-family:'Instrument Serif',serif;font-size:2rem;font-weight:400;margin-bottom:6px}
-    .tpl-creative .cv-title{font-size:0.9rem;opacity:0.8;margin-bottom:14px}
-    .tpl-creative .cv-contact-row{display:flex;justify-content:center;gap:20px;flex-wrap:wrap}
-    .tpl-creative .cv-contact-item{font-size:0.78rem;opacity:0.8}
-    .tpl-creative .cv-body{padding:32px;columns:2;column-gap:28px}
-    .tpl-creative .cv-section{break-inside:avoid;margin-bottom:24px}
-    .tpl-creative .cv-section-title{font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:0.12em;color:#764ba2;margin-bottom:12px;padding-bottom:6px;border-bottom:2px solid #f3f0ff}
-    .tpl-creative .cv-entry{margin-bottom:14px}
-    .tpl-creative .cv-entry-title{font-size:0.88rem;font-weight:700}
-    .tpl-creative .cv-entry-sub{font-size:0.78rem;color:#764ba2;font-weight:500;margin-bottom:3px}
-    .tpl-creative .cv-entry-date{font-size:0.73rem;color:var(--muted);margin-bottom:5px}
-    .tpl-creative .cv-entry-desc{font-size:0.78rem;color:var(--text2);line-height:1.5}
-    .tpl-creative .cv-skill-tag{display:inline-block;background:#f3f0ff;color:#764ba2;padding:4px 10px;border-radius:100px;font-size:0.73rem;font-weight:600;margin:3px}
-
-    /* TEMPLATE 3: MINIMAL */
-    .tpl-minimal .cv-top{padding:40px 48px 32px;border-bottom:3px solid var(--text)}
-    .tpl-minimal .cv-top-inner{display:flex;align-items:center;gap:24px}
-    .tpl-minimal .cv-photo-wrap{width:72px;height:72px;border-radius:8px;overflow:hidden;flex-shrink:0}
-    .tpl-minimal .cv-photo-wrap img{width:100%;height:100%;object-fit:cover}
-    .tpl-minimal .cv-photo-placeholder{width:72px;height:72px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0}
-    .tpl-minimal .cv-name{font-family:'Instrument Serif',serif;font-size:2rem;font-weight:400;letter-spacing:-0.02em;margin-bottom:4px}
-    .tpl-minimal .cv-title{font-size:0.9rem;color:var(--muted);margin-bottom:10px}
-    .tpl-minimal .cv-contact-row{display:flex;gap:16px;flex-wrap:wrap}
-    .tpl-minimal .cv-contact-item{font-size:0.78rem;color:var(--muted)}
-    .tpl-minimal .cv-body{padding:32px 48px;display:grid;grid-template-columns:1fr 180px;gap:32px}
-    .tpl-minimal .cv-section{margin-bottom:24px}
-    .tpl-minimal .cv-section-title{font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.15em;color:var(--muted);margin-bottom:14px}
-    .tpl-minimal .cv-entry{margin-bottom:16px;padding-left:12px;border-left:2px solid var(--border)}
-    .tpl-minimal .cv-entry-title{font-size:0.9rem;font-weight:700}
-    .tpl-minimal .cv-entry-sub{font-size:0.8rem;color:var(--text2);margin-bottom:3px}
-    .tpl-minimal .cv-entry-date{font-size:0.73rem;color:var(--muted);margin-bottom:5px}
-    .tpl-minimal .cv-entry-desc{font-size:0.8rem;color:var(--text2);line-height:1.6}
-    .tpl-minimal .cv-skill-item{margin-bottom:8px;font-size:0.8rem;color:var(--text2);display:flex;align-items:center;gap:8px}
-    .tpl-minimal .cv-skill-item::before{content:'—';color:var(--muted)}
-
-    /* DOWNLOAD BTN */
-    .download-btn{background:var(--green);color:white;border:none;padding:10px 22px;border-radius:8px;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.15s;display:flex;align-items:center;gap:7px}
-    .download-btn:hover{background:#047857;transform:translateY(-1px)}
-
-    /* FOOTER */
-    footer{background:var(--text);color:white;padding:40px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px}
-    .footer-logo{display:flex;align-items:center;gap:10px}
-    .footer-links{display:flex;gap:20px}
-    .footer-links a{font-size:0.8rem;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.15s}
-    .footer-links a:hover{color:white}
-    footer p{font-size:0.8rem;color:rgba(255,255,255,0.3)}
-
-    /* RESPONSIVE */
-    @media(max-width:768px){
-      nav{padding:0 20px}
-      .nav-center{display:none}
-      .tools-section,.features-inner{padding:60px 20px}
-      .writing-inner,.cv-inner{padding:0 16px}
-      .form-grid{grid-template-columns:1fr}
-      .cv-layout{grid-template-columns:1fr}
-      .cv-form-panel{position:static}
-      .tpl-executive .cv-body{grid-template-columns:1fr}
-      .tpl-executive .cv-sidebar{border-left:none;border-top:1px solid var(--border);padding-left:0;padding-top:24px}
-      .tpl-minimal .cv-body{grid-template-columns:1fr}
-      .tpl-creative .cv-body{columns:1}
-      footer{padding:32px 20px}
-    }
-  </style>
+@media(max-width:900px){
+  nav{padding:0 16px}
+  .nav-mid{display:none}
+  .sec,.dsec{padding:50px 18px}
+  .adw{padding:0 18px}
+  .wwrap,.cvwrap{padding:28px 14px 50px}
+  .fg{grid-template-columns:1fr}
+  .cvlay{grid-template-columns:1fr}
+  .chat-panel{position:static;height:auto}
+  .chat-msgs{max-height:320px}
+  .tpl1 .t-body,.tpl3 .t-body,.tpl4 .t-body,.tpl5 .t-body{grid-template-columns:1fr}
+  .tpl2 .t-body{grid-template-columns:1fr}
+  footer{padding:24px 18px}
+}
+</style>
 </head>
 <body>
 
+<!-- SIGNUP MODAL -->
+<div class="overlay" id="signupOverlay">
+  <div class="modal">
+    <div class="micon">🔓</div>
+    <h2>Unlock Unlimited CVs</h2>
+    <p>You've used your 5 free generations. Sign up free for unlimited access!</p>
+    <div class="mbens">
+      <div class="mben"><div class="mben-i">✓</div><span>Unlimited CV generations</span></div>
+      <div class="mben"><div class="mben-i">✓</div><span>Download PDF anytime</span></div>
+      <div class="mben"><div class="mben-i">✓</div><span>All 5 premium templates</span></div>
+      <div class="mben"><div class="mben-i">✓</div><span>Save your CV forever</span></div>
+    </div>
+    <input class="minput" type="text" id="su-name" placeholder="Your full name"/>
+    <input class="minput" type="email" id="su-email" placeholder="Your email address"/>
+    <button class="mbtn" onclick="doSignup()">🚀 Get Free Unlimited Access</button>
+    <div class="mskip" onclick="closeSignup()">Skip for now</div>
+  </div>
+</div>
+
 <!-- NAV -->
 <nav>
-  <a class="logo" href="#" onclick="showPage('home')">
-    <div class="logo-mark">W</div>
-    <span class="logo-name">Write<span>AI</span></span>
-  </a>
-  <div class="nav-center">
-    <button class="nav-link active" id="nav-home" onclick="showPage('home')">Home</button>
-    <button class="nav-link" id="nav-writing" onclick="showPage('writing')">Writing Tool</button>
-    <button class="nav-link" id="nav-cv" onclick="showPage('cv')">CV Builder</button>
+  <div class="logo" onclick="goPage('home')">
+    <div class="lmark">W</div>
+    <span class="lname">Write<b>AI</b></span>
   </div>
-  <div class="nav-right">
-    <button class="btn-ghost" onclick="showPage('writing')">Try Writing Tool</button>
-    <button class="btn-primary" onclick="showPage('cv')">
-      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-      Build CV Free
-    </button>
+  <div class="nav-mid">
+    <button class="nl on" id="nl-home" onclick="goPage('home')">Home</button>
+    <button class="nl" id="nl-writing" onclick="goPage('writing')">Writing Tool</button>
+    <button class="nl" id="nl-cv" onclick="goPage('cv')">CV Builder</button>
+  </div>
+  <div class="nav-r">
+    <span id="nusr" style="font-size:.78rem;color:var(--muted);font-weight:500"></span>
+    <button class="btn btn-ghost" onclick="goPage('writing')">Writing Tool</button>
+    <button class="btn btn-dark" onclick="goPage('cv')">Build CV Free</button>
   </div>
 </nav>
 
-<!-- ========== HOME PAGE ========== -->
-<div class="page active" id="page-home">
+<!-- HOME -->
+<div class="page on" id="pg-home">
   <section class="hero">
-    <div class="hero-bg">
-      <div class="hero-circle hero-circle-1"></div>
-      <div class="hero-circle hero-circle-2"></div>
-      <div class="hero-grid"></div>
-    </div>
-    <div class="hero-content">
-      <div class="hero-eyebrow"><span class="hero-eyebrow-dot"></span> Powered by Groq AI · 100% Free Forever</div>
-      <h1>Write & Build.<br><em>Faster than ever.</em></h1>
-      <p class="hero-sub">The only free platform that combines an AI writing tool with a world-class CV builder. No sign-up. No credit card.</p>
-      <div class="hero-actions">
-        <button class="btn-hero" onclick="showPage('writing')">
-          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-          Start Writing Free
-        </button>
-        <button class="btn-hero-outline" onclick="showPage('cv')">Build My CV →</button>
+    <div class="hbg"></div><div class="hgrid"></div>
+    <div class="hblob hb1"></div><div class="hblob hb2"></div>
+    <div class="hcontent">
+      <div class="badge"><span class="bdot"></span> Powered by Groq AI · 100% Free</div>
+      <h1>Write smarter.<br><em>Get hired faster.</em></h1>
+      <p class="hsub">AI writing tool + world-class CV builder. Just chat with AI — it builds your professional CV instantly.</p>
+      <div class="hbtns">
+        <button class="hbtn" onclick="goPage('cv')">📄 Build My CV with AI</button>
+        <button class="hbtn2" onclick="goPage('writing')">✍️ Writing Tool →</button>
       </div>
-      <div class="trust">
-        <div class="trust-item"><div class="trust-num">50K+</div><div class="trust-label">Words Generated</div></div>
-        <div class="trust-item"><div class="trust-num">6</div><div class="trust-label">Writing Tools</div></div>
-        <div class="trust-item"><div class="trust-num">3</div><div class="trust-label">CV Templates</div></div>
-        <div class="trust-item"><div class="trust-num">100%</div><div class="trust-label">Free Forever</div></div>
+      <div class="stats">
+        <div class="stat"><div class="snum">50K+</div><div class="slbl">Words Generated</div></div>
+        <div class="stat"><div class="snum">5</div><div class="slbl">CV Templates</div></div>
+        <div class="stat"><div class="snum">6</div><div class="slbl">Writing Tools</div></div>
+        <div class="stat"><div class="snum">Free</div><div class="slbl">Forever</div></div>
       </div>
     </div>
   </section>
-
-  <div style="max-width:1200px;margin:0 auto;padding:0 48px"><div class="ad-slot"><div class="ad-label">Advertisement</div>[ Google AdSense Ad will appear here ]</div></div>
-
-  <section class="tools-section">
-    <div class="section-eyebrow">Our Tools</div>
-    <div class="section-title">Everything you need<br>to write & present yourself</div>
-    <p class="section-sub">Professional tools that usually cost $50/month — completely free.</p>
-    <div class="tools-grid">
-      <div class="tool-card" onclick="showPage('writing')">
-        <div class="tool-card-icon" style="background:#eff6ff">✍️</div>
-        <h3>AI Writing Tool</h3>
-        <p>Generate blog posts, emails, captions, product descriptions, cover letters and headlines in seconds.</p>
-        <div class="tool-card-arrow">↗</div>
-      </div>
-      <div class="tool-card" onclick="showPage('cv')">
-        <div class="tool-card-icon" style="background:#f0fdf4">📄</div>
-        <h3>CV / Resume Builder</h3>
-        <p>Build a stunning professional CV with photo upload, 3 templates and one-click PDF download.</p>
-        <div class="tool-card-arrow">↗</div>
-      </div>
-      <div class="tool-card" onclick="showPage('writing');setTimeout(()=>document.querySelector('[data-tool=email]').click(),300)">
-        <div class="tool-card-icon" style="background:#fff7ed">📧</div>
-        <h3>Email Writer</h3>
-        <p>Write professional emails for any purpose in any tone — follow-ups, pitches, apologies and more.</p>
-        <div class="tool-card-arrow">↗</div>
-      </div>
-      <div class="tool-card" onclick="showPage('writing');setTimeout(()=>document.querySelector('[data-tool=caption]').click(),300)">
-        <div class="tool-card-icon" style="background:#fdf4ff">📱</div>
-        <h3>Caption Generator</h3>
-        <p>Create viral Instagram, TikTok, Twitter and LinkedIn captions with hashtags instantly.</p>
-        <div class="tool-card-arrow">↗</div>
-      </div>
-      <div class="tool-card" onclick="showPage('writing');setTimeout(()=>document.querySelector('[data-tool=product]').click(),300)">
-        <div class="tool-card-icon" style="background:#fef9ee">🛍️</div>
-        <h3>Product Descriptions</h3>
-        <p>Write compelling product descriptions that convert browsers into buyers for your store.</p>
-        <div class="tool-card-arrow">↗</div>
-      </div>
-      <div class="tool-card" onclick="showPage('writing');setTimeout(()=>document.querySelector('[data-tool=headline]').click(),300)">
-        <div class="tool-card-icon" style="background:#f0f9ff">🎯</div>
-        <h3>Headline Generator</h3>
-        <p>Generate 10 click-worthy, SEO-optimized headlines for any topic, product or article.</p>
-        <div class="tool-card-arrow">↗</div>
+  <div class="adw" style="padding-top:36px"><div class="ad"><div class="adl">Advertisement</div>[ Google AdSense ]</div></div>
+  <section class="sec">
+    <div class="ey">Our Tools</div>
+    <div class="stitle">Two tools. Zero cost.</div>
+    <p class="ssub">Professional tools that usually cost $50/month — free forever.</p>
+    <div class="g3">
+      <div class="c" onclick="goPage('cv')"><div class="cicon" style="background:#eff6ff">🤖</div><h3>AI CV Builder</h3><p>Just chat — AI asks questions and builds your complete professional CV with photo and PDF download.</p><div class="carr">↗</div></div>
+      <div class="c" onclick="goPage('writing')"><div class="cicon" style="background:#f0fdf4">✍️</div><h3>AI Writing Tool</h3><p>Generate blog posts, emails, captions, product descriptions, cover letters and headlines instantly.</p><div class="carr">↗</div></div>
+      <div class="c" onclick="goPage('cv')"><div class="cicon" style="background:#fdf4ff">🎨</div><h3>5 Premium Templates</h3><p>Royal Executive, Vibrant Creative, Emerald Modern, Golden Luxury, Minimal Clean — all stunning.</p><div class="carr">↗</div></div>
+      <div class="c" onclick="goPage('cv')"><div class="cicon" style="background:#fef9ee">📸</div><h3>Photo in Your CV</h3><p>Upload your professional headshot — it appears beautifully in all 5 templates.</p><div class="carr">↗</div></div>
+      <div class="c" onclick="goPage('cv')"><div class="cicon" style="background:#f0fdf4">⬇️</div><h3>Download as PDF</h3><p>One click to download your finished CV. Print-ready. Ready to send to employers today.</p><div class="carr">↗</div></div>
+      <div class="c" onclick="goPage('writing')"><div class="cicon" style="background:#f0f9ff">⚡</div><h3>Under 10 Seconds</h3><p>Powered by Groq — the world's fastest AI. Results in seconds, not minutes.</p><div class="carr">↗</div></div>
+    </div>
+  </section>
+  <section class="dsec">
+    <div class="di">
+      <div class="ey" style="color:rgba(255,255,255,.4)">Why WriteAI</div>
+      <div class="stitle" style="color:white">Built different.<br><span style="color:rgba(255,255,255,.3);font-style:italic;font-family:'Instrument Serif',serif">Built for you.</span></div>
+      <div class="dg">
+        <div class="dc"><div class="dicon">💬</div><h3>Just chat with AI</h3><p>No forms to fill. Just answer AI's questions in chat — like talking to a career coach.</p></div>
+        <div class="dc"><div class="dicon">🎨</div><h3>5 gorgeous templates</h3><p>Royal, Creative, Emerald, Golden, Minimal — each one more stunning than any competitor.</p></div>
+        <div class="dc"><div class="dicon">📸</div><h3>Your photo included</h3><p>Upload your headshot directly. Looks perfect in every template automatically.</p></div>
+        <div class="dc"><div class="dicon">✏️</div><h3>Edit everything</h3><p>AI builds it first, then you can edit every single detail before downloading.</p></div>
+        <div class="dc"><div class="dicon">🌍</div><h3>Any language</h3><p>Build CVs and write content in English, Korean, Spanish, French and 50+ languages.</p></div>
+        <div class="dc"><div class="dicon">💸</div><h3>100% free forever</h3><p>No subscriptions. No credit card. WriteAI is free for everyone, always.</p></div>
       </div>
     </div>
   </section>
-
-  <section class="features-section">
-    <div class="features-inner">
-      <div class="section-eyebrow" style="color:rgba(255,255,255,0.5)">Why WriteAI</div>
-      <div class="section-title" style="color:white">Built different.<br><span style="color:rgba(255,255,255,0.4);font-style:italic">Built for you.</span></div>
-      <div class="features-grid">
-        <div class="feature-item"><div class="feature-icon">⚡</div><h3>Under 10 seconds</h3><p>Powered by Groq — the world's fastest AI infrastructure.</p></div>
-        <div class="feature-item"><div class="feature-icon">📸</div><h3>Photo in your CV</h3><p>Upload your professional headshot directly into your resume.</p></div>
-        <div class="feature-item"><div class="feature-icon">⬇️</div><h3>Download as PDF</h3><p>One-click PDF download of your CV. Ready to send to employers.</p></div>
-        <div class="feature-item"><div class="feature-icon">🌍</div><h3>Any language</h3><p>Write content and build CVs in 50+ languages worldwide.</p></div>
-        <div class="feature-item"><div class="feature-icon">💸</div><h3>100% free forever</h3><p>No subscriptions. No credit card. No hidden fees. Ever.</p></div>
-        <div class="feature-item"><div class="feature-icon">🔒</div><h3>Private & secure</h3><p>Your data is never stored or shared with anyone.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <div style="max-width:1200px;margin:0 auto;padding:40px 48px"><div class="ad-slot"><div class="ad-label">Advertisement</div>[ Google AdSense Ad will appear here ]</div></div>
-
+  <div class="adw" style="padding:36px 44px"><div class="ad"><div class="adl">Advertisement</div>[ Google AdSense ]</div></div>
   <footer>
-    <div class="footer-logo">
-      <div class="logo-mark">W</div>
-      <span style="font-weight:700;font-size:1rem">WriteAI</span>
-    </div>
-    <div class="footer-links">
-      <a href="#">Privacy Policy</a>
-      <a href="#">Terms of Use</a>
-      <a href="#">Contact</a>
-    </div>
+    <div style="display:flex;align-items:center;gap:10px;font-weight:700"><div class="lmark">W</div>WriteAI</div>
+    <div class="fl2"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Contact</a></div>
     <p>© 2026 WriteAI. All rights reserved.</p>
   </footer>
 </div>
 
-<!-- ========== WRITING TOOL PAGE ========== -->
-<div class="page" id="page-writing">
-  <div class="writing-page">
-    <div class="writing-inner">
-      <div style="max-width:100%;margin-bottom:24px"><div class="ad-slot"><div class="ad-label">Advertisement</div>[ Google AdSense Ad ]</div></div>
-      <div class="page-header">
-        <div class="section-eyebrow">AI Writing Tool</div>
-        <h2>What would you like to write?</h2>
-        <p>Choose a tool, fill in the details, and get polished content in seconds.</p>
+<!-- WRITING TOOL -->
+<div class="page" id="pg-writing">
+  <div class="wwrap">
+    <div class="ad" style="margin-bottom:22px"><div class="adl">Advertisement</div>[ Google AdSense ]</div>
+    <div class="phdr"><div class="ey">AI Writing Tool</div><h2>What would you like to write?</h2><p>Choose a tool, enter your details, get polished content instantly.</p></div>
+    <div class="wcard">
+      <div class="wtabs" id="wtabs">
+        <button class="wtab on" data-t="blog">📝 Blog Post</button>
+        <button class="wtab" data-t="email">📧 Email</button>
+        <button class="wtab" data-t="caption">📱 Caption</button>
+        <button class="wtab" data-t="product">🛍️ Product</button>
+        <button class="wtab" data-t="cover">📄 Cover Letter</button>
+        <button class="wtab" data-t="headline">🎯 Headline</button>
       </div>
-      <div class="writing-card">
-        <div class="writing-tabs" id="writingTabs">
-          <button class="wtab active" data-tool="blog">📝 Blog Post</button>
-          <button class="wtab" data-tool="email">📧 Email</button>
-          <button class="wtab" data-tool="caption">📱 Caption</button>
-          <button class="wtab" data-tool="product">🛍️ Product</button>
-          <button class="wtab" data-tool="cover">📄 Cover Letter</button>
-          <button class="wtab" data-tool="headline">🎯 Headline</button>
-        </div>
-        <div class="writing-body" id="writingBody"></div>
-        <div class="writing-footer">
-          <button class="btn-primary" onclick="generateContent()" id="genBtn">
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-            Generate Content
-          </button>
-          <div class="powered"><span class="powered-dot"></span> Powered by Groq AI · Free</div>
-        </div>
-        <div class="output-section" id="outputSection" style="display:none">
-          <div class="output-header">
-            <span class="output-label">Generated Content</span>
-            <button class="copy-btn" onclick="copyContent()">
-              <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-              Copy
-            </button>
-          </div>
-          <div class="output-box" id="outputBox"><span class="output-placeholder">Your content will appear here…</span></div>
-        </div>
+      <div class="wbody" id="wbody"></div>
+      <div class="wft">
+        <button class="btn btn-dark" id="genbtn" onclick="genContent()" style="display:flex;align-items:center;gap:6px"><svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> Generate</button>
+        <div class="pow"><span class="pdot"></span> Groq AI · Free</div>
       </div>
-      <div style="margin-top:24px"><div class="ad-slot"><div class="ad-label">Advertisement</div>[ Google AdSense Ad ]</div></div>
+      <div class="outs" id="outs" style="display:none">
+        <div class="outh"><span class="outl">Generated Content</span><button class="cbtn" onclick="copyOut()">📋 Copy</button></div>
+        <div class="outbox" id="outbox"><span class="oplace">Content appears here…</span></div>
+      </div>
     </div>
+    <div class="ad" style="margin-top:22px"><div class="adl">Advertisement</div>[ Google AdSense ]</div>
   </div>
 </div>
 
-<!-- ========== CV BUILDER PAGE ========== -->
-<div class="page" id="page-cv">
-  <div class="cv-page">
-    <div class="cv-inner">
-      <div class="page-header">
-        <div class="section-eyebrow">CV / Resume Builder</div>
-        <h2>Build your perfect CV</h2>
-        <p>Fill in your details, choose a template, and download your professional CV as PDF.</p>
-      </div>
-      <div class="cv-layout">
-        <!-- FORM PANEL -->
-        <div class="cv-form-panel">
-          <div class="cv-form-header">
-            <h3>Your Information</h3>
-            <p>Fill in the sections below</p>
-          </div>
-          <div class="cv-sections">
-            <button class="cv-sec-btn active" onclick="switchCVSection('personal')">Personal</button>
-            <button class="cv-sec-btn" onclick="switchCVSection('experience')">Experience</button>
-            <button class="cv-sec-btn" onclick="switchCVSection('education')">Education</button>
-            <button class="cv-sec-btn" onclick="switchCVSection('skills')">Skills</button>
-            <button class="cv-sec-btn" onclick="switchCVSection('extra')">Extra</button>
-          </div>
-          <div class="cv-form-body">
+<!-- CV BUILDER -->
+<div class="page" id="pg-cv">
+  <div class="cvwrap">
+    <div class="phdr"><div class="ey">AI CV Builder</div><h2>Build your perfect CV</h2><p>Chat with AI — just answer questions and your CV builds itself. Then edit and download!</p></div>
+    <div class="cvlay">
 
-            <!-- PERSONAL -->
-            <div class="cv-section-content active" id="cv-personal">
-              <div class="cv-field">
-                <label class="cv-label">Profile Photo</label>
-                <div class="photo-upload" id="photoUpload" onclick="document.getElementById('photoInput').click()">
-                  <div class="photo-upload-icon">📷</div>
-                  <div class="photo-upload-text">Click to upload photo</div>
-                  <input type="file" id="photoInput" accept="image/*" onchange="handlePhoto(event)" style="display:none"/>
-                </div>
-              </div>
-              <div class="cv-grid">
-                <div class="cv-field"><label class="cv-label">First Name</label><input class="cv-input" id="cv-fname" placeholder="John" oninput="updateCV()"/></div>
-                <div class="cv-field"><label class="cv-label">Last Name</label><input class="cv-input" id="cv-lname" placeholder="Smith" oninput="updateCV()"/></div>
-              </div>
-              <div class="cv-field"><label class="cv-label">Job Title</label><input class="cv-input" id="cv-jobtitle" placeholder="Senior Software Engineer" oninput="updateCV()"/></div>
-              <div class="cv-field"><label class="cv-label">Email</label><input class="cv-input" id="cv-email" placeholder="john@example.com" oninput="updateCV()"/></div>
-              <div class="cv-grid">
-                <div class="cv-field"><label class="cv-label">Phone</label><input class="cv-input" id="cv-phone" placeholder="+1 234 567 890" oninput="updateCV()"/></div>
-                <div class="cv-field"><label class="cv-label">Location</label><input class="cv-input" id="cv-location" placeholder="New York, USA" oninput="updateCV()"/></div>
-              </div>
-              <div class="cv-field"><label class="cv-label">LinkedIn</label><input class="cv-input" id="cv-linkedin" placeholder="linkedin.com/in/johnsmith" oninput="updateCV()"/></div>
-              <div class="cv-field"><label class="cv-label">Professional Summary</label><textarea class="cv-input" id="cv-summary" rows="4" placeholder="Write a compelling summary about yourself..." oninput="updateCV()"></textarea></div>
-            </div>
-
-            <!-- EXPERIENCE -->
-            <div class="cv-section-content" id="cv-experience">
-              <div id="exp-entries"></div>
-              <button class="add-more-btn" onclick="addExperience()">+ Add Experience</button>
-            </div>
-
-            <!-- EDUCATION -->
-            <div class="cv-section-content" id="cv-education">
-              <div id="edu-entries"></div>
-              <button class="add-more-btn" onclick="addEducation()">+ Add Education</button>
-            </div>
-
-            <!-- SKILLS -->
-            <div class="cv-section-content" id="cv-skills">
-              <div id="skill-entries"></div>
-              <button class="add-more-btn" onclick="addSkill()">+ Add Skill</button>
-            </div>
-
-            <!-- EXTRA -->
-            <div class="cv-section-content" id="cv-extra">
-              <div class="cv-field"><label class="cv-label">Languages (one per line)</label><textarea class="cv-input" id="cv-languages" rows="4" placeholder="English - Native&#10;Spanish - Intermediate&#10;French - Basic" oninput="updateCV()"></textarea></div>
-              <div class="cv-field"><label class="cv-label">Certifications (one per line)</label><textarea class="cv-input" id="cv-certs" rows="4" placeholder="AWS Certified Developer&#10;Google Analytics" oninput="updateCV()"></textarea></div>
-              <div class="cv-field"><label class="cv-label">Hobbies & Interests</label><textarea class="cv-input" id="cv-hobbies" rows="3" placeholder="Photography, Hiking, Open Source..." oninput="updateCV()"></textarea></div>
-            </div>
-
-          </div>
-          <div class="cv-form-footer">
-            <button class="download-btn" onclick="downloadCV()">
-              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-              Download PDF
-            </button>
-            <button class="btn-ghost" onclick="clearCV()">Clear All</button>
+      <!-- CHAT PANEL -->
+      <div class="chat-panel">
+        <div class="chat-hdr">
+          <h3>🤖 AI CV Assistant</h3>
+          <p>Answer my questions — I'll build your CV!</p>
+          <div class="chat-hdr-btns">
+            <button class="chat-hdr-btn primary" onclick="startChat()">🔄 Start New CV</button>
+            <button class="chat-hdr-btn secondary" onclick="toggleEdit()">✏️ Edit Fields</button>
           </div>
         </div>
 
-        <!-- PREVIEW PANEL -->
-        <div class="cv-preview-panel">
-          <div class="cv-preview-toolbar">
-            <div class="cv-preview-toolbar-left">
-              <span style="font-size:0.8rem;font-weight:600;color:var(--muted);margin-right:8px">Template:</span>
-              <button class="template-btn active" onclick="setTemplate('executive')">Executive</button>
-              <button class="template-btn" onclick="setTemplate('creative')">Creative</button>
-              <button class="template-btn" onclick="setTemplate('minimal')">Minimal</button>
-            </div>
-            <button class="download-btn" onclick="downloadCV()">
-              <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-              Download PDF
-            </button>
+        <!-- PHOTO UPLOAD -->
+        <div class="photo-upload-area">
+          <div class="photo-thumb" id="photoThumb" onclick="document.getElementById('photoFile').click()">📷
+            <input type="file" id="photoFile" accept="image/*" onchange="handlePhoto(event)" style="display:none"/>
           </div>
-          <div class="cv-preview-scroll">
-            <div id="cvPreview" class="cv-document tpl-executive"></div>
+          <div class="photo-info">
+            <h4>Profile Photo</h4>
+            <p>Click the circle to upload your photo</p>
           </div>
+          <button class="photo-upload-btn" onclick="document.getElementById('photoFile').click()">Upload</button>
         </div>
 
+        <!-- ATTEMPT BAR -->
+        <div class="atbar" id="atbar">
+          <span class="attext" id="attext">5 free generations left</span>
+          <div class="atdots" id="atdots"></div>
+        </div>
+
+        <!-- CHAT MESSAGES -->
+        <div class="chat-msgs" id="chatMsgs"></div>
+
+        <!-- EDIT PANEL -->
+        <div class="edit-panel" id="editPanel">
+          <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--t2);margin-bottom:10px">Quick Edit</div>
+          <div class="edit-grid">
+            <div class="ef"><label>First Name</label><input id="e-fn" placeholder="John" oninput="renderCV()"/></div>
+            <div class="ef"><label>Last Name</label><input id="e-ln" placeholder="Smith" oninput="renderCV()"/></div>
+            <div class="ef"><label>Job Title</label><input id="e-jt" placeholder="Engineer" oninput="renderCV()"/></div>
+            <div class="ef"><label>Email</label><input id="e-em" placeholder="email@..." oninput="renderCV()"/></div>
+            <div class="ef"><label>Phone</label><input id="e-ph" placeholder="+1 234..." oninput="renderCV()"/></div>
+            <div class="ef"><label>Location</label><input id="e-lo" placeholder="City, Country" oninput="renderCV()"/></div>
+          </div>
+          <div class="ef" style="margin-bottom:8px"><label>Professional Summary</label><textarea id="e-su" rows="3" placeholder="Your professional summary..." oninput="renderCV()"></textarea></div>
+          <div class="ef" style="margin-bottom:8px"><label>Skills (comma separated)</label><input id="e-sk" placeholder="JavaScript, React, Python..." oninput="renderCV()"/></div>
+          <div class="ef"><label>Company / Most Recent Job</label><input id="e-co" placeholder="Software Engineer at Google" oninput="renderCV()"/></div>
+        </div>
+
+        <!-- CHAT INPUT -->
+        <div class="chat-input-area">
+          <textarea class="chat-input" id="chatInput" placeholder="Type your answer..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg()}" rows="1"></textarea>
+          <button class="chat-send" onclick="sendMsg()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          </button>
+        </div>
       </div>
-      <div style="margin-top:24px"><div class="ad-slot"><div class="ad-label">Advertisement</div>[ Google AdSense Ad ]</div></div>
+
+      <!-- CV PREVIEW -->
+      <div class="cv-preview">
+        <div class="cv-toolbar">
+          <div>
+            <div style="font-size:.68rem;font-weight:600;color:var(--muted);margin-bottom:5px">CHOOSE TEMPLATE</div>
+            <div class="tplbtns">
+              <button class="tplbtn on" onclick="setTpl(1,this)">👑 Royal</button>
+              <button class="tplbtn" onclick="setTpl(2,this)">🎨 Creative</button>
+              <button class="tplbtn" onclick="setTpl(3,this)">🌿 Emerald</button>
+              <button class="tplbtn" onclick="setTpl(4,this)">✨ Golden</button>
+              <button class="tplbtn" onclick="setTpl(5,this)">⬜ Minimal</button>
+            </div>
+          </div>
+          <button class="btn btn-green" onclick="dlCV()" style="display:flex;align-items:center;gap:5px;font-size:.8rem">⬇️ Download PDF</button>
+        </div>
+        <div class="cv-scroll">
+          <div id="cvdoc" class="cv-doc tpl1"></div>
+        </div>
+      </div>
+
     </div>
+    <div class="ad" style="margin-top:22px"><div class="adl">Advertisement</div>[ Google AdSense ]</div>
   </div>
 </div>
 
 <script>
-// ========== PAGE NAVIGATION ==========
-function showPage(page) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-  document.getElementById('page-' + page).classList.add('active');
-  document.getElementById('nav-' + page).classList.add('active');
-  window.scrollTo(0, 0);
-  if(page === 'writing') renderWritingTool(currentWritingTool);
-  if(page === 'cv') updateCV();
+// ===== GLOBALS =====
+let curPage='home', curTool='blog', curTpl=1;
+let cvPhoto=null;
+let cvData={fn:'',ln:'',jt:'',em:'',ph:'',lo:'',su:'',sk:[],exp:[],edu:[],langs:[],certs:'',hobbies:''};
+let attempts=parseInt(localStorage.getItem('wai_at')||'0');
+let signedUp=!!localStorage.getItem('wai_usr');
+let userName=localStorage.getItem('wai_usr')||'';
+const FREE_LIMIT=5;
+
+// Chat state
+let chatStep=0, chatAnswers={}, chatActive=false;
+const QUESTIONS=[
+  {k:'name', q:'👋 Hi! I\'m your AI CV assistant. What\'s your full name?'},
+  {k:'title', q:'Great, {name}! What\'s your current or desired job title?\n(e.g. Software Engineer, Marketing Manager, Teacher, Designer)'},
+  {k:'exp', q:'How many years of work experience do you have? (Type "0" if you\'re a fresh graduate or student)'},
+  {k:'field', q:'What industry or field do you work in?\n(e.g. Technology, Healthcare, Finance, Education, Marketing)'},
+  {k:'skills', q:'List your top 5-7 skills, separated by commas.\n(e.g. Python, Data Analysis, Communication, Project Management)'},
+  {k:'job1', q:'What\'s your most recent job? Tell me: job title, company, and what you did.\n(e.g. "Frontend Developer at Google — built web apps and led a team of 3"\nType "None" if you haven\'t worked yet)'},
+  {k:'edu', q:'What\'s your highest education?\n(e.g. "BSc Computer Science, MIT, 2020" or "High School Diploma, 2022")'},
+  {k:'achieve', q:'What\'s your proudest professional achievement or something you\'re good at?\n(e.g. "Increased sales by 40%" or "Built an app used by 10,000 people")'},
+  {k:'email', q:'What\'s your email address?'},
+  {k:'phone', q:'What\'s your phone number? (Type "skip" to skip)'},
+  {k:'location', q:'What city and country are you in?'},
+  {k:'langs', q:'What languages do you speak?\n(e.g. "English - Native, Spanish - Intermediate"\nType "skip" if just one language)'},
+];
+
+// ===== NAVIGATION =====
+function goPage(p){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.nl').forEach(x=>x.classList.remove('on'));
+  document.getElementById('pg-'+p).classList.add('on');
+  document.getElementById('nl-'+p).classList.add('on');
+  curPage=p; window.scrollTo(0,0);
+  if(p==='writing') renderTool(curTool);
+  if(p==='cv'){updateAtBar();renderCV();if(!chatActive)startChat();}
 }
 
-// ========== WRITING TOOL ==========
-const WRITING_TOOLS = {
-  blog: {
-    fields: `<div class="form-grid"><div class="form-group"><label class="form-label">Blog Topic *</label><input type="text" id="f1" placeholder="e.g. How to grow a YouTube channel"/></div><div class="form-group"><label class="form-label">Tone</label><select id="f2"><option>Professional</option><option>Casual</option><option>Inspiring</option><option>Funny</option></select></div><div class="form-group full"><label class="form-label">Target Audience</label><input type="text" id="f3" placeholder="e.g. Beginners, entrepreneurs, students..."/></div></div>`,
-    prompt: () => `Write a complete, engaging blog post about: "${document.getElementById('f1').value}". Tone: ${document.getElementById('f2').value}. Audience: ${document.getElementById('f3').value||'general public'}. Include catchy title, intro, 3-4 sections with subheadings, conclusion. SEO-friendly, ~400 words.`
-  },
-  email: {
-    fields: `<div class="form-grid"><div class="form-group"><label class="form-label">Email Purpose *</label><input type="text" id="f1" placeholder="e.g. Follow up after job interview"/></div><div class="form-group"><label class="form-label">Tone</label><select id="f2"><option>Professional</option><option>Friendly</option><option>Formal</option><option>Persuasive</option></select></div><div class="form-group full"><label class="form-label">Key Points</label><input type="text" id="f3" placeholder="e.g. Mention the Monday meeting..."/></div></div>`,
-    prompt: () => `Write a ${document.getElementById('f2').value.toLowerCase()} email for: "${document.getElementById('f1').value}". Key points: ${document.getElementById('f3').value||'none'}. Include subject line, greeting, body, sign-off.`
-  },
-  caption: {
-    fields: `<div class="form-grid"><div class="form-group"><label class="form-label">Post Topic *</label><input type="text" id="f1" placeholder="e.g. Sunrise hike in the mountains"/></div><div class="form-group"><label class="form-label">Platform</label><select id="f2"><option>Instagram</option><option>TikTok</option><option>Twitter/X</option><option>LinkedIn</option><option>Facebook</option></select></div><div class="form-group full"><label class="form-label">Vibe</label><input type="text" id="f3" placeholder="e.g. Inspirational, funny, aesthetic..."/></div></div>`,
-    prompt: () => `Write 3 different ${document.getElementById('f2').value} captions for: "${document.getElementById('f1').value}". Style: ${document.getElementById('f3').value||'engaging'}. Include relevant hashtags.`
-  },
-  product: {
-    fields: `<div class="form-grid"><div class="form-group"><label class="form-label">Product Name *</label><input type="text" id="f1" placeholder="e.g. Wireless Headphones"/></div><div class="form-group"><label class="form-label">Key Features</label><input type="text" id="f2" placeholder="e.g. 40hr battery, Bluetooth 5.0"/></div><div class="form-group full"><label class="form-label">Target Customer</label><input type="text" id="f3" placeholder="e.g. Remote workers, gamers..."/></div></div>`,
-    prompt: () => `Write a compelling product description for: "${document.getElementById('f1').value}". Features: ${document.getElementById('f2').value||'not specified'}. Customer: ${document.getElementById('f3').value||'general buyers'}. Persuasive, benefit-focused, ~150 words.`
-  },
-  cover: {
-    fields: `<div class="form-grid"><div class="form-group"><label class="form-label">Job Title *</label><input type="text" id="f1" placeholder="e.g. Senior Marketing Manager"/></div><div class="form-group"><label class="form-label">Top Skills</label><input type="text" id="f2" placeholder="e.g. SEO, analytics, strategy"/></div><div class="form-group full"><label class="form-label">Experience</label><input type="text" id="f3" placeholder="e.g. 5 years in digital marketing"/></div></div>`,
-    prompt: () => `Write a professional cover letter for: "${document.getElementById('f1').value}". Skills: ${document.getElementById('f2').value||'not specified'}. Experience: ${document.getElementById('f3').value||'not specified'}. Confident, concise, compelling.`
-  },
-  headline: {
-    fields: `<div class="form-grid"><div class="form-group"><label class="form-label">Topic / Product *</label><input type="text" id="f1" placeholder="e.g. App that helps you sleep better"/></div><div class="form-group"><label class="form-label">Style</label><select id="f2"><option>Curiosity-driven</option><option>How-to</option><option>Listicle</option><option>Bold claim</option><option>Question</option></select></div></div>`,
-    prompt: () => `Generate 10 powerful click-worthy headlines for: "${document.getElementById('f1').value}". Style: ${document.getElementById('f2').value}. Irresistible and SEO-optimized.`
-  }
+// Update nav user
+function updateNavUsr(){
+  const el=document.getElementById('nusr');
+  if(signedUp&&userName) el.textContent='👤 '+userName.split(' ')[0];
+  else el.textContent='';
+}
+updateNavUsr();
+
+// ===== WRITING TOOL =====
+const TOOLS={
+  blog:{f:`<div class="fg"><div><label class="fl">BLOG TOPIC *</label><input id="f1" placeholder="e.g. How to grow on YouTube"/></div><div><label class="fl">TONE</label><select id="f2"><option>Professional</option><option>Casual</option><option>Inspiring</option><option>Funny</option></select></div></div><div style="margin-top:12px"><label class="fl">TARGET AUDIENCE</label><input id="f3" placeholder="e.g. Beginners, entrepreneurs..."/></div>`,p:()=>`Write a complete blog post about: "${V('f1')}". Tone: ${V('f2')}. Audience: ${V('f3')||'general'}. Include title, intro, 3-4 sections with subheadings, conclusion. SEO-friendly, ~400 words.`},
+  email:{f:`<div class="fg"><div><label class="fl">EMAIL PURPOSE *</label><input id="f1" placeholder="e.g. Follow up after interview"/></div><div><label class="fl">TONE</label><select id="f2"><option>Professional</option><option>Friendly</option><option>Formal</option><option>Persuasive</option></select></div></div><div style="margin-top:12px"><label class="fl">KEY POINTS</label><input id="f3" placeholder="e.g. Mention Monday meeting..."/></div>`,p:()=>`Write a ${V('f2').toLowerCase()} email for: "${V('f1')}". Points: ${V('f3')||'none'}. Include subject, greeting, body, sign-off.`},
+  caption:{f:`<div class="fg"><div><label class="fl">POST TOPIC *</label><input id="f1" placeholder="e.g. Sunrise hike"/></div><div><label class="fl">PLATFORM</label><select id="f2"><option>Instagram</option><option>TikTok</option><option>Twitter/X</option><option>LinkedIn</option><option>Facebook</option></select></div></div><div style="margin-top:12px"><label class="fl">VIBE</label><input id="f3" placeholder="e.g. Inspirational, funny..."/></div>`,p:()=>`Write 3 ${V('f2')} captions for: "${V('f1')}". Style: ${V('f3')||'engaging'}. Include hashtags.`},
+  product:{f:`<div class="fg"><div><label class="fl">PRODUCT NAME *</label><input id="f1" placeholder="e.g. Wireless Headphones"/></div><div><label class="fl">KEY FEATURES</label><input id="f2" placeholder="e.g. 40hr battery, BT 5.0"/></div></div><div style="margin-top:12px"><label class="fl">TARGET CUSTOMER</label><input id="f3" placeholder="e.g. Remote workers, gamers..."/></div>`,p:()=>`Write a compelling product description for: "${V('f1')}". Features: ${V('f2')||'n/a'}. Customer: ${V('f3')||'general'}. Persuasive, ~150 words.`},
+  cover:{f:`<div class="fg"><div><label class="fl">JOB TITLE *</label><input id="f1" placeholder="e.g. Senior Engineer"/></div><div><label class="fl">TOP SKILLS</label><input id="f2" placeholder="e.g. SEO, analytics"/></div></div><div style="margin-top:12px"><label class="fl">EXPERIENCE</label><input id="f3" placeholder="e.g. 5 years in marketing"/></div>`,p:()=>`Write a professional cover letter for: "${V('f1')}". Skills: ${V('f2')||'n/a'}. Experience: ${V('f3')||'n/a'}. Confident, concise.`},
+  headline:{f:`<div class="fg"><div><label class="fl">TOPIC / PRODUCT *</label><input id="f1" placeholder="e.g. App that helps sleep"/></div><div><label class="fl">STYLE</label><select id="f2"><option>Curiosity-driven</option><option>How-to</option><option>Listicle</option><option>Bold claim</option><option>Question</option></select></div></div>`,p:()=>`Generate 10 powerful headlines for: "${V('f1')}". Style: ${V('f2')}. SEO-optimized, irresistible.`}
 };
+const V=id=>{const e=document.getElementById(id);return e?e.value:''};
 
-let currentWritingTool = 'blog';
-
-function renderWritingTool(key) {
-  document.getElementById('writingBody').innerHTML = WRITING_TOOLS[key].fields;
-  document.getElementById('outputSection').style.display = 'none';
+function renderTool(t){
+  document.getElementById('wbody').innerHTML=`<div class="fg" style="display:block">${TOOLS[t].f}</div>`;
+  document.getElementById('outs').style.display='none';
 }
-
-document.getElementById('writingTabs').addEventListener('click', e => {
-  const btn = e.target.closest('.wtab');
-  if(!btn) return;
-  document.querySelectorAll('.wtab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  currentWritingTool = btn.dataset.tool;
-  renderWritingTool(currentWritingTool);
+document.getElementById('wtabs').addEventListener('click',e=>{
+  const b=e.target.closest('.wtab');if(!b)return;
+  document.querySelectorAll('.wtab').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');curTool=b.dataset.t;renderTool(curTool);
 });
+renderTool('blog');
 
-renderWritingTool('blog');
-
-async function generateContent() {
-  const f1 = document.getElementById('f1');
+async function genContent(){
+  const f1=document.getElementById('f1');
   if(!f1||!f1.value.trim()){f1.style.borderColor='var(--red)';f1.focus();setTimeout(()=>f1.style.borderColor='',2000);return}
-  const btn = document.getElementById('genBtn');
-  const sec = document.getElementById('outputSection');
-  const box = document.getElementById('outputBox');
-  btn.disabled = true;
-  btn.innerHTML = `<div class="dots"><span></span><span></span><span></span></div> Generating…`;
-  sec.style.display = 'block';
-  box.innerHTML = `<div class="gen-loading"><div class="dots"><span></span><span></span><span></span></div> Writing your content…</div>`;
-  try {
-    const res = await fetch('/api/generate', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:WRITING_TOOLS[currentWritingTool].prompt()})});
-    const data = await res.json();
-    if(data.error) throw new Error(data.error);
-    const text = data.result || 'No content generated.';
-    box.innerHTML = `<span id="resultText"></span>`;
-    const span = document.getElementById('resultText');
-    let i = 0;
-    const iv = setInterval(()=>{span.textContent+=text[i]||'';i++;if(i>=text.length)clearInterval(iv)},10);
-  } catch(e) {
-    box.innerHTML = `<span style="color:var(--red);font-size:0.875rem">⚠ Error: ${e.message}</span>`;
-  }
-  btn.disabled = false;
-  btn.innerHTML = `<svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> Generate Content`;
+  const btn=document.getElementById('genbtn');
+  const box=document.getElementById('outbox');
+  document.getElementById('outs').style.display='block';
+  btn.disabled=true;btn.innerHTML=`<div class="dots" style="color:white"><span></span><span></span><span></span></div>`;
+  box.innerHTML=`<div class="ldg"><div class="dots"><span></span><span></span><span></span></div> Writing…</div>`;
+  try{
+    const r=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:TOOLS[curTool].p()})});
+    const d=await r.json();if(d.error)throw new Error(d.error);
+    const txt=d.result||'No content.';
+    box.innerHTML=`<span id="rt"></span>`;
+    const sp=document.getElementById('rt');let i=0;
+    const iv=setInterval(()=>{sp.textContent+=txt[i]||'';i++;if(i>=txt.length)clearInterval(iv)},10);
+  }catch(e){box.innerHTML=`<span style="color:var(--red);font-size:.82rem">⚠ ${e.message}</span>`}
+  btn.disabled=false;btn.innerHTML=`<svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> Generate`;
 }
 
-function copyContent() {
-  const t = document.getElementById('resultText')?.textContent;
-  if(t){navigator.clipboard.writeText(t);const b=document.querySelector('.copy-btn');b.textContent='✅ Copied!';setTimeout(()=>b.innerHTML=`<svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copy`,2000)}
+function copyOut(){
+  const t=document.getElementById('rt')?.textContent;
+  if(t){navigator.clipboard.writeText(t);const b=document.querySelector('.cbtn');b.textContent='✅ Copied!';setTimeout(()=>b.textContent='📋 Copy',2000)}
 }
 
-// ========== CV BUILDER ==========
-let cvData = {photo:null,fname:'',lname:'',jobtitle:'',email:'',phone:'',location:'',linkedin:'',summary:'',experience:[],education:[],skills:[],languages:'',certs:'',hobbies:''};
-let currentTemplate = 'executive';
-let expCount = 0, eduCount = 0, skillCount = 0;
-
-function switchCVSection(sec) {
-  document.querySelectorAll('.cv-section-content').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.cv-sec-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('cv-'+sec).classList.add('active');
-  event.target.classList.add('active');
-}
-
-function handlePhoto(e) {
-  const file = e.target.files[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    cvData.photo = ev.target.result;
-    const pu = document.getElementById('photoUpload');
-    pu.innerHTML = `<img src="${ev.target.result}" class="photo-preview"/>`;
-    updateCV();
+// ===== PHOTO =====
+function handlePhoto(e){
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    cvPhoto=ev.target.result;
+    document.getElementById('photoThumb').innerHTML=`<img src="${ev.target.result}"/><input type="file" id="photoFile" accept="image/*" onchange="handlePhoto(event)" style="display:none"/>`;
+    renderCV();
   };
-  reader.readAsDataURL(file);
+  r.readAsDataURL(f);
 }
 
-function addExperience() {
-  expCount++;
-  const id = expCount;
-  const container = document.getElementById('exp-entries');
-  const div = document.createElement('div');
-  div.className = 'entry-card';
-  div.id = 'exp-'+id;
-  div.innerHTML = `
-    <button class="remove-btn" onclick="removeEntry('exp-${id}')">✕</button>
-    <div class="cv-field"><label class="cv-label">Job Title</label><input class="cv-input" placeholder="Software Engineer" oninput="updateCV()" data-exp="${id}" data-field="title"/></div>
-    <div class="cv-field"><label class="cv-label">Company</label><input class="cv-input" placeholder="Google" oninput="updateCV()" data-exp="${id}" data-field="company"/></div>
-    <div class="cv-grid">
-      <div class="cv-field"><label class="cv-label">Start Date</label><input class="cv-input" placeholder="Jan 2022" oninput="updateCV()" data-exp="${id}" data-field="start"/></div>
-      <div class="cv-field"><label class="cv-label">End Date</label><input class="cv-input" placeholder="Present" oninput="updateCV()" data-exp="${id}" data-field="end"/></div>
-    </div>
-    <div class="cv-field"><label class="cv-label">Description</label><textarea class="cv-input" rows="3" placeholder="Describe your responsibilities..." oninput="updateCV()" data-exp="${id}" data-field="desc"></textarea></div>
-  `;
-  container.appendChild(div);
+// ===== CHAT =====
+function startChat(){
+  chatStep=0;chatAnswers={};chatActive=true;
+  document.getElementById('chatMsgs').innerHTML='';
+  setTimeout(()=>addAI(QUESTIONS[0].q),400);
 }
 
-function addEducation() {
-  eduCount++;
-  const id = eduCount;
-  const container = document.getElementById('edu-entries');
-  const div = document.createElement('div');
-  div.className = 'entry-card';
-  div.id = 'edu-'+id;
-  div.innerHTML = `
-    <button class="remove-btn" onclick="removeEntry('edu-${id}')">✕</button>
-    <div class="cv-field"><label class="cv-label">Degree</label><input class="cv-input" placeholder="Bachelor of Computer Science" oninput="updateCV()" data-edu="${id}" data-field="degree"/></div>
-    <div class="cv-field"><label class="cv-label">Institution</label><input class="cv-input" placeholder="MIT" oninput="updateCV()" data-edu="${id}" data-field="school"/></div>
-    <div class="cv-grid">
-      <div class="cv-field"><label class="cv-label">Start Year</label><input class="cv-input" placeholder="2018" oninput="updateCV()" data-edu="${id}" data-field="start"/></div>
-      <div class="cv-field"><label class="cv-label">End Year</label><input class="cv-input" placeholder="2022" oninput="updateCV()" data-edu="${id}" data-field="end"/></div>
-    </div>
-  `;
-  container.appendChild(div);
+function addAI(txt){
+  const c=document.getElementById('chatMsgs');
+  // Show typing
+  const t=document.createElement('div');t.className='msg';t.id='typing';
+  t.innerHTML=`<div class="msg-avatar ai-avatar">🤖</div><div class="typing-bubble"><div class="dots" style="color:var(--blue)"><span></span><span></span><span></span></div></div>`;
+  c.appendChild(t);c.scrollTop=c.scrollHeight;
+  setTimeout(()=>{
+    t.remove();
+    const d=document.createElement('div');d.className='msg';
+    d.innerHTML=`<div class="msg-avatar ai-avatar">🤖</div><div class="bubble ai-bubble">${txt.replace(/\n/g,'<br>')}</div>`;
+    c.appendChild(d);c.scrollTop=c.scrollHeight;
+  },800);
 }
 
-function addSkill() {
-  skillCount++;
-  const id = skillCount;
-  const container = document.getElementById('skill-entries');
-  const div = document.createElement('div');
-  div.className = 'entry-card';
-  div.id = 'skill-'+id;
-  div.innerHTML = `
-    <button class="remove-btn" onclick="removeEntry('skill-${id}')">✕</button>
-    <div class="cv-grid">
-      <div class="cv-field"><label class="cv-label">Skill Name</label><input class="cv-input" placeholder="JavaScript" oninput="updateCV()" data-skill="${id}" data-field="name"/></div>
-      <div class="cv-field"><label class="cv-label">Level (0-100)</label><input class="cv-input" type="number" min="0" max="100" placeholder="85" oninput="updateCV()" data-skill="${id}" data-field="level"/></div>
-    </div>
-  `;
-  container.appendChild(div);
+function addUser(txt){
+  const c=document.getElementById('chatMsgs');
+  const d=document.createElement('div');d.className='msg user';
+  d.innerHTML=`<div class="bubble user-bubble">${txt}</div><div class="msg-avatar user-avatar">👤</div>`;
+  c.appendChild(d);c.scrollTop=c.scrollHeight;
 }
 
-function removeEntry(id) {
-  const el = document.getElementById(id);
-  if(el) el.remove();
-  updateCV();
-}
-
-function getVal(id) { const el = document.getElementById(id); return el ? el.value : ''; }
-
-function collectCVData() {
-  cvData.fname = getVal('cv-fname');
-  cvData.lname = getVal('cv-lname');
-  cvData.jobtitle = getVal('cv-jobtitle');
-  cvData.email = getVal('cv-email');
-  cvData.phone = getVal('cv-phone');
-  cvData.location = getVal('cv-location');
-  cvData.linkedin = getVal('cv-linkedin');
-  cvData.summary = getVal('cv-summary');
-  cvData.languages = getVal('cv-languages');
-  cvData.certs = getVal('cv-certs');
-  cvData.hobbies = getVal('cv-hobbies');
-
-  cvData.experience = [];
-  document.querySelectorAll('[data-exp]').forEach(el => {
-    const id = el.dataset.exp;
-    if(!cvData.experience[id-1]) cvData.experience[id-1] = {};
-    cvData.experience[id-1][el.dataset.field] = el.value;
-  });
-  cvData.experience = cvData.experience.filter(Boolean);
-
-  cvData.education = [];
-  document.querySelectorAll('[data-edu]').forEach(el => {
-    const id = el.dataset.edu;
-    if(!cvData.education[id-1]) cvData.education[id-1] = {};
-    cvData.education[id-1][el.dataset.field] = el.value;
-  });
-  cvData.education = cvData.education.filter(Boolean);
-
-  cvData.skills = [];
-  document.querySelectorAll('[data-skill]').forEach(el => {
-    const id = el.dataset.skill;
-    if(!cvData.skills[id-1]) cvData.skills[id-1] = {};
-    cvData.skills[id-1][el.dataset.field] = el.value;
-  });
-  cvData.skills = cvData.skills.filter(Boolean);
-}
-
-function setTemplate(tpl) {
-  currentTemplate = tpl;
-  document.querySelectorAll('.template-btn').forEach(b=>b.classList.remove('active'));
-  event.target.classList.add('active');
-  updateCV();
-}
-
-function updateCV() {
-  collectCVData();
-  const preview = document.getElementById('cvPreview');
-  if(!preview) return;
-  preview.className = 'cv-document tpl-'+currentTemplate;
-  const name = `${cvData.fname||'Your'} ${cvData.lname||'Name'}`;
-  const photoHTML = cvData.photo
-    ? `<div class="cv-photo-wrap"><img src="${cvData.photo}" alt="Photo"/></div>`
-    : `<div class="cv-photo-placeholder">👤</div>`;
-
-  const contactItems = [
-    cvData.email && `<span class="cv-contact-item">✉ ${cvData.email}</span>`,
-    cvData.phone && `<span class="cv-contact-item">📞 ${cvData.phone}</span>`,
-    cvData.location && `<span class="cv-contact-item">📍 ${cvData.location}</span>`,
-    cvData.linkedin && `<span class="cv-contact-item">🔗 ${cvData.linkedin}</span>`
-  ].filter(Boolean).join('');
-
-  const expHTML = cvData.experience.map(e => `
-    <div class="cv-entry">
-      <div class="cv-entry-title">${e.title||'Job Title'}</div>
-      <div class="cv-entry-sub">${e.company||'Company'}</div>
-      <div class="cv-entry-date">${e.start||''} ${e.end ? '— '+e.end : ''}</div>
-      ${e.desc ? `<div class="cv-entry-desc">${e.desc}</div>` : ''}
-    </div>
-  `).join('') || '<div style="color:var(--muted);font-size:0.8rem;font-style:italic">Add your work experience...</div>';
-
-  const eduHTML = cvData.education.map(e => `
-    <div class="cv-entry">
-      <div class="cv-entry-title">${e.degree||'Degree'}</div>
-      <div class="cv-entry-sub">${e.school||'Institution'}</div>
-      <div class="cv-entry-date">${e.start||''} ${e.end ? '— '+e.end : ''}</div>
-    </div>
-  `).join('') || '<div style="color:var(--muted);font-size:0.8rem;font-style:italic">Add your education...</div>';
-
-  const skillsExecHTML = cvData.skills.map(s => `
-    <div class="cv-skill-item">
-      <span class="cv-skill-name">${s.name||'Skill'}</span>
-      <div class="cv-skill-bar"><div class="cv-skill-fill" style="width:${s.level||75}%"></div></div>
-    </div>
-  `).join('') || '<div style="color:var(--muted);font-size:0.8rem;font-style:italic">Add your skills...</div>';
-
-  const skillsTagHTML = cvData.skills.map(s => `<span class="cv-skill-tag">${s.name||'Skill'}</span>`).join('') || '<span class="cv-skill-tag">Add skills...</span>';
-
-  const skillsMinHTML = cvData.skills.map(s => `<div class="cv-skill-item">${s.name||'Skill'}</div>`).join('') || '<div style="color:var(--muted);font-size:0.8rem;font-style:italic">Add skills...</div>';
-
-  const langsHTML = (cvData.languages||'').split('\n').filter(l=>l.trim()).map(l => {
-    const parts = l.split('-');
-    return `<div class="cv-lang-item"><span class="cv-lang-name">${parts[0]?.trim()||l}</span><span class="cv-lang-level">${parts[1]?.trim()||''}</span></div>`;
-  }).join('') || '';
-
-  const certsHTML = (cvData.certs||'').split('\n').filter(c=>c.trim()).map(c => `<div class="cv-entry-desc" style="margin-bottom:6px">• ${c}</div>`).join('') || '';
-
-  if(currentTemplate === 'executive') {
-    preview.innerHTML = `
-      <div class="cv-top">
-        ${photoHTML}
-        <div>
-          <div class="cv-name">${name}</div>
-          <div class="cv-title">${cvData.jobtitle||'Professional Title'}</div>
-          <div class="cv-contact-row">${contactItems||'<span class="cv-contact-item" style="opacity:0.5">Add your contact info</span>'}</div>
-        </div>
-      </div>
-      <div class="cv-body">
-        <div class="cv-main">
-          ${cvData.summary ? `<div class="cv-section"><div class="cv-section-title">Professional Summary</div><div class="cv-entry-desc">${cvData.summary}</div></div>` : ''}
-          <div class="cv-section"><div class="cv-section-title">Work Experience</div>${expHTML}</div>
-          <div class="cv-section"><div class="cv-section-title">Education</div>${eduHTML}</div>
-          ${certsHTML ? `<div class="cv-section"><div class="cv-section-title">Certifications</div>${certsHTML}</div>` : ''}
-        </div>
-        <div class="cv-sidebar">
-          <div class="cv-sidebar-section"><div class="cv-sidebar-title">Skills</div>${skillsExecHTML}</div>
-          ${langsHTML ? `<div class="cv-sidebar-section"><div class="cv-sidebar-title">Languages</div>${langsHTML}</div>` : ''}
-          ${cvData.hobbies ? `<div class="cv-sidebar-section"><div class="cv-sidebar-title">Interests</div><div style="font-size:0.8rem;color:var(--text2)">${cvData.hobbies}</div></div>` : ''}
-        </div>
-      </div>`;
-  } else if(currentTemplate === 'creative') {
-    preview.innerHTML = `
-      <div class="cv-top">
-        ${photoHTML}
-        <div class="cv-name">${name}</div>
-        <div class="cv-title">${cvData.jobtitle||'Professional Title'}</div>
-        <div class="cv-contact-row">${contactItems}</div>
-      </div>
-      <div class="cv-body">
-        ${cvData.summary ? `<div class="cv-section"><div class="cv-section-title">About Me</div><div class="cv-entry-desc">${cvData.summary}</div></div>` : ''}
-        <div class="cv-section"><div class="cv-section-title">Experience</div>${expHTML}</div>
-        <div class="cv-section"><div class="cv-section-title">Education</div>${eduHTML}</div>
-        <div class="cv-section"><div class="cv-section-title">Skills</div><div>${skillsTagHTML}</div></div>
-        ${langsHTML ? `<div class="cv-section"><div class="cv-section-title">Languages</div>${langsHTML}</div>` : ''}
-        ${cvData.hobbies ? `<div class="cv-section"><div class="cv-section-title">Interests</div><div class="cv-entry-desc">${cvData.hobbies}</div></div>` : ''}
-      </div>`;
+async function sendMsg(){
+  const inp=document.getElementById('chatInput');
+  const txt=inp.value.trim();if(!txt)return;
+  inp.value='';inp.style.height='42px';
+  addUser(txt);
+  const q=QUESTIONS[chatStep];
+  chatAnswers[q.k]=txt;
+  chatStep++;
+  if(chatStep<QUESTIONS.length){
+    let nextQ=QUESTIONS[chatStep].q;
+    if(chatAnswers.name) nextQ=nextQ.replace('{name}',chatAnswers.name.split(' ')[0]);
+    setTimeout(()=>addAI(nextQ),600);
   } else {
-    preview.innerHTML = `
-      <div class="cv-top">
-        <div class="cv-top-inner">
-          ${photoHTML}
-          <div>
-            <div class="cv-name">${name}</div>
-            <div class="cv-title">${cvData.jobtitle||'Professional Title'}</div>
-            <div class="cv-contact-row">${contactItems}</div>
-          </div>
-        </div>
-      </div>
-      <div class="cv-body">
-        <div class="cv-main">
-          ${cvData.summary ? `<div class="cv-section"><div class="cv-section-title">Profile</div><div class="cv-entry-desc">${cvData.summary}</div></div>` : ''}
-          <div class="cv-section"><div class="cv-section-title">Experience</div>${expHTML}</div>
-          <div class="cv-section"><div class="cv-section-title">Education</div>${eduHTML}</div>
-        </div>
-        <div class="cv-sidebar" style="border-left:1px solid var(--border);padding-left:20px">
-          <div class="cv-section"><div class="cv-section-title">Skills</div>${skillsMinHTML}</div>
-          ${langsHTML ? `<div class="cv-section"><div class="cv-section-title">Languages</div>${langsHTML}</div>` : ''}
-          ${cvData.hobbies ? `<div class="cv-section"><div class="cv-section-title">Interests</div><div style="font-size:0.8rem;color:var(--text2)">${cvData.hobbies}</div></div>` : ''}
-        </div>
-      </div>`;
+    setTimeout(()=>addAI('✨ Perfect! I have everything I need. Building your professional CV now...'),600);
+    setTimeout(()=>buildCV(),1800);
   }
 }
 
-function downloadCV() {
-  const preview = document.getElementById('cvPreview');
-  const name = `${cvData.fname||'My'}_${cvData.lname||'CV'}`;
-  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${name} CV</title><link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Outfit',sans-serif;background:white}${document.querySelector('style').textContent}</style></head><body>${preview.outerHTML}</body></html>`;
-  const blob = new Blob([html], {type:'text/html'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = `${name}_CV.html`; a.click();
+async function buildCV(){
+  const a=chatAnswers;
+  addAI('🤖 Generating your CV content with AI...');
+  try{
+    const prompt=`You are an expert CV writer. Create professional CV content based on this information. Return ONLY a valid JSON object, no markdown, no extra text:
+
+{
+  "summary": "3-4 sentence professional summary highlighting key strengths",
+  "exp_title": "job title from their experience",
+  "exp_company": "company name",
+  "exp_period": "employment period like 2020 - Present",
+  "exp_desc": "3-4 bullet points of responsibilities and achievements, separated by |",
+  "edu_degree": "degree/qualification",
+  "edu_school": "institution",
+  "edu_year": "graduation year",
+  "skills": ["skill1","skill2","skill3","skill4","skill5"],
+  "achievement": "key achievement in one sentence"
+}
+
+Person info:
+Name: ${a.name||'Not given'}
+Job Title: ${a.title||'Not given'}
+Experience: ${a.exp||'0'} years
+Industry: ${a.field||'Not given'}
+Skills: ${a.skills||'Not given'}
+Recent Job: ${a.job1||'None'}
+Education: ${a.edu||'Not given'}
+Achievement: ${a.achieve||'Not given'}`;
+
+    const r=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt})});
+    const d=await r.json();if(d.error)throw new Error(d.error);
+    let cv;
+    try{cv=JSON.parse(d.result.replace(/```json|```/g,'').trim())}
+    catch(e){throw new Error('Parse error')}
+
+    // Fill data
+    const np=a.name?.split(' ')||[];
+    cvData.fn=np[0]||'';cvData.ln=np.slice(1).join(' ')||'';
+    cvData.jt=a.title||'';cvData.em=a.email||'';
+    cvData.ph=a.phone==='skip'?'':a.phone||'';
+    cvData.lo=a.location||'';cvData.su=cv.summary||'';
+    cvData.sk=(cv.skills||[]).map((s,i)=>({n:s,l:90-i*5}));
+    cvData.exp=cv.exp_title&&cv.exp_title.toLowerCase()!=='none'?[{t:cv.exp_title||'',c:cv.exp_company||'',p:cv.exp_period||'',d:cv.exp_desc||''}]:[];
+    cvData.edu=[{d:cv.edu_degree||'',s:cv.edu_school||'',y:cv.edu_year||''}];
+    cvData.langs=a.langs&&a.langs!=='skip'?a.langs.split(',').map(l=>l.trim()):[];
+
+    // Sync edit fields
+    setF('e-fn',cvData.fn);setF('e-ln',cvData.ln);setF('e-jt',cvData.jt);
+    setF('e-em',cvData.em);setF('e-ph',cvData.ph);setF('e-lo',cvData.lo);
+    setF('e-su',cvData.su);setF('e-sk',cvData.sk.map(s=>s.n).join(', '));
+    setF('e-co',cvData.exp[0]?`${cvData.exp[0].t} at ${cvData.exp[0].c}`:'');
+
+    renderCV();
+    addAI(`🎉 Your CV is ready! Check the preview on the right.\n\nYou can:\n• Switch between 5 templates\n• Click "✏️ Edit Fields" to make changes\n• Click ⬇️ to download as PDF\n\nLooks great, ${cvData.fn}!`);
+  }catch(e){
+    addAI(`❌ Something went wrong: ${e.message}. Please try again or use the edit fields to enter your info manually.`);
+  }
+}
+
+function setF(id,v){const e=document.getElementById(id);if(e)e.value=v||''}
+
+function toggleEdit(){
+  const ep=document.getElementById('editPanel');
+  ep.classList.toggle('show');
+}
+
+// Sync edit fields to cvData
+function syncEdit(){
+  cvData.fn=V('e-fn');cvData.ln=V('e-ln');cvData.jt=V('e-jt');
+  cvData.em=V('e-em');cvData.ph=V('e-ph');cvData.lo=V('e-lo');
+  cvData.su=V('e-su');
+  const sk=V('e-sk').split(',').filter(s=>s.trim());
+  cvData.sk=sk.map((s,i)=>({n:s.trim(),l:90-i*5}));
+  const co=V('e-co');
+  if(co&&cvData.exp.length===0) cvData.exp=[{t:co,c:'',p:'',d:''}];
+  else if(co&&cvData.exp.length>0){const p=co.split(' at ');cvData.exp[0].t=p[0]||'';cvData.exp[0].c=p[1]||'';}
+}
+
+// ===== ATTEMPTS =====
+function updateAtBar(){
+  const rem=Math.max(0,FREE_LIMIT-attempts);
+  const txt=document.getElementById('attext');
+  const dots=document.getElementById('atdots');
+  if(signedUp){txt.textContent='✅ Unlimited access!';txt.style.color='var(--green)';dots.innerHTML='';return}
+  txt.textContent=`${rem} free generation${rem!==1?'s':''} left`;
+  txt.style.color=rem<=2?'var(--red)':'var(--blue)';
+  dots.innerHTML=Array(FREE_LIMIT).fill(0).map((_,i)=>`<div class="atdot${i>=rem?' used':''}"></div>`).join('');
+}
+
+function checkAttempt(){
+  if(signedUp)return true;
+  if(attempts>=FREE_LIMIT){document.getElementById('signupOverlay').classList.add('show');return false}
+  attempts++;localStorage.setItem('wai_at',attempts);updateAtBar();return true;
+}
+
+function doSignup(){
+  const n=document.getElementById('su-name').value.trim();
+  const e=document.getElementById('su-email').value.trim();
+  if(!n||!e){alert('Please fill name and email!');return}
+  if(!e.includes('@')){alert('Please enter a valid email!');return}
+  signedUp=true;userName=n;
+  localStorage.setItem('wai_usr',n);localStorage.setItem('wai_em',e);
+  attempts=0;localStorage.setItem('wai_at','0');
+  document.getElementById('signupOverlay').classList.remove('show');
+  updateAtBar();updateNavUsr();
+  addAI(`🎉 Welcome ${n}! You now have unlimited access to all features!`);
+}
+
+function closeSignup(){document.getElementById('signupOverlay').classList.remove('show')}
+
+// ===== TEMPLATE =====
+function setTpl(n,btn){
+  curTpl=n;
+  document.querySelectorAll('.tplbtn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderCV();
+}
+
+// ===== RENDER CV =====
+function renderCV(){
+  syncEdit();
+  const d=cvData;
+  const doc=document.getElementById('cvdoc');
+  if(!doc)return;
+  doc.className='cv-doc tpl'+curTpl;
+  const name=`${d.fn||'Your'} ${d.ln||'Name'}`;
+  const photo=cvPhoto?`<div class="t-photo"><img src="${cvPhoto}" alt=""/></div>`:`<div class="t-photo">👤</div>`;
+  const contacts=[
+    d.em&&`<span class="t-c">✉ ${d.em}</span>`,
+    d.ph&&`<span class="t-c">📞 ${d.ph}</span>`,
+    d.lo&&`<span class="t-c">📍 ${d.lo}</span>`
+  ].filter(Boolean).join('');
+  const sumSection=d.su?`<div class="t-sec"><div class="t-sh">Professional Summary</div><div class="t-ep">${d.su}</div></div>`:'';
+  const expSection=d.exp.length?d.exp.map(e=>`<div class="t-sec"><div class="t-sh">Work Experience</div><div class="t-et">${e.t||'Job Title'}</div><div class="t-es">${e.c||'Company'}</div><div class="t-ed">${e.p||''}</div>${e.d?`<div class="t-ep">${e.d.split('|').map(b=>`<div class="t-li">${b.trim()}</div>`).join('')}</div>`:''}</div>`).join(''):`<div class="t-sec"><div class="t-sh">Work Experience</div><div style="color:var(--muted);font-size:.78rem;font-style:italic">Your work experience will appear here...</div></div>`;
+  const eduSection=d.edu.length?d.edu.map(e=>`<div class="t-sec"><div class="t-sh">Education</div><div class="t-et">${e.d||'Degree'}</div><div class="t-es">${e.s||'Institution'}</div><div class="t-ed">${e.y||''}</div></div>`).join(''):`<div class="t-sec"><div class="t-sh">Education</div><div style="color:var(--muted);font-size:.78rem;font-style:italic">Your education will appear here...</div></div>`;
+
+  if(curTpl===1||curTpl===3||curTpl===4){
+    const isGold=curTpl===4;
+    const isGreen=curTpl===3;
+    const accentColor=isGold?'#d4a843':isGreen?'#059669':'#2563eb';
+    const skillsHtml=d.sk.length?d.sk.map(s=>`<div class="t-sbar"><span class="t-sn">${s.n}</span><div class="t-sb"><div class="t-sf" style="width:${s.l||80}%;background:${accentColor}"></div></div></div>`).join(''):'<div style="color:var(--muted);font-size:.75rem">Add your skills</div>';
+    const langsHtml=d.langs.length?`<div class="t-ss"><div class="t-st">Languages</div>${d.langs.map(l=>`<div class="t-li">${l}</div>`).join('')}</div>`:'';
+    doc.innerHTML=`<div class="t-top">${photo}<div><div class="t-name">${name}</div><div class="t-role">${d.jt||'Professional Title'}</div><div class="t-contacts">${contacts||'<span class="t-c" style="opacity:.4">Add contact info</span>'}</div></div></div><div class="t-body"><div class="t-main">${sumSection}${expSection}${eduSection}</div><div class="t-side"><div class="t-ss"><div class="t-st">Skills</div>${skillsHtml}</div>${langsHtml}</div></div>`;
+    if(curTpl===1){const s=doc.querySelector('.t-side');if(s)s.style.background='#fafafa'}
+    if(curTpl===4){const s=doc.querySelector('.t-side');if(s)s.style.background='#faf9f7'}
+  } else if(curTpl===2){
+    const skillsHtml=d.sk.length?d.sk.map(s=>`<span class="t-tag">${s.n}</span>`).join(''):'<span class="t-tag">Add skills</span>';
+    const langsHtml=d.langs.length?`<div class="t-ss"><div class="t-st">Languages</div>${d.langs.map(l=>`<div class="t-li">${l}</div>`).join('')}</div>`:'';
+    doc.innerHTML=`<div class="t-top">${photo}<div><div class="t-name">${name}</div><div class="t-role">${d.jt||'Professional Title'}</div><div class="t-contacts">${contacts}</div></div></div><div class="t-body">${sumSection}${expSection}${eduSection}<div class="t-sec"><div class="t-sh">Skills</div>${skillsHtml}</div>${langsHtml}</div>`;
+  } else {
+    const skillsHtml=d.sk.length?d.sk.map(s=>`<div class="t-skill">${s.n}</div>`).join(''):'<div class="t-skill">Add skills</div>';
+    const langsHtml=d.langs.length?`<div class="t-ss"><div class="t-st">Languages</div>${d.langs.map(l=>`<div class="t-li">${l}</div>`).join('')}</div>`:'';
+    doc.innerHTML=`<div class="t-top"><div class="t-inner">${photo}<div><div class="t-name">${name}</div><div class="t-role">${d.jt||'Professional Title'}</div><div class="t-contacts">${contacts}</div></div></div></div><div class="t-body"><div>${sumSection}${expSection}${eduSection}</div><div style="border-left:1px solid var(--border);padding-left:16px"><div class="t-ss"><div class="t-st">Skills</div>${skillsHtml}</div>${langsHtml}</div></div>`;
+  }
+}
+
+function dlCV(){
+  if(!checkAttempt())return;
+  const doc=document.getElementById('cvdoc');
+  const d=cvData;
+  const name=`${d.fn||'My'}_${d.ln||'CV'}`;
+  const css=document.querySelector('style').textContent;
+  const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${name}</title><link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"><style>*{box-sizing:border-box;margin:0;padding:0}body{background:white}${css}</style></head><body style="background:white;padding:20px">${doc.outerHTML}<script>window.onload=function(){window.print()}<\/script></body></html>`;
+  const blob=new Blob([html],{type:'text/html'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=`${name}_CV.html`;a.click();
   URL.revokeObjectURL(url);
 }
 
-function clearCV() {
-  if(confirm('Clear all CV data?')) {
-    document.querySelectorAll('.cv-input').forEach(i=>i.value='');
-    cvData = {photo:null,fname:'',lname:'',jobtitle:'',email:'',phone:'',location:'',linkedin:'',summary:'',experience:[],education:[],skills:[],languages:'',certs:'',hobbies:''};
-    document.getElementById('exp-entries').innerHTML = '';
-    document.getElementById('edu-entries').innerHTML = '';
-    document.getElementById('skill-entries').innerHTML = '';
-    document.getElementById('photoUpload').innerHTML = `<div class="photo-upload-icon">📷</div><div class="photo-upload-text">Click to upload photo</div><input type="file" id="photoInput" accept="image/*" onchange="handlePhoto(event)" style="display:none"/>`;
-    updateCV();
-  }
-}
+// ===== INIT =====
+renderCV();
+updateAtBar();
+updateNavUsr();
 
-// Init CV preview
-updateCV();
+// Auto-resize chat input
+document.getElementById('chatInput').addEventListener('input',function(){
+  this.style.height='42px';
+  this.style.height=Math.min(this.scrollHeight,100)+'px';
+});
 </script>
 </body>
 </html>
