@@ -3,341 +3,313 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>WriteAI – AI Writing Assistant</title>
-  <meta name="description" content="Professional AI writing assistant. Generate blog posts, emails, captions and more instantly. Free forever."/>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <title>WriteAI – AI Writing & CV Builder</title>
+  <meta name="description" content="Free AI writing tool and professional CV builder. Create stunning resumes, blog posts, emails and more instantly."/>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg: #f5f5f7;
-      --white: #ffffff;
-      --surface: #ffffff;
-      --surface2: #f0f0f3;
-      --border: #e2e2e8;
-      --accent: #0078d4;
-      --accent-dark: #005a9e;
-      --accent-light: #eff6ff;
-      --accent2: #7c3aed;
-      --success: #107c10;
-      --text: #1a1a2e;
-      --text2: #444454;
-      --muted: #767688;
-      --radius: 12px;
-      --shadow: 0 2px 12px rgba(0,0,0,0.08);
-      --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#f8f7f4;
+      --white:#ffffff;
+      --surface:#ffffff;
+      --surface2:#f2f1ee;
+      --border:#e8e6e0;
+      --accent:#1a1a2e;
+      --blue:#2563eb;
+      --blue-light:#eff6ff;
+      --blue-dark:#1d4ed8;
+      --gold:#d4a843;
+      --gold-light:#fef9ee;
+      --green:#059669;
+      --green-light:#f0fdf4;
+      --red:#dc2626;
+      --text:#0f0f1a;
+      --text2:#3d3d52;
+      --muted:#8b8b9e;
+      --radius:14px;
+      --shadow:0 1px 8px rgba(0,0,0,0.06),0 4px 20px rgba(0,0,0,0.04);
+      --shadow-lg:0 8px 40px rgba(0,0,0,0.1),0 2px 8px rgba(0,0,0,0.06);
+      --shadow-xl:0 20px 60px rgba(0,0,0,0.12);
     }
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;font-weight:400;line-height:1.6;overflow-x:hidden}
 
-    html { scroll-behavior: smooth; }
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-weight: 400;
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
+    /* SCROLLBAR */
+    ::-webkit-scrollbar{width:6px}
+    ::-webkit-scrollbar-track{background:var(--bg)}
+    ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 
     /* NAV */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      background: rgba(255,255,255,0.95);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border);
-      padding: 0 40px;
-      height: 60px;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .logo {
-      display: flex; align-items: center; gap: 10px;
-      font-weight: 700; font-size: 1.15rem; color: var(--text);
-      text-decoration: none;
-    }
-    .logo-icon {
-      width: 32px; height: 32px; border-radius: 8px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      display: flex; align-items: center; justify-content: center;
-      color: white; font-size: 0.9rem; font-weight: 800;
-    }
-    .nav-links { display: flex; align-items: center; gap: 8px; }
-    .nav-link {
-      color: var(--text2); text-decoration: none; font-size: 0.875rem;
-      font-weight: 500; padding: 6px 14px; border-radius: 6px;
-      transition: background 0.15s, color 0.15s;
-    }
-    .nav-link:hover { background: var(--surface2); color: var(--text); }
-    .btn-nav {
-      background: var(--accent); color: white;
-      padding: 7px 18px; border-radius: 6px;
-      font-size: 0.875rem; font-weight: 600;
-      text-decoration: none; transition: background 0.15s;
-      border: none; cursor: pointer; font-family: inherit;
-    }
-    .btn-nav:hover { background: var(--accent-dark); }
+    nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(248,247,244,0.92);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:0 48px;height:64px;display:flex;align-items:center;justify-content:space-between}
+    .logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text)}
+    .logo-mark{width:34px;height:34px;background:var(--text);border-radius:9px;display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:1rem;letter-spacing:-0.05em;font-family:'Instrument Serif',serif;font-style:italic}
+    .logo-name{font-weight:700;font-size:1.1rem;letter-spacing:-0.02em}
+    .logo-name span{color:var(--blue)}
+    .nav-center{display:flex;gap:4px}
+    .nav-link{color:var(--text2);text-decoration:none;font-size:0.875rem;font-weight:500;padding:7px 16px;border-radius:8px;transition:all 0.15s;border:none;background:none;cursor:pointer;font-family:'Outfit',sans-serif}
+    .nav-link:hover,.nav-link.active{background:var(--surface2);color:var(--text)}
+    .nav-right{display:flex;gap:10px;align-items:center}
+    .btn-ghost{background:none;border:1px solid var(--border);color:var(--text);padding:8px 18px;border-radius:8px;font-size:0.875rem;font-weight:500;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.15s}
+    .btn-ghost:hover{border-color:var(--blue);color:var(--blue)}
+    .btn-primary{background:var(--text);color:white;border:none;padding:9px 20px;border-radius:8px;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.15s;display:flex;align-items:center;gap:7px}
+    .btn-primary:hover{background:#2d2d45;transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,0.2)}
+    .btn-primary:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+    .btn-blue{background:var(--blue);color:white;border:none;padding:9px 20px;border-radius:8px;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.15s;display:flex;align-items:center;gap:7px}
+    .btn-blue:hover{background:var(--blue-dark);transform:translateY(-1px)}
 
-    /* HERO */
-    .hero {
-      min-height: 100vh;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      text-align: center; padding: 100px 24px 60px;
-      position: relative; overflow: hidden;
-    }
-    .hero-bg {
-      position: absolute; inset: 0; z-index: 0;
-      background: linear-gradient(160deg, #f0f7ff 0%, #f5f5f7 40%, #faf0ff 100%);
-    }
-    .hero-grid {
-      position: absolute; inset: 0; z-index: 0;
-      background-image:
-        linear-gradient(rgba(0,120,212,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,120,212,0.04) 1px, transparent 1px);
-      background-size: 40px 40px;
-    }
-    .hero-content { position: relative; z-index: 1; max-width: 780px; }
+    /* PAGE SYSTEM */
+    .page{display:none;min-height:100vh;padding-top:64px}
+    .page.active{display:block}
 
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: white; border: 1px solid var(--border);
-      color: var(--accent); font-size: 0.78rem; font-weight: 600;
-      padding: 6px 14px; border-radius: 100px;
-      margin-bottom: 32px; box-shadow: var(--shadow);
-      animation: fadeUp 0.5s ease both;
-      letter-spacing: 0.02em; text-transform: uppercase;
-    }
-    .hero-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); }
-
-    h1 {
-      font-size: clamp(2.4rem, 6vw, 4.2rem);
-      font-weight: 800; line-height: 1.1;
-      letter-spacing: -0.03em; color: var(--text);
-      animation: fadeUp 0.5s 0.1s ease both;
-    }
-    h1 em {
-      font-style: normal;
-      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
-    .hero-sub {
-      margin-top: 20px; font-size: 1.1rem; color: var(--text2);
-      max-width: 520px; margin-left: auto; margin-right: auto;
-      font-weight: 400; line-height: 1.7;
-      animation: fadeUp 0.5s 0.2s ease both;
-    }
-    .hero-actions {
-      margin-top: 36px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
-      animation: fadeUp 0.5s 0.3s ease both;
-    }
-    .btn-primary {
-      background: var(--accent); color: white; border: none;
-      padding: 12px 28px; border-radius: 8px; font-size: 0.95rem;
-      font-weight: 600; cursor: pointer; font-family: inherit;
-      transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
-      box-shadow: 0 4px 14px rgba(0,120,212,0.35);
-      display: flex; align-items: center; gap: 8px;
-    }
-    .btn-primary:hover { background: var(--accent-dark); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,120,212,0.4); }
-    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-    .btn-outline {
-      background: white; color: var(--text); border: 1px solid var(--border);
-      padding: 12px 28px; border-radius: 8px; font-size: 0.95rem;
-      font-weight: 500; cursor: pointer; font-family: inherit;
-      transition: border-color 0.15s, box-shadow 0.15s;
-      box-shadow: var(--shadow);
-    }
-    .btn-outline:hover { border-color: var(--accent); box-shadow: 0 4px 14px rgba(0,120,212,0.1); }
+    /* ========== HOME PAGE ========== */
+    .hero{min-height:calc(100vh - 64px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 24px 80px;position:relative;overflow:hidden}
+    .hero-bg{position:absolute;inset:0;z-index:0}
+    .hero-circle{position:absolute;border-radius:50%;filter:blur(80px);opacity:0.07}
+    .hero-circle-1{width:500px;height:500px;background:var(--blue);top:-100px;right:-100px}
+    .hero-circle-2{width:400px;height:400px;background:var(--gold);bottom:-50px;left:-50px}
+    .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(26,26,46,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(26,26,46,0.03) 1px,transparent 1px);background-size:48px 48px}
+    .hero-content{position:relative;z-index:1;max-width:820px}
+    .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:white;border:1px solid var(--border);padding:6px 16px;border-radius:100px;font-size:0.78rem;font-weight:600;color:var(--text2);margin-bottom:28px;box-shadow:var(--shadow);animation:rise 0.6s ease both}
+    .hero-eyebrow-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:blink 2s infinite}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+    h1{font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(3rem,7vw,5.5rem);line-height:1.05;letter-spacing:-0.02em;color:var(--text);animation:rise 0.6s 0.1s ease both}
+    h1 em{font-style:italic;color:var(--blue)}
+    h1 .serif-gold{color:var(--gold)}
+    .hero-sub{margin-top:20px;font-size:1.1rem;color:var(--text2);max-width:540px;margin-left:auto;margin-right:auto;line-height:1.7;animation:rise 0.6s 0.2s ease both}
+    .hero-actions{margin-top:36px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;animation:rise 0.6s 0.3s ease both}
+    .btn-hero{background:var(--text);color:white;border:none;padding:14px 32px;border-radius:10px;font-size:1rem;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.2s;box-shadow:0 4px 20px rgba(15,15,26,0.25);display:flex;align-items:center;gap:8px}
+    .btn-hero:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(15,15,26,0.3)}
+    .btn-hero-outline{background:white;color:var(--text);border:1px solid var(--border);padding:14px 32px;border-radius:10px;font-size:1rem;font-weight:500;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.2s;box-shadow:var(--shadow)}
+    .btn-hero-outline:hover{border-color:var(--text);box-shadow:var(--shadow-lg)}
+    @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 
     /* TRUST BAR */
-    .trust-bar {
-      margin-top: 56px; padding-top: 32px;
-      border-top: 1px solid var(--border);
-      display: flex; gap: 40px; justify-content: center; flex-wrap: wrap;
-      animation: fadeUp 0.5s 0.4s ease both;
-    }
-    .trust-item { display: flex; align-items: center; gap: 10px; }
-    .trust-num { font-size: 1.4rem; font-weight: 800; color: var(--text); }
-    .trust-label { font-size: 0.8rem; color: var(--muted); font-weight: 500; }
+    .trust{margin-top:56px;display:flex;gap:0;justify-content:center;flex-wrap:wrap;animation:rise 0.6s 0.4s ease both}
+    .trust-item{padding:16px 32px;text-align:center;border-right:1px solid var(--border)}
+    .trust-item:last-child{border-right:none}
+    .trust-num{font-family:'Instrument Serif',serif;font-size:2rem;font-weight:400;color:var(--text);line-height:1}
+    .trust-label{font-size:0.75rem;color:var(--muted);font-weight:500;margin-top:4px;text-transform:uppercase;letter-spacing:0.06em}
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* SECTION */
-    .section { padding: 80px 24px; max-width: 1100px; margin: 0 auto; }
-    .section-header { margin-bottom: 48px; }
-    .section-tag {
-      display: inline-block; background: var(--accent-light);
-      color: var(--accent); font-size: 0.75rem; font-weight: 700;
-      padding: 4px 12px; border-radius: 100px; margin-bottom: 14px;
-      letter-spacing: 0.05em; text-transform: uppercase;
-    }
-    .section-title {
-      font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 800;
-      line-height: 1.2; letter-spacing: -0.02em; color: var(--text);
-      margin-bottom: 12px;
-    }
-    .section-sub { color: var(--muted); font-size: 1rem; max-width: 480px; }
-
-    /* TOOL CARD */
-    .tool-wrapper {
-      background: white; border: 1px solid var(--border);
-      border-radius: 16px; overflow: hidden; box-shadow: var(--shadow-lg);
-    }
-    .tool-header {
-      padding: 20px 24px; border-bottom: 1px solid var(--border);
-      background: #fafafa;
-      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
-    }
-    .tool-header-title { font-size: 0.9rem; font-weight: 600; color: var(--text2); }
-    .tool-tabs { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
-    .tool-tabs::-webkit-scrollbar { display: none; }
-    .tab {
-      padding: 7px 16px; font-size: 0.82rem; font-weight: 500;
-      color: var(--muted); border-radius: 6px; cursor: pointer; white-space: nowrap;
-      background: none; border: 1px solid transparent;
-      transition: all 0.15s; font-family: inherit;
-    }
-    .tab:hover { background: var(--surface2); color: var(--text); }
-    .tab.active { background: var(--accent); color: white; border-color: var(--accent); }
-
-    .tool-body { padding: 28px; }
-    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-    @media(max-width:640px){ .form-grid{grid-template-columns:1fr} nav{padding:0 16px} .nav-links .nav-link{display:none} }
-
-    .form-group { display: flex; flex-direction: column; gap: 6px; }
-    .form-group.full { grid-column: 1 / -1; }
-    label { font-size: 0.8rem; font-weight: 600; color: var(--text2); letter-spacing: 0.01em; }
-
-    input, select, textarea {
-      width: 100%; background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 8px; color: var(--text); font-family: inherit;
-      font-size: 0.9rem; padding: 10px 14px; outline: none; resize: vertical;
-      transition: border-color 0.15s, box-shadow 0.15s;
-    }
-    input:focus, select:focus, textarea:focus {
-      border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,120,212,0.1);
-      background: white;
-    }
-    select option { background: white; }
-
-    .tool-footer {
-      padding: 20px 28px; border-top: 1px solid var(--border);
-      background: #fafafa;
-      display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
-    }
-    .powered-badge {
-      display: flex; align-items: center; gap: 6px;
-      font-size: 0.75rem; color: var(--muted); font-weight: 500;
-    }
-    .powered-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--success); }
-
-    /* OUTPUT */
-    .output-section { padding: 0 28px 28px; }
-    .output-label {
-      font-size: 0.75rem; font-weight: 700; color: var(--muted);
-      text-transform: uppercase; letter-spacing: 0.08em;
-      margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between;
-    }
-    .output-box {
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 10px; padding: 18px; min-height: 140px;
-      font-size: 0.9rem; line-height: 1.8; color: var(--text);
-      white-space: pre-wrap; position: relative;
-    }
-    .output-placeholder { color: var(--muted); font-style: italic; font-size: 0.875rem; }
-    .copy-btn {
-      background: white; border: 1px solid var(--border);
-      color: var(--text2); padding: 5px 12px; border-radius: 6px;
-      font-size: 0.75rem; font-weight: 600; cursor: pointer;
-      font-family: inherit; transition: all 0.15s;
-      display: flex; align-items: center; gap: 5px;
-    }
-    .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
-
-    .generating { display: flex; align-items: center; gap: 10px; color: var(--accent); font-size: 0.875rem; font-weight: 500; }
-    .dots { display: flex; gap: 4px; }
-    .dots span { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: dotbounce 1.2s infinite; }
-    .dots span:nth-child(2){animation-delay:0.2s}
-    .dots span:nth-child(3){animation-delay:0.4s}
-    @keyframes dotbounce { 0%,100%{transform:translateY(0);opacity:0.4} 50%{transform:translateY(-6px);opacity:1} }
+    /* TOOLS GRID */
+    .tools-section{padding:80px 48px;max-width:1200px;margin:0 auto}
+    .section-eyebrow{font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--blue);margin-bottom:12px}
+    .section-title{font-family:'Instrument Serif',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:400;line-height:1.2;margin-bottom:14px;letter-spacing:-0.02em}
+    .section-sub{color:var(--muted);font-size:1rem;max-width:480px}
+    .tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:48px}
+    .tool-card{background:white;border:1px solid var(--border);border-radius:var(--radius);padding:28px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden}
+    .tool-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--blue-light),transparent);opacity:0;transition:opacity 0.2s}
+    .tool-card:hover{box-shadow:var(--shadow-lg);border-color:rgba(37,99,235,0.2);transform:translateY(-2px)}
+    .tool-card:hover::before{opacity:1}
+    .tool-card-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:16px;position:relative;z-index:1}
+    .tool-card h3{font-size:1rem;font-weight:700;margin-bottom:8px;position:relative;z-index:1}
+    .tool-card p{font-size:0.85rem;color:var(--muted);line-height:1.6;position:relative;z-index:1}
+    .tool-card-arrow{position:absolute;top:24px;right:24px;color:var(--muted);font-size:1.2rem;transition:transform 0.2s;z-index:1}
+    .tool-card:hover .tool-card-arrow{transform:translate(3px,-3px);color:var(--blue)}
 
     /* FEATURES */
-    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: 16px; }
-    .feature-card {
-      background: white; border: 1px solid var(--border); border-radius: var(--radius);
-      padding: 24px; transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
-    }
-    .feature-card:hover { box-shadow: var(--shadow-lg); border-color: rgba(0,120,212,0.2); transform: translateY(-2px); }
-    .feature-icon-wrap {
-      width: 44px; height: 44px; border-radius: 10px; margin-bottom: 16px;
-      display: flex; align-items: center; justify-content: center; font-size: 1.3rem;
-    }
-    .feature-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; color: var(--text); }
-    .feature-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
-
-    /* STEPS */
-    .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 0; }
-    .step {
-      padding: 32px 24px; position: relative;
-      border-right: 1px solid var(--border);
-    }
-    .step:last-child { border-right: none; }
-    @media(max-width:640px){ .step{border-right:none; border-bottom:1px solid var(--border)} }
-    .step-num {
-      width: 36px; height: 36px; border-radius: 8px;
-      background: var(--accent); color: white;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 800; font-size: 0.9rem; margin-bottom: 16px;
-    }
-    .step h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; }
-    .step p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
-
-    /* CTA */
-    .cta-section {
-      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
-      border-radius: 20px; padding: 56px 40px; text-align: center;
-      color: white; position: relative; overflow: hidden;
-    }
-    .cta-section::before {
-      content: ''; position: absolute; inset: 0;
-      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='300' cy='100' r='180' fill='rgba(255,255,255,0.04)'/%3E%3Ccircle cx='50' cy='300' r='140' fill='rgba(255,255,255,0.04)'/%3E%3C/svg%3E");
-    }
-    .cta-section h2 { font-size: 2rem; font-weight: 800; margin-bottom: 12px; position: relative; }
-    .cta-section p { opacity: 0.85; margin-bottom: 32px; position: relative; }
-    .btn-white {
-      background: white; color: var(--accent); border: none;
-      padding: 13px 32px; border-radius: 8px; font-size: 0.95rem;
-      font-weight: 700; cursor: pointer; font-family: inherit;
-      transition: transform 0.15s, box-shadow 0.15s;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.15); position: relative;
-    }
-    .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.2); }
-
-    /* FOOTER */
-    footer {
-      background: white; border-top: 1px solid var(--border);
-      padding: 32px 40px;
-      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;
-    }
-    .footer-left { display: flex; align-items: center; gap: 16px; }
-    .footer-links { display: flex; gap: 20px; }
-    .footer-links a { font-size: 0.8rem; color: var(--muted); text-decoration: none; transition: color 0.15s; }
-    .footer-links a:hover { color: var(--text); }
-    footer p { font-size: 0.8rem; color: var(--muted); }
+    .features-section{padding:80px 48px;background:var(--text);color:white}
+    .features-inner{max-width:1200px;margin:0 auto}
+    .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;margin-top:48px}
+    .feature-item{padding:28px;border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius);transition:all 0.2s}
+    .feature-item:hover{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.15)}
+    .feature-icon{width:44px;height:44px;border-radius:10px;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:16px}
+    .feature-item h3{font-size:0.95rem;font-weight:600;margin-bottom:8px;color:white}
+    .feature-item p{font-size:0.85rem;color:rgba(255,255,255,0.5);line-height:1.6}
 
     /* AD SLOT */
-    .ad-slot {
-      background: white; border: 1px dashed var(--border); border-radius: var(--radius);
-      padding: 18px; text-align: center; color: var(--muted); font-size: 0.75rem; margin: 24px 0;
-    }
-    .ad-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; color: #bbb; }
+    .ad-slot{background:white;border:1px dashed var(--border);border-radius:var(--radius);padding:16px;text-align:center;color:var(--muted);font-size:0.75rem;margin:24px 0}
+    .ad-label{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;color:#ccc}
 
-    /* DIVIDER */
-    .divider { border: none; border-top: 1px solid var(--border); }
+    /* ========== WRITING TOOL PAGE ========== */
+    .writing-page{padding:80px 0 60px}
+    .writing-inner{max-width:1100px;margin:0 auto;padding:0 24px}
+    .page-header{margin-bottom:40px}
+    .page-header h2{font-family:'Instrument Serif',serif;font-size:2.4rem;font-weight:400;letter-spacing:-0.02em;margin-bottom:8px}
+    .page-header p{color:var(--muted)}
 
-    .section-card {
-      background: white; border: 1px solid var(--border);
-      border-radius: 16px; overflow: hidden; box-shadow: var(--shadow);
+    /* TOOL WRAPPER */
+    .writing-card{background:white;border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
+    .writing-tabs{display:flex;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border);background:#fafafa}
+    .writing-tabs::-webkit-scrollbar{display:none}
+    .wtab{padding:14px 20px;font-size:0.85rem;font-weight:500;color:var(--muted);cursor:pointer;white-space:nowrap;border:none;background:none;border-bottom:2px solid transparent;transition:all 0.15s;font-family:'Outfit',sans-serif;display:flex;align-items:center;gap:6px}
+    .wtab.active{color:var(--text);border-bottom-color:var(--blue);background:white}
+    .wtab:hover:not(.active){color:var(--text);background:var(--surface2)}
+    .writing-body{padding:32px}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .form-group{display:flex;flex-direction:column;gap:7px}
+    .form-group.full{grid-column:1/-1}
+    .form-label{font-size:0.75rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.06em}
+    input,select,textarea{width:100%;background:var(--surface2);border:1.5px solid var(--border);border-radius:9px;color:var(--text);font-family:'Outfit',sans-serif;font-size:0.9rem;padding:11px 14px;outline:none;resize:vertical;transition:all 0.15s}
+    input:focus,select:focus,textarea:focus{border-color:var(--blue);background:white;box-shadow:0 0 0 3px rgba(37,99,235,0.08)}
+    select option{background:white}
+    .writing-footer{padding:20px 32px;border-top:1px solid var(--border);background:#fafafa;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+    .powered{display:flex;align-items:center;gap:6px;font-size:0.75rem;color:var(--muted);font-weight:500}
+    .powered-dot{width:5px;height:5px;border-radius:50%;background:var(--green)}
+    .output-section{padding:0 32px 32px}
+    .output-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+    .output-label{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)}
+    .copy-btn{display:flex;align-items:center;gap:5px;background:white;border:1px solid var(--border);color:var(--text2);padding:6px 12px;border-radius:7px;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.15s}
+    .copy-btn:hover{border-color:var(--blue);color:var(--blue)}
+    .output-box{background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:20px;min-height:150px;font-size:0.9rem;line-height:1.8;white-space:pre-wrap;color:var(--text)}
+    .output-placeholder{color:var(--muted);font-style:italic;font-size:0.875rem}
+    .gen-loading{display:flex;align-items:center;gap:10px;color:var(--blue);font-size:0.875rem;font-weight:500}
+    .dots{display:flex;gap:4px}
+    .dots span{width:6px;height:6px;border-radius:50%;background:var(--blue);animation:dotjump 1.2s infinite}
+    .dots span:nth-child(2){animation-delay:0.2s}
+    .dots span:nth-child(3){animation-delay:0.4s}
+    @keyframes dotjump{0%,100%{transform:translateY(0);opacity:0.3}50%{transform:translateY(-6px);opacity:1}}
+
+    /* ========== CV BUILDER PAGE ========== */
+    .cv-page{padding:80px 0 60px}
+    .cv-inner{max-width:1300px;margin:0 auto;padding:0 24px}
+    .cv-layout{display:grid;grid-template-columns:420px 1fr;gap:28px;align-items:start}
+    @media(max-width:900px){.cv-layout{grid-template-columns:1fr}}
+
+    /* CV FORM PANEL */
+    .cv-form-panel{background:white;border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);position:sticky;top:84px}
+    .cv-form-header{padding:20px 24px;border-bottom:1px solid var(--border);background:#fafafa}
+    .cv-form-header h3{font-size:1rem;font-weight:700;margin-bottom:2px}
+    .cv-form-header p{font-size:0.8rem;color:var(--muted)}
+    .cv-sections{display:flex;border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;background:#fafafa}
+    .cv-sections::-webkit-scrollbar{display:none}
+    .cv-sec-btn{padding:11px 16px;font-size:0.8rem;font-weight:500;color:var(--muted);cursor:pointer;white-space:nowrap;border:none;background:none;border-bottom:2px solid transparent;transition:all 0.15s;font-family:'Outfit',sans-serif}
+    .cv-sec-btn.active{color:var(--blue);border-bottom-color:var(--blue);background:white}
+    .cv-form-body{padding:24px;max-height:calc(100vh - 280px);overflow-y:auto}
+    .cv-form-body::-webkit-scrollbar{width:4px}
+    .cv-form-body::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+    .cv-section-content{display:none}
+    .cv-section-content.active{display:block}
+    .cv-field{margin-bottom:16px}
+    .cv-label{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text2);display:block;margin-bottom:6px}
+    .cv-input{width:100%;background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-family:'Outfit',sans-serif;font-size:0.875rem;padding:10px 12px;outline:none;resize:vertical;transition:all 0.15s}
+    .cv-input:focus{border-color:var(--blue);background:white;box-shadow:0 0 0 3px rgba(37,99,235,0.08)}
+    .cv-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .cv-form-footer{padding:16px 24px;border-top:1px solid var(--border);display:flex;gap:10px}
+
+    /* PHOTO UPLOAD */
+    .photo-upload{width:100%;height:140px;border:2px dashed var(--border);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;background:var(--surface2);margin-bottom:16px;position:relative;overflow:hidden}
+    .photo-upload:hover{border-color:var(--blue);background:var(--blue-light)}
+    .photo-upload-icon{font-size:2rem;margin-bottom:8px}
+    .photo-upload-text{font-size:0.8rem;color:var(--muted);font-weight:500}
+    .photo-upload input{position:absolute;inset:0;opacity:0;cursor:pointer}
+    .photo-preview{width:100%;height:100%;object-fit:cover;border-radius:10px}
+
+    /* ADD MORE BUTTON */
+    .add-more-btn{width:100%;padding:10px;border:1.5px dashed var(--border);border-radius:8px;background:none;color:var(--blue);font-size:0.85rem;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.15s;margin-top:8px}
+    .add-more-btn:hover{background:var(--blue-light);border-color:var(--blue)}
+
+    /* ENTRY CARD */
+    .entry-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px;position:relative}
+    .entry-card .remove-btn{position:absolute;top:10px;right:10px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;transition:color 0.15s}
+    .entry-card .remove-btn:hover{color:var(--red)}
+
+    /* CV PREVIEW PANEL */
+    .cv-preview-panel{background:white;border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:var(--shadow-lg)}
+    .cv-preview-toolbar{padding:14px 20px;border-bottom:1px solid var(--border);background:#fafafa;display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .cv-preview-toolbar-left{display:flex;gap:8px;align-items:center}
+    .template-btn{padding:7px 14px;border:1px solid var(--border);border-radius:7px;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;background:white;color:var(--text2);transition:all 0.15s}
+    .template-btn.active{background:var(--text);color:white;border-color:var(--text)}
+    .template-btn:hover:not(.active){border-color:var(--blue);color:var(--blue)}
+    .cv-preview-scroll{padding:24px;background:#e8e6e0;min-height:600px;display:flex;justify-content:center}
+
+    /* CV TEMPLATES */
+    .cv-document{width:100%;max-width:680px;background:white;box-shadow:var(--shadow-xl);font-family:'Outfit',sans-serif}
+
+    /* TEMPLATE 1: EXECUTIVE */
+    .tpl-executive .cv-top{background:var(--text);color:white;padding:36px;display:flex;gap:24px;align-items:center}
+    .tpl-executive .cv-photo-wrap{width:80px;height:80px;border-radius:50%;overflow:hidden;flex-shrink:0;border:3px solid rgba(255,255,255,0.3)}
+    .tpl-executive .cv-photo-wrap img{width:100%;height:100%;object-fit:cover}
+    .tpl-executive .cv-photo-placeholder{width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:2rem;flex-shrink:0}
+    .tpl-executive .cv-name{font-family:'Instrument Serif',serif;font-size:1.8rem;font-weight:400;line-height:1.1;margin-bottom:4px}
+    .tpl-executive .cv-title{font-size:0.9rem;opacity:0.7;font-weight:400;margin-bottom:10px}
+    .tpl-executive .cv-contact-row{display:flex;gap:16px;flex-wrap:wrap}
+    .tpl-executive .cv-contact-item{font-size:0.78rem;opacity:0.7;display:flex;align-items:center;gap:5px}
+    .tpl-executive .cv-body{padding:32px;display:grid;grid-template-columns:1fr 260px;gap:28px}
+    .tpl-executive .cv-main{}
+    .tpl-executive .cv-sidebar{border-left:1px solid var(--border);padding-left:24px}
+    .tpl-executive .cv-section{margin-bottom:24px}
+    .tpl-executive .cv-section-title{font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:0.12em;color:var(--blue);margin-bottom:12px;padding-bottom:6px;border-bottom:2px solid var(--blue-light)}
+    .tpl-executive .cv-entry{margin-bottom:16px}
+    .tpl-executive .cv-entry-title{font-size:0.9rem;font-weight:700;color:var(--text)}
+    .tpl-executive .cv-entry-sub{font-size:0.8rem;color:var(--blue);font-weight:500;margin-bottom:4px}
+    .tpl-executive .cv-entry-date{font-size:0.75rem;color:var(--muted);margin-bottom:6px}
+    .tpl-executive .cv-entry-desc{font-size:0.8rem;color:var(--text2);line-height:1.6}
+    .tpl-executive .cv-skill-item{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+    .tpl-executive .cv-skill-name{font-size:0.8rem;font-weight:500;color:var(--text2)}
+    .tpl-executive .cv-skill-bar{width:100px;height:5px;background:var(--surface2);border-radius:3px;overflow:hidden}
+    .tpl-executive .cv-skill-fill{height:100%;background:var(--blue);border-radius:3px}
+    .tpl-executive .cv-sidebar-section{margin-bottom:20px}
+    .tpl-executive .cv-sidebar-title{font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:10px}
+    .tpl-executive .cv-lang-item{display:flex;justify-content:space-between;margin-bottom:6px;font-size:0.8rem}
+    .tpl-executive .cv-lang-name{color:var(--text2)}
+    .tpl-executive .cv-lang-level{color:var(--muted)}
+
+    /* TEMPLATE 2: CREATIVE */
+    .tpl-creative .cv-top{background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:40px;text-align:center}
+    .tpl-creative .cv-photo-wrap{width:90px;height:90px;border-radius:50%;overflow:hidden;margin:0 auto 16px;border:4px solid rgba(255,255,255,0.4)}
+    .tpl-creative .cv-photo-wrap img{width:100%;height:100%;object-fit:cover}
+    .tpl-creative .cv-photo-placeholder{width:90px;height:90px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:2.5rem;margin:0 auto 16px}
+    .tpl-creative .cv-name{font-family:'Instrument Serif',serif;font-size:2rem;font-weight:400;margin-bottom:6px}
+    .tpl-creative .cv-title{font-size:0.9rem;opacity:0.8;margin-bottom:14px}
+    .tpl-creative .cv-contact-row{display:flex;justify-content:center;gap:20px;flex-wrap:wrap}
+    .tpl-creative .cv-contact-item{font-size:0.78rem;opacity:0.8}
+    .tpl-creative .cv-body{padding:32px;columns:2;column-gap:28px}
+    .tpl-creative .cv-section{break-inside:avoid;margin-bottom:24px}
+    .tpl-creative .cv-section-title{font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:0.12em;color:#764ba2;margin-bottom:12px;padding-bottom:6px;border-bottom:2px solid #f3f0ff}
+    .tpl-creative .cv-entry{margin-bottom:14px}
+    .tpl-creative .cv-entry-title{font-size:0.88rem;font-weight:700}
+    .tpl-creative .cv-entry-sub{font-size:0.78rem;color:#764ba2;font-weight:500;margin-bottom:3px}
+    .tpl-creative .cv-entry-date{font-size:0.73rem;color:var(--muted);margin-bottom:5px}
+    .tpl-creative .cv-entry-desc{font-size:0.78rem;color:var(--text2);line-height:1.5}
+    .tpl-creative .cv-skill-tag{display:inline-block;background:#f3f0ff;color:#764ba2;padding:4px 10px;border-radius:100px;font-size:0.73rem;font-weight:600;margin:3px}
+
+    /* TEMPLATE 3: MINIMAL */
+    .tpl-minimal .cv-top{padding:40px 48px 32px;border-bottom:3px solid var(--text)}
+    .tpl-minimal .cv-top-inner{display:flex;align-items:center;gap:24px}
+    .tpl-minimal .cv-photo-wrap{width:72px;height:72px;border-radius:8px;overflow:hidden;flex-shrink:0}
+    .tpl-minimal .cv-photo-wrap img{width:100%;height:100%;object-fit:cover}
+    .tpl-minimal .cv-photo-placeholder{width:72px;height:72px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0}
+    .tpl-minimal .cv-name{font-family:'Instrument Serif',serif;font-size:2rem;font-weight:400;letter-spacing:-0.02em;margin-bottom:4px}
+    .tpl-minimal .cv-title{font-size:0.9rem;color:var(--muted);margin-bottom:10px}
+    .tpl-minimal .cv-contact-row{display:flex;gap:16px;flex-wrap:wrap}
+    .tpl-minimal .cv-contact-item{font-size:0.78rem;color:var(--muted)}
+    .tpl-minimal .cv-body{padding:32px 48px;display:grid;grid-template-columns:1fr 180px;gap:32px}
+    .tpl-minimal .cv-section{margin-bottom:24px}
+    .tpl-minimal .cv-section-title{font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.15em;color:var(--muted);margin-bottom:14px}
+    .tpl-minimal .cv-entry{margin-bottom:16px;padding-left:12px;border-left:2px solid var(--border)}
+    .tpl-minimal .cv-entry-title{font-size:0.9rem;font-weight:700}
+    .tpl-minimal .cv-entry-sub{font-size:0.8rem;color:var(--text2);margin-bottom:3px}
+    .tpl-minimal .cv-entry-date{font-size:0.73rem;color:var(--muted);margin-bottom:5px}
+    .tpl-minimal .cv-entry-desc{font-size:0.8rem;color:var(--text2);line-height:1.6}
+    .tpl-minimal .cv-skill-item{margin-bottom:8px;font-size:0.8rem;color:var(--text2);display:flex;align-items:center;gap:8px}
+    .tpl-minimal .cv-skill-item::before{content:'—';color:var(--muted)}
+
+    /* DOWNLOAD BTN */
+    .download-btn{background:var(--green);color:white;border:none;padding:10px 22px;border-radius:8px;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.15s;display:flex;align-items:center;gap:7px}
+    .download-btn:hover{background:#047857;transform:translateY(-1px)}
+
+    /* FOOTER */
+    footer{background:var(--text);color:white;padding:40px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px}
+    .footer-logo{display:flex;align-items:center;gap:10px}
+    .footer-links{display:flex;gap:20px}
+    .footer-links a{font-size:0.8rem;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.15s}
+    .footer-links a:hover{color:white}
+    footer p{font-size:0.8rem;color:rgba(255,255,255,0.3)}
+
+    /* RESPONSIVE */
+    @media(max-width:768px){
+      nav{padding:0 20px}
+      .nav-center{display:none}
+      .tools-section,.features-inner{padding:60px 20px}
+      .writing-inner,.cv-inner{padding:0 16px}
+      .form-grid{grid-template-columns:1fr}
+      .cv-layout{grid-template-columns:1fr}
+      .cv-form-panel{position:static}
+      .tpl-executive .cv-body{grid-template-columns:1fr}
+      .tpl-executive .cv-sidebar{border-left:none;border-top:1px solid var(--border);padding-left:0;padding-top:24px}
+      .tpl-minimal .cv-body{grid-template-columns:1fr}
+      .tpl-creative .cv-body{columns:1}
+      footer{padding:32px 20px}
     }
   </style>
 </head>
@@ -345,354 +317,647 @@
 
 <!-- NAV -->
 <nav>
-  <a class="logo" href="#">
-    <div class="logo-icon">W</div>
-    WriteAI
+  <a class="logo" href="#" onclick="showPage('home')">
+    <div class="logo-mark">W</div>
+    <span class="logo-name">Write<span>AI</span></span>
   </a>
-  <div class="nav-links">
-    <a href="#tool" class="nav-link">Tool</a>
-    <a href="#features" class="nav-link">Features</a>
-    <a href="#how" class="nav-link">How it works</a>
-    <button class="btn-nav" onclick="document.getElementById('tool').scrollIntoView({behavior:'smooth'})">Get Started Free</button>
+  <div class="nav-center">
+    <button class="nav-link active" id="nav-home" onclick="showPage('home')">Home</button>
+    <button class="nav-link" id="nav-writing" onclick="showPage('writing')">Writing Tool</button>
+    <button class="nav-link" id="nav-cv" onclick="showPage('cv')">CV Builder</button>
+  </div>
+  <div class="nav-right">
+    <button class="btn-ghost" onclick="showPage('writing')">Try Writing Tool</button>
+    <button class="btn-primary" onclick="showPage('cv')">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+      Build CV Free
+    </button>
   </div>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-grid"></div>
-  <div class="hero-content">
-    <div class="hero-badge"><span class="hero-badge-dot"></span> Powered by Groq AI · Free Forever</div>
-    <h1>Your AI Writing<br>Assistant for <em>Everything</em></h1>
-    <p class="hero-sub">Generate professional blog posts, emails, captions, product descriptions and more — in seconds. No sign-up required.</p>
-    <div class="hero-actions">
-      <button class="btn-primary" onclick="document.getElementById('tool').scrollIntoView({behavior:'smooth'})">
-        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-        Start Writing Free
-      </button>
-      <button class="btn-outline" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">See How It Works</button>
+<!-- ========== HOME PAGE ========== -->
+<div class="page active" id="page-home">
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="hero-circle hero-circle-1"></div>
+      <div class="hero-circle hero-circle-2"></div>
+      <div class="hero-grid"></div>
     </div>
-    <div class="trust-bar">
-      <div class="trust-item">
-        <div>
-          <div class="trust-num">50K+</div>
-          <div class="trust-label">Words Generated</div>
-        </div>
-      </div>
-      <div class="trust-item">
-        <div>
-          <div class="trust-num">6</div>
-          <div class="trust-label">Writing Tools</div>
-        </div>
-      </div>
-      <div class="trust-item">
-        <div>
-          <div class="trust-num">100%</div>
-          <div class="trust-label">Free Forever</div>
-        </div>
-      </div>
-      <div class="trust-item">
-        <div>
-          <div class="trust-num">&lt;10s</div>
-          <div class="trust-label">Generation Time</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<hr class="divider"/>
-
-<!-- AD -->
-<div style="max-width:1100px;margin:0 auto;padding:0 24px">
-  <div class="ad-slot"><div class="ad-label">Advertisement</div>[ Google AdSense Ad will appear here ]</div>
-</div>
-
-<!-- TOOL -->
-<section class="section" id="tool">
-  <div class="section-header">
-    <span class="section-tag">AI Writing Tool</span>
-    <h2 class="section-title">What would you like to write?</h2>
-    <p class="section-sub">Choose a tool, enter your details, and get polished content instantly.</p>
-  </div>
-
-  <div class="tool-wrapper">
-    <div class="tool-header">
-      <span class="tool-header-title">Select content type</span>
-      <div class="tool-tabs" id="tabs">
-        <button class="tab active" data-tool="blog">📝 Blog Post</button>
-        <button class="tab" data-tool="email">📧 Email</button>
-        <button class="tab" data-tool="caption">📱 Caption</button>
-        <button class="tab" data-tool="product">🛍️ Product</button>
-        <button class="tab" data-tool="cover">📄 Cover Letter</button>
-        <button class="tab" data-tool="headline">✍️ Headline</button>
-      </div>
-    </div>
-
-    <div class="tool-body" id="toolBody"></div>
-
-    <div class="tool-footer">
-      <button class="btn-primary" onclick="generate()" id="genBtn">
-        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-        Generate Content
-      </button>
-      <div class="powered-badge">
-        <span class="powered-dot"></span>
-        Powered by Groq AI · Free
-      </div>
-    </div>
-
-    <div class="output-section" id="outputSection" style="display:none">
-      <div class="output-label">
-        <span>Generated Content</span>
-        <button class="copy-btn" onclick="copyText()">
-          <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-          Copy
+    <div class="hero-content">
+      <div class="hero-eyebrow"><span class="hero-eyebrow-dot"></span> Powered by Groq AI · 100% Free Forever</div>
+      <h1>Write & Build.<br><em>Faster than ever.</em></h1>
+      <p class="hero-sub">The only free platform that combines an AI writing tool with a world-class CV builder. No sign-up. No credit card.</p>
+      <div class="hero-actions">
+        <button class="btn-hero" onclick="showPage('writing')">
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          Start Writing Free
         </button>
+        <button class="btn-hero-outline" onclick="showPage('cv')">Build My CV →</button>
       </div>
-      <div class="output-box" id="output">
-        <span class="output-placeholder">Your content will appear here…</span>
+      <div class="trust">
+        <div class="trust-item"><div class="trust-num">50K+</div><div class="trust-label">Words Generated</div></div>
+        <div class="trust-item"><div class="trust-num">6</div><div class="trust-label">Writing Tools</div></div>
+        <div class="trust-item"><div class="trust-num">3</div><div class="trust-label">CV Templates</div></div>
+        <div class="trust-item"><div class="trust-num">100%</div><div class="trust-label">Free Forever</div></div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- AD -->
-<div style="max-width:1100px;margin:0 auto;padding:0 24px">
-  <div class="ad-slot"><div class="ad-label">Advertisement</div>[ Google AdSense Ad will appear here ]</div>
+  <div style="max-width:1200px;margin:0 auto;padding:0 48px"><div class="ad-slot"><div class="ad-label">Advertisement</div>[ Google AdSense Ad will appear here ]</div></div>
+
+  <section class="tools-section">
+    <div class="section-eyebrow">Our Tools</div>
+    <div class="section-title">Everything you need<br>to write & present yourself</div>
+    <p class="section-sub">Professional tools that usually cost $50/month — completely free.</p>
+    <div class="tools-grid">
+      <div class="tool-card" onclick="showPage('writing')">
+        <div class="tool-card-icon" style="background:#eff6ff">✍️</div>
+        <h3>AI Writing Tool</h3>
+        <p>Generate blog posts, emails, captions, product descriptions, cover letters and headlines in seconds.</p>
+        <div class="tool-card-arrow">↗</div>
+      </div>
+      <div class="tool-card" onclick="showPage('cv')">
+        <div class="tool-card-icon" style="background:#f0fdf4">📄</div>
+        <h3>CV / Resume Builder</h3>
+        <p>Build a stunning professional CV with photo upload, 3 templates and one-click PDF download.</p>
+        <div class="tool-card-arrow">↗</div>
+      </div>
+      <div class="tool-card" onclick="showPage('writing');setTimeout(()=>document.querySelector('[data-tool=email]').click(),300)">
+        <div class="tool-card-icon" style="background:#fff7ed">📧</div>
+        <h3>Email Writer</h3>
+        <p>Write professional emails for any purpose in any tone — follow-ups, pitches, apologies and more.</p>
+        <div class="tool-card-arrow">↗</div>
+      </div>
+      <div class="tool-card" onclick="showPage('writing');setTimeout(()=>document.querySelector('[data-tool=caption]').click(),300)">
+        <div class="tool-card-icon" style="background:#fdf4ff">📱</div>
+        <h3>Caption Generator</h3>
+        <p>Create viral Instagram, TikTok, Twitter and LinkedIn captions with hashtags instantly.</p>
+        <div class="tool-card-arrow">↗</div>
+      </div>
+      <div class="tool-card" onclick="showPage('writing');setTimeout(()=>document.querySelector('[data-tool=product]').click(),300)">
+        <div class="tool-card-icon" style="background:#fef9ee">🛍️</div>
+        <h3>Product Descriptions</h3>
+        <p>Write compelling product descriptions that convert browsers into buyers for your store.</p>
+        <div class="tool-card-arrow">↗</div>
+      </div>
+      <div class="tool-card" onclick="showPage('writing');setTimeout(()=>document.querySelector('[data-tool=headline]').click(),300)">
+        <div class="tool-card-icon" style="background:#f0f9ff">🎯</div>
+        <h3>Headline Generator</h3>
+        <p>Generate 10 click-worthy, SEO-optimized headlines for any topic, product or article.</p>
+        <div class="tool-card-arrow">↗</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features-section">
+    <div class="features-inner">
+      <div class="section-eyebrow" style="color:rgba(255,255,255,0.5)">Why WriteAI</div>
+      <div class="section-title" style="color:white">Built different.<br><span style="color:rgba(255,255,255,0.4);font-style:italic">Built for you.</span></div>
+      <div class="features-grid">
+        <div class="feature-item"><div class="feature-icon">⚡</div><h3>Under 10 seconds</h3><p>Powered by Groq — the world's fastest AI infrastructure.</p></div>
+        <div class="feature-item"><div class="feature-icon">📸</div><h3>Photo in your CV</h3><p>Upload your professional headshot directly into your resume.</p></div>
+        <div class="feature-item"><div class="feature-icon">⬇️</div><h3>Download as PDF</h3><p>One-click PDF download of your CV. Ready to send to employers.</p></div>
+        <div class="feature-item"><div class="feature-icon">🌍</div><h3>Any language</h3><p>Write content and build CVs in 50+ languages worldwide.</p></div>
+        <div class="feature-item"><div class="feature-icon">💸</div><h3>100% free forever</h3><p>No subscriptions. No credit card. No hidden fees. Ever.</p></div>
+        <div class="feature-item"><div class="feature-icon">🔒</div><h3>Private & secure</h3><p>Your data is never stored or shared with anyone.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <div style="max-width:1200px;margin:0 auto;padding:40px 48px"><div class="ad-slot"><div class="ad-label">Advertisement</div>[ Google AdSense Ad will appear here ]</div></div>
+
+  <footer>
+    <div class="footer-logo">
+      <div class="logo-mark">W</div>
+      <span style="font-weight:700;font-size:1rem">WriteAI</span>
+    </div>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Use</a>
+      <a href="#">Contact</a>
+    </div>
+    <p>© 2026 WriteAI. All rights reserved.</p>
+  </footer>
 </div>
 
-<!-- FEATURES -->
-<section class="section" id="features">
-  <div class="section-header">
-    <span class="section-tag">Why WriteAI</span>
-    <h2 class="section-title">Built for professionals,<br>free for everyone</h2>
-    <p class="section-sub">Everything you need to produce high-quality written content at scale.</p>
-  </div>
-  <div class="features-grid">
-    <div class="feature-card">
-      <div class="feature-icon-wrap" style="background:#eff6ff">⚡</div>
-      <h3>Instant Generation</h3>
-      <p>Get publish-ready content in under 10 seconds. Powered by Groq's ultra-fast AI infrastructure.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon-wrap" style="background:#f0fdf4">🎯</div>
-      <h3>6 Specialized Tools</h3>
-      <p>Blog posts, emails, social captions, product descriptions, cover letters, and headlines — all optimized separately.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon-wrap" style="background:#fff7ed">💸</div>
-      <h3>Always Free</h3>
-      <p>No subscriptions, no credit cards, no limits. WriteAI is 100% free with no hidden costs ever.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon-wrap" style="background:#fdf4ff">🌍</div>
-      <h3>Multilingual</h3>
-      <p>Generate content in English, Korean, Spanish, French, Japanese and 50+ other languages.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon-wrap" style="background:#eff6ff">📋</div>
-      <h3>One-Click Copy</h3>
-      <p>Copy your generated content instantly and paste it anywhere — no formatting issues.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon-wrap" style="background:#f0fdf4">🔒</div>
-      <h3>Private & Secure</h3>
-      <p>Your data is never stored or shared. Enterprise-grade privacy on a free product.</p>
-    </div>
-  </div>
-</section>
-
-<!-- HOW IT WORKS -->
-<hr class="divider"/>
-<section class="section" id="how">
-  <div class="section-header" style="text-align:center;max-width:500px;margin:0 auto 0">
-    <span class="section-tag">Simple Process</span>
-    <h2 class="section-title">How it works</h2>
-    <p class="section-sub" style="margin:0 auto">Three steps to professional content</p>
-  </div>
-  <div style="margin-top:48px" class="section-card">
-    <div class="steps-grid">
-      <div class="step">
-        <div class="step-num">1</div>
-        <h3>Choose Your Tool</h3>
-        <p>Select from Blog Post, Email, Caption, Product Description, Cover Letter, or Headline.</p>
+<!-- ========== WRITING TOOL PAGE ========== -->
+<div class="page" id="page-writing">
+  <div class="writing-page">
+    <div class="writing-inner">
+      <div style="max-width:100%;margin-bottom:24px"><div class="ad-slot"><div class="ad-label">Advertisement</div>[ Google AdSense Ad ]</div></div>
+      <div class="page-header">
+        <div class="section-eyebrow">AI Writing Tool</div>
+        <h2>What would you like to write?</h2>
+        <p>Choose a tool, fill in the details, and get polished content in seconds.</p>
       </div>
-      <div class="step">
-        <div class="step-num">2</div>
-        <h3>Enter Your Details</h3>
-        <p>Fill in the topic, tone, and audience. More detail means better, more targeted output.</p>
+      <div class="writing-card">
+        <div class="writing-tabs" id="writingTabs">
+          <button class="wtab active" data-tool="blog">📝 Blog Post</button>
+          <button class="wtab" data-tool="email">📧 Email</button>
+          <button class="wtab" data-tool="caption">📱 Caption</button>
+          <button class="wtab" data-tool="product">🛍️ Product</button>
+          <button class="wtab" data-tool="cover">📄 Cover Letter</button>
+          <button class="wtab" data-tool="headline">🎯 Headline</button>
+        </div>
+        <div class="writing-body" id="writingBody"></div>
+        <div class="writing-footer">
+          <button class="btn-primary" onclick="generateContent()" id="genBtn">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Generate Content
+          </button>
+          <div class="powered"><span class="powered-dot"></span> Powered by Groq AI · Free</div>
+        </div>
+        <div class="output-section" id="outputSection" style="display:none">
+          <div class="output-header">
+            <span class="output-label">Generated Content</span>
+            <button class="copy-btn" onclick="copyContent()">
+              <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+              Copy
+            </button>
+          </div>
+          <div class="output-box" id="outputBox"><span class="output-placeholder">Your content will appear here…</span></div>
+        </div>
       </div>
-      <div class="step">
-        <div class="step-num">3</div>
-        <h3>Copy & Publish</h3>
-        <p>Click Generate, review your content, and copy it directly to wherever you need it.</p>
-      </div>
+      <div style="margin-top:24px"><div class="ad-slot"><div class="ad-label">Advertisement</div>[ Google AdSense Ad ]</div></div>
     </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<div style="max-width:1100px;margin:0 auto;padding:0 24px 80px">
-  <div class="cta-section">
-    <h2>Start writing smarter today</h2>
-    <p>Join thousands of creators, marketers, and professionals using WriteAI every day.</p>
-    <button class="btn-white" onclick="document.getElementById('tool').scrollIntoView({behavior:'smooth'})">Try WriteAI Free — No Sign Up →</button>
   </div>
 </div>
 
-<!-- AD -->
-<div style="max-width:1100px;margin:0 auto;padding:0 24px 40px">
-  <div class="ad-slot"><div class="ad-label">Advertisement</div>[ Google AdSense Ad will appear here ]</div>
-</div>
+<!-- ========== CV BUILDER PAGE ========== -->
+<div class="page" id="page-cv">
+  <div class="cv-page">
+    <div class="cv-inner">
+      <div class="page-header">
+        <div class="section-eyebrow">CV / Resume Builder</div>
+        <h2>Build your perfect CV</h2>
+        <p>Fill in your details, choose a template, and download your professional CV as PDF.</p>
+      </div>
+      <div class="cv-layout">
+        <!-- FORM PANEL -->
+        <div class="cv-form-panel">
+          <div class="cv-form-header">
+            <h3>Your Information</h3>
+            <p>Fill in the sections below</p>
+          </div>
+          <div class="cv-sections">
+            <button class="cv-sec-btn active" onclick="switchCVSection('personal')">Personal</button>
+            <button class="cv-sec-btn" onclick="switchCVSection('experience')">Experience</button>
+            <button class="cv-sec-btn" onclick="switchCVSection('education')">Education</button>
+            <button class="cv-sec-btn" onclick="switchCVSection('skills')">Skills</button>
+            <button class="cv-sec-btn" onclick="switchCVSection('extra')">Extra</button>
+          </div>
+          <div class="cv-form-body">
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-left">
-    <a class="logo" href="#" style="text-decoration:none;color:inherit">
-      <div class="logo-icon">W</div>
-      WriteAI
-    </a>
-    <p>Free AI writing tool for everyone.</p>
+            <!-- PERSONAL -->
+            <div class="cv-section-content active" id="cv-personal">
+              <div class="cv-field">
+                <label class="cv-label">Profile Photo</label>
+                <div class="photo-upload" id="photoUpload" onclick="document.getElementById('photoInput').click()">
+                  <div class="photo-upload-icon">📷</div>
+                  <div class="photo-upload-text">Click to upload photo</div>
+                  <input type="file" id="photoInput" accept="image/*" onchange="handlePhoto(event)" style="display:none"/>
+                </div>
+              </div>
+              <div class="cv-grid">
+                <div class="cv-field"><label class="cv-label">First Name</label><input class="cv-input" id="cv-fname" placeholder="John" oninput="updateCV()"/></div>
+                <div class="cv-field"><label class="cv-label">Last Name</label><input class="cv-input" id="cv-lname" placeholder="Smith" oninput="updateCV()"/></div>
+              </div>
+              <div class="cv-field"><label class="cv-label">Job Title</label><input class="cv-input" id="cv-jobtitle" placeholder="Senior Software Engineer" oninput="updateCV()"/></div>
+              <div class="cv-field"><label class="cv-label">Email</label><input class="cv-input" id="cv-email" placeholder="john@example.com" oninput="updateCV()"/></div>
+              <div class="cv-grid">
+                <div class="cv-field"><label class="cv-label">Phone</label><input class="cv-input" id="cv-phone" placeholder="+1 234 567 890" oninput="updateCV()"/></div>
+                <div class="cv-field"><label class="cv-label">Location</label><input class="cv-input" id="cv-location" placeholder="New York, USA" oninput="updateCV()"/></div>
+              </div>
+              <div class="cv-field"><label class="cv-label">LinkedIn</label><input class="cv-input" id="cv-linkedin" placeholder="linkedin.com/in/johnsmith" oninput="updateCV()"/></div>
+              <div class="cv-field"><label class="cv-label">Professional Summary</label><textarea class="cv-input" id="cv-summary" rows="4" placeholder="Write a compelling summary about yourself..." oninput="updateCV()"></textarea></div>
+            </div>
+
+            <!-- EXPERIENCE -->
+            <div class="cv-section-content" id="cv-experience">
+              <div id="exp-entries"></div>
+              <button class="add-more-btn" onclick="addExperience()">+ Add Experience</button>
+            </div>
+
+            <!-- EDUCATION -->
+            <div class="cv-section-content" id="cv-education">
+              <div id="edu-entries"></div>
+              <button class="add-more-btn" onclick="addEducation()">+ Add Education</button>
+            </div>
+
+            <!-- SKILLS -->
+            <div class="cv-section-content" id="cv-skills">
+              <div id="skill-entries"></div>
+              <button class="add-more-btn" onclick="addSkill()">+ Add Skill</button>
+            </div>
+
+            <!-- EXTRA -->
+            <div class="cv-section-content" id="cv-extra">
+              <div class="cv-field"><label class="cv-label">Languages (one per line)</label><textarea class="cv-input" id="cv-languages" rows="4" placeholder="English - Native&#10;Spanish - Intermediate&#10;French - Basic" oninput="updateCV()"></textarea></div>
+              <div class="cv-field"><label class="cv-label">Certifications (one per line)</label><textarea class="cv-input" id="cv-certs" rows="4" placeholder="AWS Certified Developer&#10;Google Analytics" oninput="updateCV()"></textarea></div>
+              <div class="cv-field"><label class="cv-label">Hobbies & Interests</label><textarea class="cv-input" id="cv-hobbies" rows="3" placeholder="Photography, Hiking, Open Source..." oninput="updateCV()"></textarea></div>
+            </div>
+
+          </div>
+          <div class="cv-form-footer">
+            <button class="download-btn" onclick="downloadCV()">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              Download PDF
+            </button>
+            <button class="btn-ghost" onclick="clearCV()">Clear All</button>
+          </div>
+        </div>
+
+        <!-- PREVIEW PANEL -->
+        <div class="cv-preview-panel">
+          <div class="cv-preview-toolbar">
+            <div class="cv-preview-toolbar-left">
+              <span style="font-size:0.8rem;font-weight:600;color:var(--muted);margin-right:8px">Template:</span>
+              <button class="template-btn active" onclick="setTemplate('executive')">Executive</button>
+              <button class="template-btn" onclick="setTemplate('creative')">Creative</button>
+              <button class="template-btn" onclick="setTemplate('minimal')">Minimal</button>
+            </div>
+            <button class="download-btn" onclick="downloadCV()">
+              <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              Download PDF
+            </button>
+          </div>
+          <div class="cv-preview-scroll">
+            <div id="cvPreview" class="cv-document tpl-executive"></div>
+          </div>
+        </div>
+
+      </div>
+      <div style="margin-top:24px"><div class="ad-slot"><div class="ad-label">Advertisement</div>[ Google AdSense Ad ]</div></div>
+    </div>
   </div>
-  <div class="footer-links">
-    <a href="#">Privacy Policy</a>
-    <a href="#">Terms of Use</a>
-    <a href="#">Contact</a>
-  </div>
-  <p>© 2026 WriteAI. All rights reserved.</p>
-</footer>
+</div>
 
 <script>
-  const TOOLS = {
-    blog: {
-      fields: `
-        <div class="form-grid">
-          <div class="form-group"><label>BLOG TOPIC *</label><input type="text" id="f1" placeholder="e.g. How to grow a YouTube channel in 2026"/></div>
-          <div class="form-group"><label>TONE</label><select id="f2"><option>Professional</option><option>Casual</option><option>Inspiring</option><option>Funny</option></select></div>
-          <div class="form-group full"><label>TARGET AUDIENCE</label><input type="text" id="f3" placeholder="e.g. Beginners, entrepreneurs, students..."/></div>
-        </div>`,
-      prompt: () => `Write a complete, engaging blog post about: "${document.getElementById('f1').value}". Tone: ${document.getElementById('f2').value}. Audience: ${document.getElementById('f3').value||'general public'}. Include catchy title, introduction, 3-4 sections with subheadings, and conclusion. SEO-friendly, ~400 words.`
-    },
-    email: {
-      fields: `
-        <div class="form-grid">
-          <div class="form-group"><label>EMAIL PURPOSE *</label><input type="text" id="f1" placeholder="e.g. Follow up after a job interview"/></div>
-          <div class="form-group"><label>TONE</label><select id="f2"><option>Professional</option><option>Friendly</option><option>Formal</option><option>Persuasive</option></select></div>
-          <div class="form-group full"><label>KEY POINTS TO INCLUDE</label><input type="text" id="f3" placeholder="e.g. Mention the Monday meeting, request feedback..."/></div>
-        </div>`,
-      prompt: () => `Write a ${document.getElementById('f2').value.toLowerCase()} email for: "${document.getElementById('f1').value}". Key points: ${document.getElementById('f3').value||'none'}. Include subject line, greeting, body, and sign-off.`
-    },
-    caption: {
-      fields: `
-        <div class="form-grid">
-          <div class="form-group"><label>POST TOPIC *</label><input type="text" id="f1" placeholder="e.g. Sunrise hike in the mountains"/></div>
-          <div class="form-group"><label>PLATFORM</label><select id="f2"><option>Instagram</option><option>TikTok</option><option>Twitter/X</option><option>LinkedIn</option><option>Facebook</option></select></div>
-          <div class="form-group full"><label>VIBE / STYLE</label><input type="text" id="f3" placeholder="e.g. Inspirational, funny, aesthetic, motivational..."/></div>
-        </div>`,
-      prompt: () => `Write 3 different ${document.getElementById('f2').value} captions for: "${document.getElementById('f1').value}". Style: ${document.getElementById('f3').value||'engaging'}. Include relevant hashtags for each.`
-    },
-    product: {
-      fields: `
-        <div class="form-grid">
-          <div class="form-group"><label>PRODUCT NAME *</label><input type="text" id="f1" placeholder="e.g. Wireless Noise-Cancelling Headphones"/></div>
-          <div class="form-group"><label>KEY FEATURES</label><input type="text" id="f2" placeholder="e.g. 40hr battery, Bluetooth 5.0, foldable"/></div>
-          <div class="form-group full"><label>TARGET CUSTOMER</label><input type="text" id="f3" placeholder="e.g. Remote workers, commuters, gamers..."/></div>
-        </div>`,
-      prompt: () => `Write a compelling product description for: "${document.getElementById('f1').value}". Features: ${document.getElementById('f2').value||'not specified'}. Customer: ${document.getElementById('f3').value||'general buyers'}. Persuasive, benefit-focused, ~150 words.`
-    },
-    cover: {
-      fields: `
-        <div class="form-grid">
-          <div class="form-group"><label>JOB TITLE *</label><input type="text" id="f1" placeholder="e.g. Senior Marketing Manager at Microsoft"/></div>
-          <div class="form-group"><label>TOP SKILLS</label><input type="text" id="f2" placeholder="e.g. SEO, content strategy, data analytics"/></div>
-          <div class="form-group full"><label>EXPERIENCE</label><input type="text" id="f3" placeholder="e.g. 5 years in digital marketing and brand strategy"/></div>
-        </div>`,
-      prompt: () => `Write a professional cover letter for: "${document.getElementById('f1').value}". Skills: ${document.getElementById('f2').value||'not specified'}. Experience: ${document.getElementById('f3').value||'not specified'}. Confident, concise, and compelling.`
-    },
-    headline: {
-      fields: `
-        <div class="form-grid">
-          <div class="form-group"><label>TOPIC / PRODUCT *</label><input type="text" id="f1" placeholder="e.g. App that helps remote workers stay focused"/></div>
-          <div class="form-group"><label>HEADLINE STYLE</label><select id="f2"><option>Curiosity-driven</option><option>How-to</option><option>Listicle</option><option>Bold claim</option><option>Question</option></select></div>
-        </div>`,
-      prompt: () => `Generate 10 powerful, click-worthy headlines for: "${document.getElementById('f1').value}". Style: ${document.getElementById('f2').value}. Make them irresistible and SEO-optimized.`
-    }
+// ========== PAGE NAVIGATION ==========
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.getElementById('nav-' + page).classList.add('active');
+  window.scrollTo(0, 0);
+  if(page === 'writing') renderWritingTool(currentWritingTool);
+  if(page === 'cv') updateCV();
+}
+
+// ========== WRITING TOOL ==========
+const WRITING_TOOLS = {
+  blog: {
+    fields: `<div class="form-grid"><div class="form-group"><label class="form-label">Blog Topic *</label><input type="text" id="f1" placeholder="e.g. How to grow a YouTube channel"/></div><div class="form-group"><label class="form-label">Tone</label><select id="f2"><option>Professional</option><option>Casual</option><option>Inspiring</option><option>Funny</option></select></div><div class="form-group full"><label class="form-label">Target Audience</label><input type="text" id="f3" placeholder="e.g. Beginners, entrepreneurs, students..."/></div></div>`,
+    prompt: () => `Write a complete, engaging blog post about: "${document.getElementById('f1').value}". Tone: ${document.getElementById('f2').value}. Audience: ${document.getElementById('f3').value||'general public'}. Include catchy title, intro, 3-4 sections with subheadings, conclusion. SEO-friendly, ~400 words.`
+  },
+  email: {
+    fields: `<div class="form-grid"><div class="form-group"><label class="form-label">Email Purpose *</label><input type="text" id="f1" placeholder="e.g. Follow up after job interview"/></div><div class="form-group"><label class="form-label">Tone</label><select id="f2"><option>Professional</option><option>Friendly</option><option>Formal</option><option>Persuasive</option></select></div><div class="form-group full"><label class="form-label">Key Points</label><input type="text" id="f3" placeholder="e.g. Mention the Monday meeting..."/></div></div>`,
+    prompt: () => `Write a ${document.getElementById('f2').value.toLowerCase()} email for: "${document.getElementById('f1').value}". Key points: ${document.getElementById('f3').value||'none'}. Include subject line, greeting, body, sign-off.`
+  },
+  caption: {
+    fields: `<div class="form-grid"><div class="form-group"><label class="form-label">Post Topic *</label><input type="text" id="f1" placeholder="e.g. Sunrise hike in the mountains"/></div><div class="form-group"><label class="form-label">Platform</label><select id="f2"><option>Instagram</option><option>TikTok</option><option>Twitter/X</option><option>LinkedIn</option><option>Facebook</option></select></div><div class="form-group full"><label class="form-label">Vibe</label><input type="text" id="f3" placeholder="e.g. Inspirational, funny, aesthetic..."/></div></div>`,
+    prompt: () => `Write 3 different ${document.getElementById('f2').value} captions for: "${document.getElementById('f1').value}". Style: ${document.getElementById('f3').value||'engaging'}. Include relevant hashtags.`
+  },
+  product: {
+    fields: `<div class="form-grid"><div class="form-group"><label class="form-label">Product Name *</label><input type="text" id="f1" placeholder="e.g. Wireless Headphones"/></div><div class="form-group"><label class="form-label">Key Features</label><input type="text" id="f2" placeholder="e.g. 40hr battery, Bluetooth 5.0"/></div><div class="form-group full"><label class="form-label">Target Customer</label><input type="text" id="f3" placeholder="e.g. Remote workers, gamers..."/></div></div>`,
+    prompt: () => `Write a compelling product description for: "${document.getElementById('f1').value}". Features: ${document.getElementById('f2').value||'not specified'}. Customer: ${document.getElementById('f3').value||'general buyers'}. Persuasive, benefit-focused, ~150 words.`
+  },
+  cover: {
+    fields: `<div class="form-grid"><div class="form-group"><label class="form-label">Job Title *</label><input type="text" id="f1" placeholder="e.g. Senior Marketing Manager"/></div><div class="form-group"><label class="form-label">Top Skills</label><input type="text" id="f2" placeholder="e.g. SEO, analytics, strategy"/></div><div class="form-group full"><label class="form-label">Experience</label><input type="text" id="f3" placeholder="e.g. 5 years in digital marketing"/></div></div>`,
+    prompt: () => `Write a professional cover letter for: "${document.getElementById('f1').value}". Skills: ${document.getElementById('f2').value||'not specified'}. Experience: ${document.getElementById('f3').value||'not specified'}. Confident, concise, compelling.`
+  },
+  headline: {
+    fields: `<div class="form-grid"><div class="form-group"><label class="form-label">Topic / Product *</label><input type="text" id="f1" placeholder="e.g. App that helps you sleep better"/></div><div class="form-group"><label class="form-label">Style</label><select id="f2"><option>Curiosity-driven</option><option>How-to</option><option>Listicle</option><option>Bold claim</option><option>Question</option></select></div></div>`,
+    prompt: () => `Generate 10 powerful click-worthy headlines for: "${document.getElementById('f1').value}". Style: ${document.getElementById('f2').value}. Irresistible and SEO-optimized.`
+  }
+};
+
+let currentWritingTool = 'blog';
+
+function renderWritingTool(key) {
+  document.getElementById('writingBody').innerHTML = WRITING_TOOLS[key].fields;
+  document.getElementById('outputSection').style.display = 'none';
+}
+
+document.getElementById('writingTabs').addEventListener('click', e => {
+  const btn = e.target.closest('.wtab');
+  if(!btn) return;
+  document.querySelectorAll('.wtab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  currentWritingTool = btn.dataset.tool;
+  renderWritingTool(currentWritingTool);
+});
+
+renderWritingTool('blog');
+
+async function generateContent() {
+  const f1 = document.getElementById('f1');
+  if(!f1||!f1.value.trim()){f1.style.borderColor='var(--red)';f1.focus();setTimeout(()=>f1.style.borderColor='',2000);return}
+  const btn = document.getElementById('genBtn');
+  const sec = document.getElementById('outputSection');
+  const box = document.getElementById('outputBox');
+  btn.disabled = true;
+  btn.innerHTML = `<div class="dots"><span></span><span></span><span></span></div> Generating…`;
+  sec.style.display = 'block';
+  box.innerHTML = `<div class="gen-loading"><div class="dots"><span></span><span></span><span></span></div> Writing your content…</div>`;
+  try {
+    const res = await fetch('/api/generate', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:WRITING_TOOLS[currentWritingTool].prompt()})});
+    const data = await res.json();
+    if(data.error) throw new Error(data.error);
+    const text = data.result || 'No content generated.';
+    box.innerHTML = `<span id="resultText"></span>`;
+    const span = document.getElementById('resultText');
+    let i = 0;
+    const iv = setInterval(()=>{span.textContent+=text[i]||'';i++;if(i>=text.length)clearInterval(iv)},10);
+  } catch(e) {
+    box.innerHTML = `<span style="color:var(--red);font-size:0.875rem">⚠ Error: ${e.message}</span>`;
+  }
+  btn.disabled = false;
+  btn.innerHTML = `<svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> Generate Content`;
+}
+
+function copyContent() {
+  const t = document.getElementById('resultText')?.textContent;
+  if(t){navigator.clipboard.writeText(t);const b=document.querySelector('.copy-btn');b.textContent='✅ Copied!';setTimeout(()=>b.innerHTML=`<svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copy`,2000)}
+}
+
+// ========== CV BUILDER ==========
+let cvData = {photo:null,fname:'',lname:'',jobtitle:'',email:'',phone:'',location:'',linkedin:'',summary:'',experience:[],education:[],skills:[],languages:'',certs:'',hobbies:''};
+let currentTemplate = 'executive';
+let expCount = 0, eduCount = 0, skillCount = 0;
+
+function switchCVSection(sec) {
+  document.querySelectorAll('.cv-section-content').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.cv-sec-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('cv-'+sec).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function handlePhoto(e) {
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    cvData.photo = ev.target.result;
+    const pu = document.getElementById('photoUpload');
+    pu.innerHTML = `<img src="${ev.target.result}" class="photo-preview"/>`;
+    updateCV();
   };
+  reader.readAsDataURL(file);
+}
 
-  let currentTool = 'blog';
+function addExperience() {
+  expCount++;
+  const id = expCount;
+  const container = document.getElementById('exp-entries');
+  const div = document.createElement('div');
+  div.className = 'entry-card';
+  div.id = 'exp-'+id;
+  div.innerHTML = `
+    <button class="remove-btn" onclick="removeEntry('exp-${id}')">✕</button>
+    <div class="cv-field"><label class="cv-label">Job Title</label><input class="cv-input" placeholder="Software Engineer" oninput="updateCV()" data-exp="${id}" data-field="title"/></div>
+    <div class="cv-field"><label class="cv-label">Company</label><input class="cv-input" placeholder="Google" oninput="updateCV()" data-exp="${id}" data-field="company"/></div>
+    <div class="cv-grid">
+      <div class="cv-field"><label class="cv-label">Start Date</label><input class="cv-input" placeholder="Jan 2022" oninput="updateCV()" data-exp="${id}" data-field="start"/></div>
+      <div class="cv-field"><label class="cv-label">End Date</label><input class="cv-input" placeholder="Present" oninput="updateCV()" data-exp="${id}" data-field="end"/></div>
+    </div>
+    <div class="cv-field"><label class="cv-label">Description</label><textarea class="cv-input" rows="3" placeholder="Describe your responsibilities..." oninput="updateCV()" data-exp="${id}" data-field="desc"></textarea></div>
+  `;
+  container.appendChild(div);
+}
 
-  function renderTool(key) {
-    document.getElementById('toolBody').innerHTML = TOOLS[key].fields;
-    document.getElementById('outputSection').style.display = 'none';
-  }
+function addEducation() {
+  eduCount++;
+  const id = eduCount;
+  const container = document.getElementById('edu-entries');
+  const div = document.createElement('div');
+  div.className = 'entry-card';
+  div.id = 'edu-'+id;
+  div.innerHTML = `
+    <button class="remove-btn" onclick="removeEntry('edu-${id}')">✕</button>
+    <div class="cv-field"><label class="cv-label">Degree</label><input class="cv-input" placeholder="Bachelor of Computer Science" oninput="updateCV()" data-edu="${id}" data-field="degree"/></div>
+    <div class="cv-field"><label class="cv-label">Institution</label><input class="cv-input" placeholder="MIT" oninput="updateCV()" data-edu="${id}" data-field="school"/></div>
+    <div class="cv-grid">
+      <div class="cv-field"><label class="cv-label">Start Year</label><input class="cv-input" placeholder="2018" oninput="updateCV()" data-edu="${id}" data-field="start"/></div>
+      <div class="cv-field"><label class="cv-label">End Year</label><input class="cv-input" placeholder="2022" oninput="updateCV()" data-edu="${id}" data-field="end"/></div>
+    </div>
+  `;
+  container.appendChild(div);
+}
 
-  document.getElementById('tabs').addEventListener('click', e => {
-    const btn = e.target.closest('.tab');
-    if (!btn) return;
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    btn.classList.add('active');
-    currentTool = btn.dataset.tool;
-    renderTool(currentTool);
+function addSkill() {
+  skillCount++;
+  const id = skillCount;
+  const container = document.getElementById('skill-entries');
+  const div = document.createElement('div');
+  div.className = 'entry-card';
+  div.id = 'skill-'+id;
+  div.innerHTML = `
+    <button class="remove-btn" onclick="removeEntry('skill-${id}')">✕</button>
+    <div class="cv-grid">
+      <div class="cv-field"><label class="cv-label">Skill Name</label><input class="cv-input" placeholder="JavaScript" oninput="updateCV()" data-skill="${id}" data-field="name"/></div>
+      <div class="cv-field"><label class="cv-label">Level (0-100)</label><input class="cv-input" type="number" min="0" max="100" placeholder="85" oninput="updateCV()" data-skill="${id}" data-field="level"/></div>
+    </div>
+  `;
+  container.appendChild(div);
+}
+
+function removeEntry(id) {
+  const el = document.getElementById(id);
+  if(el) el.remove();
+  updateCV();
+}
+
+function getVal(id) { const el = document.getElementById(id); return el ? el.value : ''; }
+
+function collectCVData() {
+  cvData.fname = getVal('cv-fname');
+  cvData.lname = getVal('cv-lname');
+  cvData.jobtitle = getVal('cv-jobtitle');
+  cvData.email = getVal('cv-email');
+  cvData.phone = getVal('cv-phone');
+  cvData.location = getVal('cv-location');
+  cvData.linkedin = getVal('cv-linkedin');
+  cvData.summary = getVal('cv-summary');
+  cvData.languages = getVal('cv-languages');
+  cvData.certs = getVal('cv-certs');
+  cvData.hobbies = getVal('cv-hobbies');
+
+  cvData.experience = [];
+  document.querySelectorAll('[data-exp]').forEach(el => {
+    const id = el.dataset.exp;
+    if(!cvData.experience[id-1]) cvData.experience[id-1] = {};
+    cvData.experience[id-1][el.dataset.field] = el.value;
   });
+  cvData.experience = cvData.experience.filter(Boolean);
 
-  renderTool('blog');
+  cvData.education = [];
+  document.querySelectorAll('[data-edu]').forEach(el => {
+    const id = el.dataset.edu;
+    if(!cvData.education[id-1]) cvData.education[id-1] = {};
+    cvData.education[id-1][el.dataset.field] = el.value;
+  });
+  cvData.education = cvData.education.filter(Boolean);
 
-  async function generate() {
-    const f1 = document.getElementById('f1');
-    if (!f1 || !f1.value.trim()) {
-      f1.style.borderColor = '#d92b2b';
-      f1.style.boxShadow = '0 0 0 3px rgba(217,43,43,0.1)';
-      f1.focus();
-      setTimeout(() => { f1.style.borderColor = ''; f1.style.boxShadow = ''; }, 2000);
-      return;
-    }
+  cvData.skills = [];
+  document.querySelectorAll('[data-skill]').forEach(el => {
+    const id = el.dataset.skill;
+    if(!cvData.skills[id-1]) cvData.skills[id-1] = {};
+    cvData.skills[id-1][el.dataset.field] = el.value;
+  });
+  cvData.skills = cvData.skills.filter(Boolean);
+}
 
-    const btn = document.getElementById('genBtn');
-    const outputSection = document.getElementById('outputSection');
-    const output = document.getElementById('output');
+function setTemplate(tpl) {
+  currentTemplate = tpl;
+  document.querySelectorAll('.template-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  updateCV();
+}
 
-    btn.disabled = true;
-    btn.innerHTML = `<div class="dots"><span></span><span></span><span></span></div> Generating…`;
-    outputSection.style.display = 'block';
-    output.innerHTML = `<div class="generating"><div class="dots"><span></span><span></span><span></span></div> Writing your content…</div>`;
+function updateCV() {
+  collectCVData();
+  const preview = document.getElementById('cvPreview');
+  if(!preview) return;
+  preview.className = 'cv-document tpl-'+currentTemplate;
+  const name = `${cvData.fname||'Your'} ${cvData.lname||'Name'}`;
+  const photoHTML = cvData.photo
+    ? `<div class="cv-photo-wrap"><img src="${cvData.photo}" alt="Photo"/></div>`
+    : `<div class="cv-photo-placeholder">👤</div>`;
 
-    try {
-      const res = await fetch('/api/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt: TOOLS[currentTool].prompt() })
-      });
-      const data = await res.json();
-      if (data.error) throw new Error(data.error);
-      const text = data.result || 'No content generated.';
-      output.innerHTML = `<span id="resultText"></span>`;
-      const span = document.getElementById('resultText');
-      let i = 0;
-      const iv = setInterval(() => {
-        span.textContent += text[i] || '';
-        i++;
-        if (i >= text.length) clearInterval(iv);
-      }, 10);
-    } catch(e) {
-      output.innerHTML = `<span style="color:#d92b2b;font-size:0.875rem">⚠ Error: ${e.message}. Please try again.</span>`;
-    }
+  const contactItems = [
+    cvData.email && `<span class="cv-contact-item">✉ ${cvData.email}</span>`,
+    cvData.phone && `<span class="cv-contact-item">📞 ${cvData.phone}</span>`,
+    cvData.location && `<span class="cv-contact-item">📍 ${cvData.location}</span>`,
+    cvData.linkedin && `<span class="cv-contact-item">🔗 ${cvData.linkedin}</span>`
+  ].filter(Boolean).join('');
 
-    btn.disabled = false;
-    btn.innerHTML = `<svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> Generate Content`;
+  const expHTML = cvData.experience.map(e => `
+    <div class="cv-entry">
+      <div class="cv-entry-title">${e.title||'Job Title'}</div>
+      <div class="cv-entry-sub">${e.company||'Company'}</div>
+      <div class="cv-entry-date">${e.start||''} ${e.end ? '— '+e.end : ''}</div>
+      ${e.desc ? `<div class="cv-entry-desc">${e.desc}</div>` : ''}
+    </div>
+  `).join('') || '<div style="color:var(--muted);font-size:0.8rem;font-style:italic">Add your work experience...</div>';
+
+  const eduHTML = cvData.education.map(e => `
+    <div class="cv-entry">
+      <div class="cv-entry-title">${e.degree||'Degree'}</div>
+      <div class="cv-entry-sub">${e.school||'Institution'}</div>
+      <div class="cv-entry-date">${e.start||''} ${e.end ? '— '+e.end : ''}</div>
+    </div>
+  `).join('') || '<div style="color:var(--muted);font-size:0.8rem;font-style:italic">Add your education...</div>';
+
+  const skillsExecHTML = cvData.skills.map(s => `
+    <div class="cv-skill-item">
+      <span class="cv-skill-name">${s.name||'Skill'}</span>
+      <div class="cv-skill-bar"><div class="cv-skill-fill" style="width:${s.level||75}%"></div></div>
+    </div>
+  `).join('') || '<div style="color:var(--muted);font-size:0.8rem;font-style:italic">Add your skills...</div>';
+
+  const skillsTagHTML = cvData.skills.map(s => `<span class="cv-skill-tag">${s.name||'Skill'}</span>`).join('') || '<span class="cv-skill-tag">Add skills...</span>';
+
+  const skillsMinHTML = cvData.skills.map(s => `<div class="cv-skill-item">${s.name||'Skill'}</div>`).join('') || '<div style="color:var(--muted);font-size:0.8rem;font-style:italic">Add skills...</div>';
+
+  const langsHTML = (cvData.languages||'').split('\n').filter(l=>l.trim()).map(l => {
+    const parts = l.split('-');
+    return `<div class="cv-lang-item"><span class="cv-lang-name">${parts[0]?.trim()||l}</span><span class="cv-lang-level">${parts[1]?.trim()||''}</span></div>`;
+  }).join('') || '';
+
+  const certsHTML = (cvData.certs||'').split('\n').filter(c=>c.trim()).map(c => `<div class="cv-entry-desc" style="margin-bottom:6px">• ${c}</div>`).join('') || '';
+
+  if(currentTemplate === 'executive') {
+    preview.innerHTML = `
+      <div class="cv-top">
+        ${photoHTML}
+        <div>
+          <div class="cv-name">${name}</div>
+          <div class="cv-title">${cvData.jobtitle||'Professional Title'}</div>
+          <div class="cv-contact-row">${contactItems||'<span class="cv-contact-item" style="opacity:0.5">Add your contact info</span>'}</div>
+        </div>
+      </div>
+      <div class="cv-body">
+        <div class="cv-main">
+          ${cvData.summary ? `<div class="cv-section"><div class="cv-section-title">Professional Summary</div><div class="cv-entry-desc">${cvData.summary}</div></div>` : ''}
+          <div class="cv-section"><div class="cv-section-title">Work Experience</div>${expHTML}</div>
+          <div class="cv-section"><div class="cv-section-title">Education</div>${eduHTML}</div>
+          ${certsHTML ? `<div class="cv-section"><div class="cv-section-title">Certifications</div>${certsHTML}</div>` : ''}
+        </div>
+        <div class="cv-sidebar">
+          <div class="cv-sidebar-section"><div class="cv-sidebar-title">Skills</div>${skillsExecHTML}</div>
+          ${langsHTML ? `<div class="cv-sidebar-section"><div class="cv-sidebar-title">Languages</div>${langsHTML}</div>` : ''}
+          ${cvData.hobbies ? `<div class="cv-sidebar-section"><div class="cv-sidebar-title">Interests</div><div style="font-size:0.8rem;color:var(--text2)">${cvData.hobbies}</div></div>` : ''}
+        </div>
+      </div>`;
+  } else if(currentTemplate === 'creative') {
+    preview.innerHTML = `
+      <div class="cv-top">
+        ${photoHTML}
+        <div class="cv-name">${name}</div>
+        <div class="cv-title">${cvData.jobtitle||'Professional Title'}</div>
+        <div class="cv-contact-row">${contactItems}</div>
+      </div>
+      <div class="cv-body">
+        ${cvData.summary ? `<div class="cv-section"><div class="cv-section-title">About Me</div><div class="cv-entry-desc">${cvData.summary}</div></div>` : ''}
+        <div class="cv-section"><div class="cv-section-title">Experience</div>${expHTML}</div>
+        <div class="cv-section"><div class="cv-section-title">Education</div>${eduHTML}</div>
+        <div class="cv-section"><div class="cv-section-title">Skills</div><div>${skillsTagHTML}</div></div>
+        ${langsHTML ? `<div class="cv-section"><div class="cv-section-title">Languages</div>${langsHTML}</div>` : ''}
+        ${cvData.hobbies ? `<div class="cv-section"><div class="cv-section-title">Interests</div><div class="cv-entry-desc">${cvData.hobbies}</div></div>` : ''}
+      </div>`;
+  } else {
+    preview.innerHTML = `
+      <div class="cv-top">
+        <div class="cv-top-inner">
+          ${photoHTML}
+          <div>
+            <div class="cv-name">${name}</div>
+            <div class="cv-title">${cvData.jobtitle||'Professional Title'}</div>
+            <div class="cv-contact-row">${contactItems}</div>
+          </div>
+        </div>
+      </div>
+      <div class="cv-body">
+        <div class="cv-main">
+          ${cvData.summary ? `<div class="cv-section"><div class="cv-section-title">Profile</div><div class="cv-entry-desc">${cvData.summary}</div></div>` : ''}
+          <div class="cv-section"><div class="cv-section-title">Experience</div>${expHTML}</div>
+          <div class="cv-section"><div class="cv-section-title">Education</div>${eduHTML}</div>
+        </div>
+        <div class="cv-sidebar" style="border-left:1px solid var(--border);padding-left:20px">
+          <div class="cv-section"><div class="cv-section-title">Skills</div>${skillsMinHTML}</div>
+          ${langsHTML ? `<div class="cv-section"><div class="cv-section-title">Languages</div>${langsHTML}</div>` : ''}
+          ${cvData.hobbies ? `<div class="cv-section"><div class="cv-section-title">Interests</div><div style="font-size:0.8rem;color:var(--text2)">${cvData.hobbies}</div></div>` : ''}
+        </div>
+      </div>`;
   }
+}
 
-  function copyText() {
-    const t = document.getElementById('resultText')?.textContent;
-    if (t) {
-      navigator.clipboard.writeText(t);
-      const btn = document.querySelector('.copy-btn');
-      btn.innerHTML = `✅ Copied!`;
-      setTimeout(() => {
-        btn.innerHTML = `<svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copy`;
-      }, 2000);
-    }
+function downloadCV() {
+  const preview = document.getElementById('cvPreview');
+  const name = `${cvData.fname||'My'}_${cvData.lname||'CV'}`;
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${name} CV</title><link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Outfit',sans-serif;background:white}${document.querySelector('style').textContent}</style></head><body>${preview.outerHTML}</body></html>`;
+  const blob = new Blob([html], {type:'text/html'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `${name}_CV.html`; a.click();
+  URL.revokeObjectURL(url);
+}
+
+function clearCV() {
+  if(confirm('Clear all CV data?')) {
+    document.querySelectorAll('.cv-input').forEach(i=>i.value='');
+    cvData = {photo:null,fname:'',lname:'',jobtitle:'',email:'',phone:'',location:'',linkedin:'',summary:'',experience:[],education:[],skills:[],languages:'',certs:'',hobbies:''};
+    document.getElementById('exp-entries').innerHTML = '';
+    document.getElementById('edu-entries').innerHTML = '';
+    document.getElementById('skill-entries').innerHTML = '';
+    document.getElementById('photoUpload').innerHTML = `<div class="photo-upload-icon">📷</div><div class="photo-upload-text">Click to upload photo</div><input type="file" id="photoInput" accept="image/*" onchange="handlePhoto(event)" style="display:none"/>`;
+    updateCV();
   }
+}
+
+// Init CV preview
+updateCV();
 </script>
 </body>
 </html>
