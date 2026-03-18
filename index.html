@@ -875,7 +875,7 @@ select option{background:var(--white)}
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 // ============================================================
 // NAVIGATION
 // ============================================================
@@ -1399,4 +1399,7 @@ window.doSignup=doSignup;
 window.quickCaption=quickCaption;
 window.sendContact=sendContact;
 window.renderWT=renderWT;
-document.getElementById('cin').addEventListener('input',function(){this.style.height='4
+document.getElementById('cin').addEventListener('input',function(){this.style.height='40px';this.style.height=Math.min(this.scrollHeight,100)+'px'});
+</script>
+</body>
+</html>
