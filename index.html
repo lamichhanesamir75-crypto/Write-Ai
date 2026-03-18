@@ -1,1 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WriteAI – Free AI Writing Tool</title>
+  <meta name="description" content="Free AI-powered writing tool. Generate blog posts, emails, captions, and more in seconds. No sign-up required."/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    :root {
+      --bg: #0a0a0f;
+      --surface: #13131a;
+      --surface2: #1c1c27;
+      --border: #2a2a3a;
+      --accent: #7c6af7;
+      --accent2: #e85d9a;
+      --accent3: #38d9a9;
+      --text: #f0efff;
+      --muted: #8888aa;
+      --radius: 16px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* NOISE OVERLAY */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.4;
+    }
+
+    /* GLOW BLOBS */
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.12;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .blob-1 { width: 600px; height: 600px; background: var(--accent); top: -200px; left: -200px; animation: drift 12s ease-in-out infinite alternate; }
+    .blob-2 { width: 500px; height: 500px; background: var(--accent2); bottom: -100px; right: -100px; animation: drift 16s ease-in-out infinite alternate-reverse; }
+    .blob-3 { width: 400px; height: 400px; background: var(--accent3); top: 50%; left: 50%; transform: translate(-50%, -50%); animation: drift 10s ease-in-out infinite alternate; }
+
+    @keyframes drift {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(40px, 30px) scale(1.1); }
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(10,10,15,0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.4rem;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--text); }
+    .nav-links { display: flex; gap: 32px; align-items: center; }
+    .btn-nav {
+      background: var(--accent);
+      color: white !important;
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: opacity 0.2s !important;
+    }
+    .btn-nav:hover { opacity: 0.85; }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(124,106,247,0.15);
+      border: 1px solid rgba(124,106,247,0.35);
+      color: #b8affe;
+      font-size: 0.8rem;
+      font-weight: 500;
+      padding: 6px 16px;
+      border-radius: 100px;
+      margin-bottom: 28px;
+      animation: fadeUp 0.6s ease both;
+    }
+    .badge span { width: 6px; height: 6px; border-radius: 50%; background: var(--accent3); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      max-width: 800px;
+      animation: fadeUp 0.7s 0.1s ease both;
+    }
+    h1 .grad {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 60%, #ff9b6b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      margin-top: 20px;
+      font-size: 1.15rem;
+      color: var(--muted);
+      max-width: 520px;
+      animation: fadeUp 0.7s 0.2s ease both;
+    }
+    .hero-cta {
+      margin-top: 40px;
+      display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;
+      animation: fadeUp 0.7s 0.3s ease both;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: white;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 40px rgba(124,106,247,0.3);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 60px rgba(124,106,247,0.5); }
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 14px 32px;
+      border-radius: 12px;
+      font-size: 1rem;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--accent); background: rgba(124,106,247,0.08); }
+    .stats {
+      margin-top: 60px;
+      display: flex; gap: 48px; flex-wrap: wrap; justify-content: center;
+      animation: fadeUp 0.7s 0.4s ease both;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.8rem;
+      background: linear-gradient(135deg, var(--accent3), var(--accent));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* TOOL SECTION */
+    .section { position: relative; z-index: 1; padding: 80px 24px; max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      font-size: 0.75rem; font-weight: 500; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--accent3); margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: clamp(1.8rem, 4vw, 2.8rem); line-height: 1.15; margin-bottom: 16px;
+    }
+    .section-sub { color: var(--muted); max-width: 500px; margin-bottom: 48px; }
+
+    /* TOOL CARD */
+    .tool-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .tool-tabs {
+      display: flex; overflow-x: auto; border-bottom: 1px solid var(--border);
+      scrollbar-width: none;
+    }
+    .tool-tabs::-webkit-scrollbar { display: none; }
+    .tab {
+      padding: 14px 22px;
+      font-size: 0.9rem; font-weight: 400;
+      color: var(--muted);
+      cursor: pointer;
+      white-space: nowrap;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+      background: none; border-top: none; border-left: none; border-right: none;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .tab.active { color: var(--text); border-bottom-color: var(--accent); }
+    .tab:hover:not(.active) { color: var(--text); }
+
+    .tool-body { padding: 32px; }
+    .tool-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    @media(max-width:700px){ .tool-row { grid-template-columns: 1fr; } }
+
+    label { font-size: 0.82rem; font-weight: 500; color: var(--muted); display: block; margin-bottom: 8px; }
+    textarea, input, select {
+      width: 100%; background: var(--surface2);
+      border: 1px solid var(--border); border-radius: 10px;
+      color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.95rem;
+      padding: 12px 16px; resize: vertical; outline: none;
+      transition: border-color 0.2s;
+    }
+    textarea:focus, input:focus, select:focus { border-color: var(--accent); }
+    select option { background: var(--surface2); }
+
+    .tool-controls { margin-top: 20px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .output-box {
+      margin-top: 24px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      min-height: 160px;
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: var(--text);
+      position: relative;
+      white-space: pre-wrap;
+    }
+    .output-placeholder { color: var(--muted); font-style: italic; }
+    .copy-btn {
+      position: absolute; top: 12px; right: 12px;
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--muted); padding: 6px 14px; border-radius: 6px;
+      font-size: 0.8rem; cursor: pointer; font-family: 'DM Sans', sans-serif;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .copy-btn:hover { color: var(--text); border-color: var(--accent); }
+
+    .generating { display: flex; align-items: center; gap: 10px; color: var(--accent); }
+    .dot-spin { display: flex; gap: 5px; }
+    .dot-spin span {
+      width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
+      animation: bounce 1s infinite;
+    }
+    .dot-spin span:nth-child(2){ animation-delay: 0.15s; }
+    .dot-spin span:nth-child(3){ animation-delay: 0.3s; }
+    @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+
+    /* FEATURES */
+    .features-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .feature-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .feature-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+    .feature-icon {
+      width: 46px; height: 46px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; margin-bottom: 16px;
+    }
+    .feature-card h3 {
+      font-family: 'Syne', sans-serif; font-weight: 600;
+      font-size: 1.05rem; margin-bottom: 8px;
+    }
+    .feature-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+
+    /* HOW IT WORKS */
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 24px; }
+    .step { text-align: center; padding: 32px 20px; }
+    .step-num {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.2rem;
+      margin: 0 auto 20px;
+    }
+    .step h3 { font-family: 'Syne', sans-serif; font-weight: 600; margin-bottom: 10px; }
+    .step p { font-size: 0.9rem; color: var(--muted); }
+
+    /* DIVIDER */
+    .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+    /* CTA BANNER */
+    .cta-banner {
+      background: linear-gradient(135deg, rgba(124,106,247,0.15), rgba(232,93,154,0.1));
+      border: 1px solid rgba(124,106,247,0.3);
+      border-radius: var(--radius);
+      padding: 60px 40px;
+      text-align: center;
+    }
+    .cta-banner h2 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 2rem; margin-bottom: 14px; }
+    .cta-banner p { color: var(--muted); margin-bottom: 32px; }
+
+    /* FOOTER */
+    footer {
+      position: relative; z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 40px;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;
+    }
+    footer p { font-size: 0.85rem; color: var(--muted); }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-size: 0.85rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--text); }
+
+    /* AD SLOTS */
+    .ad-slot {
+      background: var(--surface); border: 1px dashed var(--border);
+      border-radius: var(--radius); padding: 20px;
+      text-align: center; color: var(--muted); font-size: 0.8rem;
+      margin: 16px 0;
+    }
+    .ad-slot-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+
+<!-- BACKGROUND BLOBS -->
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">WriteAI ✦</div>
+  <div class="nav-links">
+    <a href="#tool">Tool</a>
+    <a href="#features">Features</a>
+    <a href="#how">How It Works</a>
+    <a href="#tool" class="btn-nav">Try Free →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="badge"><span></span> Powered by Claude AI — 100% Free</div>
+  <h1>Write Anything.<br><span class="grad">10× Faster.</span></h1>
+  <p class="hero-sub">Generate blog posts, emails, captions, and more in seconds. No sign-up. No credit card. Just write.</p>
+  <div class="hero-cta">
+    <button class="btn-primary" onclick="document.getElementById('tool').scrollIntoView({behavior:'smooth'})">Start Writing Free →</button>
+    <button class="btn-secondary" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">See How It Works</button>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-num">50K+</div><div class="stat-label">Words Generated</div></div>
+    <div class="stat"><div class="stat-num">6</div><div class="stat-label">Writing Tools</div></div>
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Free Forever</div></div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- AD SLOT TOP -->
+<div style="max-width:1100px;margin:32px auto;padding:0 24px;">
+  <div class="ad-slot">
+    <div class="ad-slot-label">Advertisement</div>
+    <!-- PASTE YOUR GOOGLE ADSENSE CODE HERE -->
+    <p>[ Google AdSense Ad will appear here ]</p>
+  </div>
+</div>
+
+<!-- TOOL SECTION -->
+<section class="section" id="tool">
+  <div class="section-label">✦ AI Writing Tool</div>
+  <div class="section-title">What do you want<br>to write today?</div>
+  <p class="section-sub">Pick a tool below, fill in a few details, and get professional content instantly.</p>
+
+  <div class="tool-card">
+    <div class="tool-tabs" id="tabs">
+      <button class="tab active" data-tool="blog">📝 Blog Post</button>
+      <button class="tab" data-tool="email">📧 Email</button>
+      <button class="tab" data-tool="caption">📱 Caption</button>
+      <button class="tab" data-tool="product">🛍️ Product Desc</button>
+      <button class="tab" data-tool="cover">📄 Cover Letter</button>
+      <button class="tab" data-tool="headline">✍️ Headline</button>
+    </div>
+
+    <div class="tool-body" id="toolBody">
+      <!-- Dynamically filled -->
+    </div>
+  </div>
+</section>
+
+<!-- AD SLOT MIDDLE -->
+<div style="max-width:1100px;margin:0 auto;padding:0 24px;">
+  <div class="ad-slot">
+    <div class="ad-slot-label">Advertisement</div>
+    <!-- PASTE YOUR GOOGLE ADSENSE CODE HERE -->
+    <p>[ Google AdSense Ad will appear here ]</p>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section class="section" id="features">
+  <div class="section-label">✦ Why WriteAI</div>
+  <div class="section-title">Everything you need<br>to write better</div>
+  <p class="section-sub">Built for bloggers, marketers, students, and business owners.</p>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(124,106,247,0.15)">⚡</div>
+      <h3>Instant Results</h3>
+      <p>Get high-quality content generated in under 10 seconds. No waiting, no frustration.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(232,93,154,0.15)">🎯</div>
+      <h3>Multiple Tools</h3>
+      <p>Blog posts, emails, captions, product descriptions, cover letters, and headlines — all in one place.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(56,217,169,0.15)">💸</div>
+      <h3>100% Free</h3>
+      <p>No hidden fees. No subscription. No credit card. Free forever with unlimited usage.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(255,155,107,0.15)">🌍</div>
+      <h3>Any Language</h3>
+      <p>Write in English, Korean, Spanish, French, and many more. Global content, zero effort.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(124,106,247,0.15)">📋</div>
+      <h3>One-Click Copy</h3>
+      <p>Copy your generated content with a single click. Paste it anywhere instantly.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:rgba(232,93,154,0.15)">🔒</div>
+      <h3>Private & Safe</h3>
+      <p>Your inputs are never stored or shared. Write with full confidence and privacy.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<hr class="divider"/>
+<section class="section" id="how">
+  <div class="section-label">✦ Simple Process</div>
+  <div class="section-title" style="text-align:center">How it works</div>
+  <p class="section-sub" style="text-align:center;margin:0 auto 48px">Three steps to amazing content</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3>Pick Your Tool</h3>
+      <p>Choose from Blog Post, Email, Caption, Product Description, Cover Letter, or Headline.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3>Add Your Details</h3>
+      <p>Enter your topic, tone, and any key details. The more you share, the better the result.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3>Copy & Use</h3>
+      <p>Hit Generate, read your content, and copy it to use anywhere in seconds.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<div style="max-width:1100px;margin:0 auto;padding:0 24px 80px;">
+  <div class="cta-banner">
+    <h2>Start writing smarter today 🚀</h2>
+    <p>Join thousands of writers, marketers, and creators using WriteAI for free.</p>
+    <button class="btn-primary" onclick="document.getElementById('tool').scrollIntoView({behavior:'smooth'})">Try It Free — No Sign Up →</button>
+  </div>
+</div>
+
+<!-- AD SLOT BOTTOM -->
+<div style="max-width:1100px;margin:0 auto;padding:0 24px 40px;">
+  <div class="ad-slot">
+    <div class="ad-slot-label">Advertisement</div>
+    <!-- PASTE YOUR GOOGLE ADSENSE CODE HERE -->
+    <p>[ Google AdSense Ad will appear here ]</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="logo" style="margin-bottom:6px">WriteAI ✦</div>
+    <p>Free AI writing tool for everyone.</p>
+  </div>
+  <div class="footer-links">
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms of Use</a>
+    <a href="#">Contact</a>
+  </div>
+  <p>© 2026 WriteAI. All rights reserved.</p>
+</footer>
+
+<script>
+  const TOOLS = {
+    blog: {
+      fields: `
+        <div class="tool-row">
+          <div>
+            <label>Blog Topic *</label>
+            <input type="text" id="f1" placeholder="e.g. How to lose weight fast" />
+          </div>
+          <div>
+            <label>Tone</label>
+            <select id="f2">
+              <option>Professional</option><option>Casual</option><option>Inspiring</option><option>Funny</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-top:16px">
+          <label>Target Audience</label>
+          <input type="text" id="f3" placeholder="e.g. Beginners, business owners, students..." />
+        </div>`,
+      prompt: () => `Write a complete, engaging blog post about: "${document.getElementById('f1').value}". 
+        Tone: ${document.getElementById('f2').value}. Target audience: ${document.getElementById('f3').value || 'general public'}.
+        Include: a catchy title, introduction, 3-4 sections with subheadings, and a conclusion. Make it SEO-friendly and around 400 words.`
+    },
+    email: {
+      fields: `
+        <div class="tool-row">
+          <div>
+            <label>Email Purpose *</label>
+            <input type="text" id="f1" placeholder="e.g. Follow up after interview" />
+          </div>
+          <div>
+            <label>Tone</label>
+            <select id="f2">
+              <option>Professional</option><option>Friendly</option><option>Formal</option><option>Persuasive</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-top:16px">
+          <label>Key Points to Include</label>
+          <input type="text" id="f3" placeholder="e.g. Mention the meeting on Monday, ask for feedback..." />
+        </div>`,
+      prompt: () => `Write a ${document.getElementById('f2').value.toLowerCase()} email for: "${document.getElementById('f1').value}".
+        Key points: ${document.getElementById('f3').value || 'none specified'}. Include subject line, greeting, body, and sign-off.`
+    },
+    caption: {
+      fields: `
+        <div class="tool-row">
+          <div>
+            <label>What is the Post About? *</label>
+            <input type="text" id="f1" placeholder="e.g. Sunset photo at the beach" />
+          </div>
+          <div>
+            <label>Platform</label>
+            <select id="f2">
+              <option>Instagram</option><option>TikTok</option><option>Twitter/X</option><option>LinkedIn</option><option>Facebook</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-top:16px">
+          <label>Vibe / Style</label>
+          <input type="text" id="f3" placeholder="e.g. Inspirational, funny, aesthetic, motivational..." />
+        </div>`,
+      prompt: () => `Write 3 different ${document.getElementById('f2').value} captions for a post about: "${document.getElementById('f1').value}".
+        Style: ${document.getElementById('f3').value || 'engaging'}. Include relevant hashtags for each. Make them catchy and scroll-stopping.`
+    },
+    product: {
+      fields: `
+        <div class="tool-row">
+          <div>
+            <label>Product Name *</label>
+            <input type="text" id="f1" placeholder="e.g. Wireless Noise-Cancelling Headphones" />
+          </div>
+          <div>
+            <label>Key Features</label>
+            <input type="text" id="f2" placeholder="e.g. 40hr battery, Bluetooth 5.0, foldable" />
+          </div>
+        </div>
+        <div style="margin-top:16px">
+          <label>Target Customer</label>
+          <input type="text" id="f3" placeholder="e.g. Remote workers, commuters, gamers..." />
+        </div>`,
+      prompt: () => `Write a compelling product description for: "${document.getElementById('f1').value}".
+        Key features: ${document.getElementById('f2').value || 'not specified'}. Target customer: ${document.getElementById('f3').value || 'general buyers'}.
+        Make it persuasive, benefit-focused, and suitable for an e-commerce listing. Around 150 words.`
+    },
+    cover: {
+      fields: `
+        <div class="tool-row">
+          <div>
+            <label>Job Title Applying For *</label>
+            <input type="text" id="f1" placeholder="e.g. Marketing Manager at Google" />
+          </div>
+          <div>
+            <label>Your Top Skills</label>
+            <input type="text" id="f2" placeholder="e.g. SEO, content writing, data analysis" />
+          </div>
+        </div>
+        <div style="margin-top:16px">
+          <label>Years of Experience</label>
+          <input type="text" id="f3" placeholder="e.g. 3 years in digital marketing" />
+        </div>`,
+      prompt: () => `Write a professional cover letter for someone applying for: "${document.getElementById('f1').value}".
+        Their top skills: ${document.getElementById('f2').value || 'not specified'}. Experience: ${document.getElementById('f3').value || 'not specified'}.
+        Make it confident, concise, and compelling. Include opening, body paragraphs, and closing.`
+    },
+    headline: {
+      fields: `
+        <div class="tool-row">
+          <div>
+            <label>Topic / Product / Article *</label>
+            <input type="text" id="f1" placeholder="e.g. App that helps you sleep better" />
+          </div>
+          <div>
+            <label>Style</label>
+            <select id="f2">
+              <option>Curiosity-driven</option><option>How-to</option><option>Listicle</option><option>Bold claim</option><option>Question</option>
+            </select>
+          </div>
+        </div>`,
+      prompt: () => `Generate 10 powerful, click-worthy headlines for: "${document.getElementById('f1').value}".
+        Style: ${document.getElementById('f2').value}. Make them irresistible, SEO-friendly, and varied in structure.`
+    }
+  };
+
+  let currentTool = 'blog';
+
+  function renderTool(key) {
+    const t = TOOLS[key];
+    document.getElementById('toolBody').innerHTML = `
+      ${t.fields}
+      <div class="tool-controls">
+        <button class="btn-primary" onclick="generate()" id="genBtn">✦ Generate</button>
+        <span style="font-size:0.8rem;color:var(--muted)">Powered by Claude AI</span>
+      </div>
+      <div class="output-box" id="output">
+        <span class="output-placeholder">Your generated content will appear here…</span>
+      </div>
+    `;
+  }
+
+  document.getElementById('tabs').addEventListener('click', e => {
+    const btn = e.target.closest('.tab');
+    if (!btn) return;
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    currentTool = btn.dataset.tool;
+    renderTool(currentTool);
+  });
+
+  renderTool('blog');
+
+  async function generate() {
+    const f1 = document.getElementById('f1');
+    if (!f1 || !f1.value.trim()) {
+      f1.style.borderColor = 'var(--accent2)';
+      f1.focus();
+      setTimeout(() => f1.style.borderColor = '', 1500);
+      return;
+    }
+
+    const btn = document.getElementById('genBtn');
+    const output = document.getElementById('output');
+    btn.disabled = true;
+    btn.textContent = 'Generating…';
+    output.innerHTML = `<div class="generating"><div class="dot-spin"><span></span><span></span><span></span></div> Writing your content…</div>`;
+
+    try {
+      const prompt = TOOLS[currentTool].prompt();
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          messages: [{ role: 'user', content: prompt }]
+        })
+      });
+      const data = await res.json();
+      const text = data.content?.map(b => b.text || '').join('') || 'Something went wrong. Please try again.';
+      output.innerHTML = `<button class="copy-btn" onclick="copyText()">Copy</button><span id="resultText"></span>`;
+      // Typewriter effect
+      const span = document.getElementById('resultText');
+      let i = 0;
+      const interval = setInterval(() => {
+        span.textContent += text[i] || '';
+        i++;
+        if (i >= text.length) clearInterval(interval);
+      }, 10);
+    } catch(e) {
+      output.innerHTML = `<span style="color:var(--accent2)">⚠ Error: Could not connect to AI. Please try again.</span>`;
+    }
+
+    btn.disabled = false;
+    btn.textContent = '✦ Generate';
+  }
+
+  function copyText() {
+    const t = document.getElementById('resultText')?.textContent;
+    if (t) {
+      navigator.clipboard.writeText(t);
+      const btn = document.querySelector('.copy-btn');
+      btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = 'Copy', 2000);
+    }
+  }
+</script>
+</body>
+</html>
